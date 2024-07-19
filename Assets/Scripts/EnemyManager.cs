@@ -54,7 +54,7 @@ public class EnemyManager : MonoBehaviour
         for (int i = 0; i < EnemyData.Actions.Length; i++)
         {
             GameObject ArrowObject = new GameObject();
-            ArrowObject.transform.position = new Vector3(0.5f * (i % 4) - 1.25f, 4 - (Mathf.FloorToInt(i / 4) * 0.5f), 0);
+            ArrowObject.transform.position = new Vector3(1f * (i % 4) - 1.25f, 4 - (Mathf.FloorToInt(i / 4) * 1f), 0);
             ArrowObject.AddComponent<SpriteRenderer>().sprite = DirectionalSprites[(int)EnemyData.Actions[i]];
             ArrowsList.Add(ArrowObject.transform);
 
