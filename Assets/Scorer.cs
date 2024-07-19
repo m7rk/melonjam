@@ -16,6 +16,7 @@ public class Scorer : MonoBehaviour
         MATCH_BOTH,
         RHYME_ONLY, // wrong POS
         POS_ONLY, // doesn't rhyme
+        REPEAT, 
         NO_MATCH, // neither
         NOT_WORD // didnt finish or not a word
     }
@@ -51,7 +52,7 @@ public class Scorer : MonoBehaviour
             }
             // this is the new word.
             lastWord = word;
-            previous.text += (word + "\n");
+            previous.text += (word + " ");
         }
         else
         {
