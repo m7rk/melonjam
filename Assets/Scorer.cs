@@ -8,6 +8,7 @@ public class Scorer : MonoBehaviour
     public Rhymer rhymer;
     public LyricScoreBox box;
     public TMP_Text previous;
+    public List<string> previousWords;
 
     string lastWord = null;
 
@@ -31,7 +32,11 @@ public class Scorer : MonoBehaviour
                 var rhymed = rhymer.rhymes(lastWord, word);
                 var waspos = rhymer.isPOS(word, targetpos);
 
-                if (rhymed && waspos)
+                if(previousWords.Contains(word))
+                {
+                    box.newWord(LYRICSCORE.REPEAT);
+                }
+                else if (rhymed && waspos)
                 {
                     box.newWord(LYRICSCORE.MATCH_BOTH);
                 }
@@ -43,16 +48,19 @@ public class Scorer : MonoBehaviour
                 {
                     box.newWord(LYRICSCORE.POS_ONLY);
                     previous.text = "";
+                    previousWords = new List<string>();
                 }
                 else
                 {
                     box.newWord(LYRICSCORE.NO_MATCH);
                     previous.text = "";
+                    previousWords = new List<string>();
                 }
             }
             // this is the new word.
             lastWord = word;
             previous.text += (word + " ");
+            previousWords.Add(word);
         }
         else
         {
