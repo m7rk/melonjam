@@ -30,7 +30,7 @@ public class Scorer : MonoBehaviour
             if (lastWord != null)
             {
                 var rhymed = rhymer.rhymes(lastWord, word);
-                var waspos = rhymer.isPOS(word, targetpos);
+                var waspos = rhymer.isPOS(word, targetpos,false);
 
                 if(previousWords.Contains(word))
                 {

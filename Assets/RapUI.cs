@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
-// handles user input and prompts the user to type the lyrics.
+// handles the rap UI (user input + prompts the user to type the lyrics, and boss)
 public class RapUI : MonoBehaviour
 {
     // rhymer
@@ -33,7 +33,12 @@ public class RapUI : MonoBehaviour
     float barStartTime;
     
     //how long are bars? (const'd for now)
-    const float barLength = 5f;
+    const float barLength = 2f;
+
+    bool bossBars = true;
+
+    // for AI
+    private string lastWord = "rap";
 
 
     // Start is called before the first frame update
@@ -49,19 +54,29 @@ public class RapUI : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        checkKeyPress();
-        var currentBar = bars[barIndex];
-
         // get the current bar and bar character.
+        var currentBar = bars[barIndex];
         var barProgress = ((Time.time - barStartTime) / barLength);
         int barCharacter = (int)(barProgress * (float)currentBar.IndexOf("["));
 
         // get text inside []
         var targetPOS = currentBar.Substring(currentBar.IndexOf("[") + 1, currentBar.IndexOf("]") - currentBar.IndexOf("[") - 1);
 
+        if (!bossBars)
+        {
+            checkKeyPress();
+        }
+        else
+        {
+            AIWord(targetPOS);
+        }
+
+
+
         // submit word and go to next bar.
         if (Time.time - barStartTime >= barLength)
         {
+            lastWord = word;
             scorer.submitWord(word.ToUpper(),targetPOS);
             barIndex += 1;
             barStartTime += barLength;
@@ -101,6 +116,24 @@ public class RapUI : MonoBehaviour
         if(Input.GetKeyDown(KeyCode.Backspace) && word.Length > 0)
         {
             word = word.Substring(0, word.Length - 1);
+        }
+    }
+
+    // fine for now...
+    void AIWord(string targetPOS)
+    {
+        if (word == "")
+        {
+            if (Random.Range(0, 4) == 2)
+            {
+                word = rhymer.getRandomWord(targetPOS);
+            }
+            else if (word == "")
+            {
+                // lots of attempts.
+                word = rhymer.getRandomWordRhymesWith(targetPOS, lastWord, 100000);
+
+            }
         }
     }
 
