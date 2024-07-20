@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.02.00">
+	<object class="ParameterPreset" id="{ace9a531-a10b-4970-9b42-1d5fda871acb}">
+		<property name="name">
+			<value>Flow_Bar</value>
+		</property>
+		<relationship name="folder">
+			<destination>{a418e0de-c7d0-05c9-280a-b529dc02e12e}</destination>
+		</relationship>
+		<relationship name="parameter">
+			<destination>{3a2b3834-3907-4ccd-a6ad-6598ea0dddc2}</destination>
+		</relationship>
+	</object>
+	<object class="GameParameter" id="{3a2b3834-3907-4ccd-a6ad-6598ea0dddc2}">
+		<property name="maximum">
+			<value>100</value>
+		</property>
+		<property name="initialValue">
+			<value>0</value>
+		</property>
+	</object>
+</objects>
