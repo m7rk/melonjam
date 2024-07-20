@@ -1,13 +1,10 @@
 fileFormatVersion: 2
-guid: 719a9226bd3f6a347b2bece0962d3b0b
+guid: 3b52c49b2a30c0c46a27b014a7e40864
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -1614681456858927432
-    second: PlayerHurtOutline_0
-  - first:
-      213: -4670544665905242596
-    second: PlayerHurtOutline_1
+      213: -2834816866031520189
+    second: StartButton_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -49,7 +46,7 @@ TextureImporter:
   nPOTScale: 0
   lightmap: 0
   compressionQuality: 50
-  spriteMode: 1
+  spriteMode: 2
   spriteExtrude: 1
   spriteMeshType: 1
   alignment: 0
@@ -116,13 +113,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: PlayerHurtOutline_0
+      name: StartButton_0
       rect:
         serializedVersion: 2
-        x: 5
-        y: 514
-        width: 12
-        height: 57
+        x: 0
+        y: 3
+        width: 200
+        height: 62
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -130,29 +127,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 8be638a15cf7799e0800000000000000
-      internalID: -1614681456858927432
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: PlayerHurtOutline_1
-      rect:
-        serializedVersion: 2
-        x: 16
-        y: 13
-        width: 249
-        height: 561
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: c1e5f193f54ee2fb0800000000000000
-      internalID: -4670544665905242596
+      spriteID: 346b7e07415b8a8d0800000000000000
+      internalID: -2834816866031520189
       vertices: []
       indices: 
       edges: []
@@ -160,16 +136,14 @@ TextureImporter:
     outline: []
     physicsShape: []
     bones: []
-    spriteID: 5e97eb03825dee720800000000000000
+    spriteID: 
     internalID: 0
     vertices: []
     indices: 
     edges: []
     weights: []
     secondaryTextures: []
-    nameFileIdTable:
-      PlayerHurtOutline_0: -1614681456858927432
-      PlayerHurtOutline_1: -4670544665905242596
+    nameFileIdTable: {}
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

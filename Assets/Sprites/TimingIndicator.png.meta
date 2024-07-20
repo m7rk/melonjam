@@ -1,22 +1,16 @@
 fileFormatVersion: 2
-guid: aa9f7676c2f11194e96a7673aaf040c8
+guid: ba2c7c32945749a4f895fa70752d077c
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -6275375497745544460
-    second: Arrows1_0
+      213: -1696499411513588932
+    second: TimingIndicator_0
   - first:
-      213: -4429990010063559755
-    second: Arrows1_1
+      213: -8432022417875588013
+    second: TimingIndicator_1
   - first:
-      213: 1670946096253805908
-    second: Arrows1_2
-  - first:
-      213: -2732231709748262898
-    second: Arrows1_3
-  - first:
-      213: 7669604179215697833
-    second: Arrows1_4
+      213: -8205347676028124667
+    second: TimingIndicator_2
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -58,12 +52,12 @@ TextureImporter:
   nPOTScale: 0
   lightmap: 0
   compressionQuality: 50
-  spriteMode: 2
+  spriteMode: 1
   spriteExtrude: 1
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spritePixelsToUnits: 50
+  spritePixelsToUnits: 100
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
@@ -109,33 +103,7 @@ TextureImporter:
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
   - serializedVersion: 3
-    buildTarget: Android
-    maxTextureSize: 2048
-    resizeAlgorithm: 0
-    textureFormat: -1
-    textureCompression: 1
-    compressionQuality: 50
-    crunchedCompression: 0
-    allowsAlphaSplitting: 0
-    overridden: 0
-    ignorePlatformSupport: 0
-    androidETC2FallbackOverride: 0
-    forceMaximumCompressionQuality_BC6H_BC7: 0
-  - serializedVersion: 3
     buildTarget: WebGL
-    maxTextureSize: 2048
-    resizeAlgorithm: 0
-    textureFormat: -1
-    textureCompression: 1
-    compressionQuality: 50
-    crunchedCompression: 0
-    allowsAlphaSplitting: 0
-    overridden: 0
-    ignorePlatformSupport: 0
-    androidETC2FallbackOverride: 0
-    forceMaximumCompressionQuality_BC6H_BC7: 0
-  - serializedVersion: 3
-    buildTarget: Windows Store Apps
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
@@ -151,106 +119,64 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Arrows1_0
+      name: TimingIndicator_0
       rect:
         serializedVersion: 2
-        x: 0
-        y: 0
-        width: 50
-        height: 50
+        x: 9
+        y: 43
+        width: 6
+        height: 6
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
-      tessellationDetail: 0
+      tessellationDetail: -1
       bones: []
-      spriteID: 3a3a8573cff7f5745a41307057def30b
-      internalID: 607634535
+      spriteID: c33c21f06c2d478e0800000000000000
+      internalID: -1696499411513588932
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Arrows1_1
+      name: TimingIndicator_1
       rect:
         serializedVersion: 2
-        x: 50
-        y: 0
-        width: 50
-        height: 50
+        x: 10
+        y: 1
+        width: 26
+        height: 47
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
-      tessellationDetail: 0
+      tessellationDetail: -1
       bones: []
-      spriteID: 428cf15a1ae94c24facb55a92c1c24c0
-      internalID: 149241732
+      spriteID: 35c256429407bfa80800000000000000
+      internalID: -8432022417875588013
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Arrows1_2
+      name: TimingIndicator_2
       rect:
         serializedVersion: 2
-        x: 100
-        y: 0
-        width: 50
-        height: 50
+        x: 33
+        y: 9
+        width: 6
+        height: 6
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
-      tessellationDetail: 0
+      tessellationDetail: -1
       bones: []
-      spriteID: e43aaab003ad6334598e59d9641d9755
-      internalID: 408530201
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Arrows1_3
-      rect:
-        serializedVersion: 2
-        x: 150
-        y: 0
-        width: 50
-        height: 50
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: e295a41ba3e927442a93da45649d6cfd
-      internalID: -1758889728
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Arrows1_4
-      rect:
-        serializedVersion: 2
-        x: 200
-        y: 0
-        width: 50
-        height: 50
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: b87bae129b4273e469a15b8e84e97b7b
-      internalID: -2021907648
+      spriteID: 50244cf23cfb02e80800000000000000
+      internalID: -8205347676028124667
       vertices: []
       indices: 
       edges: []
@@ -258,7 +184,7 @@ TextureImporter:
     outline: []
     physicsShape: []
     bones: []
-    spriteID: 7c39977a0912ffc41909e0eef61e91fc
+    spriteID: 5e97eb03825dee720800000000000000
     internalID: 0
     vertices: []
     indices: 
@@ -266,11 +192,9 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      Arrows1_0: 607634535
-      Arrows1_1: 149241732
-      Arrows1_2: 408530201
-      Arrows1_3: -1758889728
-      Arrows1_4: -2021907648
+      TimingIndicator_0: -1696499411513588932
+      TimingIndicator_1: -8432022417875588013
+      TimingIndicator_2: -8205347676028124667
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
