@@ -148,6 +148,32 @@ TextureImporter:
     ignorePlatformSupport: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Android
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Windows Store Apps
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
     sprites:
@@ -455,7 +481,21 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      BattleBars_0: 2122190583174789198
+      BattleBars_1: 7376639991513276871
+      BattleBars_10: 6402710412127263555
+      BattleBars_11: -203350448465887636
+      BattleBars_12: 5925124157710191451
+      BattleBars_13: 8332350759710502907
+      BattleBars_2: 2509913094076976277
+      BattleBars_3: 7292798765295231920
+      BattleBars_4: 5294981690218358362
+      BattleBars_5: -3140140509858964944
+      BattleBars_6: 230944702787816711
+      BattleBars_7: 3964713950983907261
+      BattleBars_8: -4873841405248085158
+      BattleBars_9: 572008070185329421
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
