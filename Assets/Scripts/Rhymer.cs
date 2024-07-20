@@ -1,7 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 using UnityEngine;
+using UnityEngine.Windows;
 
 //60,000 words
 public class Rhymer : MonoBehaviour
@@ -12,7 +14,7 @@ public class Rhymer : MonoBehaviour
 
     private Dictionary<string, List<string[]>> tocmu = new Dictionary<string, List<string[]>>();
     private Dictionary<string, string[]> topos = new Dictionary<string, string[]>();
-    private Dictionary<string, int> mcw = new Dictionary<string, int>();
+    private HashSet<string> mcw = new HashSet<string>();
 
     // Start is called before the first frame update
     void Start()
@@ -25,14 +27,9 @@ public class Rhymer : MonoBehaviour
     private void createMCW()
     {
         var lines = mostcommonwords.text.Split('\n');
-        int i = 0;
         foreach (var line in lines)
         {
-            if (!mcw.ContainsKey(line))
-            {
-                mcw[line.ToUpper()] = i;
-            }
-            ++i;
+            mcw.Add(line.ToUpper().Trim());
         }
     }
 
@@ -69,8 +66,7 @@ public class Rhymer : MonoBehaviour
                 {
                     tocmu[word] = new List<string[]>();
                 }
-                tocmu[word].Add(cmu);
-
+                tocmu[word.ToUpper()].Add(cmu);
 
                 hitCount++;
             }
@@ -100,12 +96,14 @@ public class Rhymer : MonoBehaviour
 
                     var pho1 = cmu1[cmu1.Length - cmp];
                     var pho2 = cmu2[cmu2.Length - cmp];
+                    var pho1_noacc = Regex.Replace(pho1, @"[\d-]", string.Empty);
+                    var pho2_noacc = Regex.Replace(pho2, @"[\d-]", string.Empty);
 
-                    // staring from the end, compare syllables until both match on a stress.
-                    if (pho1 == pho2)
+                    // staring from the end, compare syllables until both match on a stress. We don't care about the stress. (for now)
+                    if (pho1_noacc == pho2_noacc)
                     {
-                        // matched phoneme... if it's a stress phoneme it's a rhyme!
-                        if (pho1.Contains("0") || pho1.Contains("1") || pho1.Contains("2") || pho1.Contains("3") || pho1.Contains("4"))
+                        // stress phoneme detection, if one of them is a stress phoneme, it's a rhyme. 0 is not stressed so it doesn't count.
+                        if ((pho1 != pho1_noacc) && (pho2 != pho2_noacc) && !(pho1.Contains("0") && pho2.Contains("0")))
                         {
                             return true;
                         }
@@ -144,14 +142,14 @@ public class Rhymer : MonoBehaviour
         return false;
     }
 
-    public string getRandomWord(string pos, int intelligence)
+    public string getRandomWord(string pos)
     {
         var keys = tocmu.Keys.ToList();
         var random = new System.Random();
         while (true)
         {
             var word = keys[random.Next(keys.Count)];
-            if (isPOS(word, pos, true) && aiKnowsWord(word,intelligence))
+            if (isPOS(word, pos, true) && aiKnowsWord(word))
             {
                 return word;
             }
@@ -159,18 +157,18 @@ public class Rhymer : MonoBehaviour
 
     }
 
-    public bool aiKnowsWord(string word, int intelligence)
+    public bool aiKnowsWord(string word)
     {
-        return mcw.ContainsKey(word) && mcw[word] < intelligence;
+        return mcw.Contains(word);
     }
 
-    public string getRandomWordRhymesWith(string pos, string lastWord, int intelligence)
+    public string getRandomWordRhymesWith(string pos, string lastWord)
     {
         var keys = tocmu.Keys.ToList();
         List<string> words = new List<string>();
         foreach(var word in keys) 
         {
-            if (isPOS(word, pos, true) && rhymes(word, lastWord) && aiKnowsWord(word, intelligence) && word != lastWord)
+            if (isPOS(word, pos, true) && rhymes(word, lastWord) && aiKnowsWord(word) && word != lastWord)
             {
                 words.Add(word);
             }
@@ -181,6 +179,6 @@ public class Rhymer : MonoBehaviour
             var random = new System.Random();
             return words[random.Next(words.Count)];
         }
-        return getRandomWord(pos, intelligence);
+        return getRandomWord(pos);
     }
 }

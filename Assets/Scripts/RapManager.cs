@@ -101,12 +101,14 @@ public class RapManager : MonoBehaviour
 
         // subsitute [A] with typed word. green if the word's valid
         wordTextBox.text = (validWord ? "<color=green>" : "<color=red>") + word + "<color=orange>";
-        var textSubbed = currentBar.Replace("[n.]", "");
-        textSubbed = textSubbed.Replace("[v.]", "");
-        textSubbed = textSubbed.Replace("[adj.]", "");
 
-        // do we use these?
-        textSubbed = textSubbed.Replace("[adv.]", "");
+        // supported so far - nouns, adjectives, transitive verbs
+        var textSubbed = currentBar.Replace("[n.]", "");
+        textSubbed = textSubbed.Replace("[a.]", "");
+        textSubbed = textSubbed.Replace("[v. i.]", "");
+
+        // not yet!
+        textSubbed = textSubbed.Replace("[v. t.]", "");
         textSubbed = textSubbed.Replace("[prep.]", "");
         textSubbed = textSubbed.Replace("[conj.]", "");
         textSubbed = textSubbed.Replace("[pron.]", "");
@@ -136,14 +138,13 @@ public class RapManager : MonoBehaviour
     {
         if (word == "" && bm.getBars() % 1 > 0.5f)
         {
-            if (Random.Range(0, 4) == 2 || scorer.getLastRhyme() == null)
+            if (scorer.getLastRhyme() == null)
             {
-                word = rhymer.getRandomWord(targetPOS,INTEL);
+                word = rhymer.getRandomWord(targetPOS);
             }
             else if (word == "")
             {
-                // lots of attempts.
-                word = rhymer.getRandomWordRhymesWith(targetPOS, scorer.getLastRhyme(), INTEL);
+                word = rhymer.getRandomWordRhymesWith(targetPOS, scorer.getLastRhyme());
 
             }
         }
