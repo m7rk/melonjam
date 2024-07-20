@@ -37,9 +37,8 @@ public class RapManager : MonoBehaviour
 
     bool bossBars = false;
 
-    // replace with something better later
-    public Slider playerSlider;
-    public Slider bossSlider;
+    public SpriteBar playerSlider;
+    public SpriteBar bossSlider;
 
     private const int INTEL = 10000;
 
@@ -59,16 +58,26 @@ public class RapManager : MonoBehaviour
     {
         // get the current bar and bar character.
         var currentBar = bars[lyricBarIndex];
-        var barProgress = bm.getBars() % 1;
+        var barProgress = bm.getPhrase() % 1;
         int barCharacter = (int)(barProgress * (float)currentBar.IndexOf("["));
 
         // get text inside []
         var targetPOS = currentBar.Substring(currentBar.IndexOf("[") + 1, currentBar.IndexOf("]") - currentBar.IndexOf("[") - 1);
 
-        playerSlider.gameObject.SetActive(!bossBars);
-        bossSlider.gameObject.SetActive(bossBars);
-        playerSlider.value = bm.getBars() % 8;
-        bossSlider.value = bm.getBars() % 8;
+
+        playerSlider.set( 1 - (bm.getPhrase() % 8 / 8f));
+        bossSlider.set(1 - (bm.getPhrase() % 8 / 8f));
+
+        if (!bossBars)
+        {
+            bossSlider.set(0);
+        }
+        else
+        {
+            playerSlider.set(0);
+
+        }
+
         if (!bossBars)
         {
             checkKeyPress();
@@ -80,7 +89,7 @@ public class RapManager : MonoBehaviour
 
 
         // submit word and go to next bar.
-        if (totalBarIndex != (int)bm.getBars())
+        if (totalBarIndex != (int)bm.getPhrase())
         {
             totalBarIndex += 1;
             lyricBarIndex += 1;
@@ -136,7 +145,7 @@ public class RapManager : MonoBehaviour
     // fine for now...
     void AIWord(string targetPOS)
     {
-        if (word == "" && bm.getBars() % 1 > 0.5f)
+        if (word == "" && bm.getPhrase() % 1 > 0.5f)
         {
             if (scorer.getLastRhyme() == null)
             {

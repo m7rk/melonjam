@@ -7,12 +7,12 @@ using UnityEngine.UI;
 public class Scorer : MonoBehaviour
 {
     public Rhymer rhymer;
-    public LyricScoreBox box;
+    public LyricScoreBox feedbackBox;
     public TMP_Text previous;
     private List<string> previousWords = new List<string>();
 
-    public Slider scoreSlider;
-    public ScoreDecal sd;
+    public SpriteBar scoreSlider;
+    public ScoreDecal scoreDecal;
 
     public enum LYRICSCORE
     {
@@ -31,7 +31,14 @@ public class Scorer : MonoBehaviour
     private const int SCORE_NO_MATCH = -400;
     private const int SCORE_NOT_WORD = -500;
 
+    public const int SCORE_MAX = 5000;
+    private int currentScore = SCORE_MAX / 2;
 
+    public void applyScore(int amt, bool playerScoring)
+    {
+        currentScore += (playerScoring ? 1 : -1) * SCORE_REPEAT;
+        scoreSlider.set(currentScore / SCORE_MAX);
+    }
 
     public void submitWord(string word, string targetpos, bool playerScoring, bool isEnd)
     {
@@ -45,47 +52,44 @@ public class Scorer : MonoBehaviour
                 if(previousWords.Contains(word))
                 {
                     // lose some points for a repeat, but keep combo.
-                    box.newWord(LYRICSCORE.REPEAT);
-
-                    scoreSlider.value += (playerScoring ? 1 : -1) * SCORE_REPEAT;
-                    sd.newWord(SCORE_REPEAT);
+                    feedbackBox.newWord(LYRICSCORE.REPEAT);
+                    applyScore(SCORE_REPEAT, playerScoring);
+                    scoreDecal.newWord(SCORE_REPEAT);
                 }
                 else if (rhymed && waspos)
                 {
                     // get a nice amount for a match
-                    box.newWord(LYRICSCORE.MATCH_BOTH);
-
-                    scoreSlider.value += (playerScoring ? 1 : -1) * SCORE_MATCH_BOTH;
-                    sd.newWord(SCORE_MATCH_BOTH);
+                    feedbackBox.newWord(LYRICSCORE.MATCH_BOTH);
+                    applyScore(SCORE_MATCH_BOTH, playerScoring);
+                    scoreDecal.newWord(SCORE_MATCH_BOTH);
                 }
                 else if (rhymed)
                 {
                     // get no points for keeping the rhyme alive.
-                    box.newWord(LYRICSCORE.RHYME_ONLY);
-
-                    scoreSlider.value += (playerScoring ? 1 : -1) * SCORE_RHYME_ONLY;
-                    sd.newWord(SCORE_RHYME_ONLY);
+                    feedbackBox.newWord(LYRICSCORE.RHYME_ONLY);
+                    applyScore(SCORE_RHYME_ONLY, playerScoring);
+                    scoreDecal.newWord(SCORE_RHYME_ONLY);
                 }
                 else if (waspos)
                 {
                     // resets the rhyme. If there's at least two words, get points for them.
                     if(previousWords.Count > 1)
                     {
-                        scoreSlider.value += (playerScoring ? 1 : -1) * (SCORE_FLOW_BONUS * previousWords.Count);
-                        sd.flowBonus((SCORE_FLOW_BONUS * previousWords.Count), previousWords.Count);
+                        applyScore(SCORE_FLOW_BONUS * previousWords.Count, playerScoring);
+                        scoreDecal.flowBonus((SCORE_FLOW_BONUS * previousWords.Count), previousWords.Count);
                     }
 
-                    box.newWord(LYRICSCORE.POS_ONLY);
+                    feedbackBox.newWord(LYRICSCORE.POS_ONLY);
                     previous.text = "";
                     previousWords = new List<string>();
                 }
                 else
                 {
                     // lose many points for a nonsenstical word, but the rhyme is at least set..
-                    scoreSlider.value += (playerScoring ? 1 : -1) * SCORE_NO_MATCH;
-                    sd.newWord(SCORE_NO_MATCH);
+                    applyScore(SCORE_NO_MATCH, playerScoring);
+                    scoreDecal.newWord(SCORE_NO_MATCH);
 
-                    box.newWord(LYRICSCORE.NO_MATCH);
+                    feedbackBox.newWord(LYRICSCORE.NO_MATCH);
                     previous.text = "";
                     previousWords = new List<string>();
                 }
@@ -96,10 +100,10 @@ public class Scorer : MonoBehaviour
         else
         {
             // lose everything.
-            scoreSlider.value += (playerScoring ? 1 : -1) * SCORE_NOT_WORD;
+            applyScore(SCORE_NOT_WORD, playerScoring);
             previous.text = "";
             previousWords = new List<string>();
-            box.newWord(LYRICSCORE.NOT_WORD);
+            feedbackBox.newWord(LYRICSCORE.NOT_WORD);
         }
 
         if(isEnd)
@@ -107,8 +111,8 @@ public class Scorer : MonoBehaviour
             // cash out words before next turn.
             if (previousWords.Count > 1)
             {
-                scoreSlider.value += (playerScoring ? 1 : -1) * (SCORE_FLOW_BONUS * previousWords.Count);
-                sd.flowBonus((SCORE_FLOW_BONUS * previousWords.Count), previousWords.Count);
+                applyScore(SCORE_FLOW_BONUS * previousWords.Count, playerScoring);
+                scoreDecal.flowBonus((SCORE_FLOW_BONUS * previousWords.Count), previousWords.Count);
             }
             previous.text = "";
             previousWords = new List<string>();

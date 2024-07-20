@@ -6,6 +6,11 @@ using UnityEngine;
 public class EnemyManager : MonoBehaviour
 {
     public PlayerAnimtor pa;
+    public BeatManager bm;
+    public int lastBar;
+
+    public GameObject enemyPrefab;
+
 
     public void Update()
     {
@@ -25,5 +30,20 @@ public class EnemyManager : MonoBehaviour
         {
             pa.setAnim("down");
         }
+
+
+        // spawn an enemy to the left of the origin when a new bar starts.
+        if(lastBar != ((int)bm.getPhrase()))
+        {
+            // spawn enemy... the indicator is at x = -3
+
+            // enemies ALWAYS travel 2 unity unit per bar??
+
+            var go = Instantiate(enemyPrefab);
+            go.transform.position = new Vector3(-3 + 16,-0.5f, 0);
+            lastBar = ((int)bm.getPhrase());
+        }
     }
+
+
 }

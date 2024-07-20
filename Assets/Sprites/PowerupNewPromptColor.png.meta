@@ -1,13 +1,19 @@
 fileFormatVersion: 2
-guid: 874c598ba5f27964e95f2a1bc524aa17
+guid: a48e1a269bb49df4ab9a2bd93474797e
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 5259807336482286798
-    second: HealthEmpty_0
+      213: -2334795514204588928
+    second: PowerupNewPromptColor_0
   - first:
-      213: 7582056399983381245
-    second: HealthEmpty_1
+      213: 7530885271854951493
+    second: PowerupNewPromptColor_1
+  - first:
+      213: -3327950057680367472
+    second: PowerupNewPromptColor_2
+  - first:
+      213: 4271256774500204500
+    second: PowerupNewPromptColor_3
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -49,7 +55,7 @@ TextureImporter:
   nPOTScale: 0
   lightmap: 0
   compressionQuality: 50
-  spriteMode: 1
+  spriteMode: 2
   spriteExtrude: 1
   spriteMeshType: 1
   alignment: 0
@@ -116,13 +122,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: HealthEmpty_0
+      name: PowerupNewPromptColor_0
       rect:
         serializedVersion: 2
-        x: 4
-        y: 0
-        width: 290
-        height: 69
+        x: 15
+        y: 29
+        width: 40
+        height: 38
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -130,20 +136,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: ecc2506a7e69ef840800000000000000
-      internalID: 5259807336482286798
+      spriteID: 084f8a0a9d3299fd0800000000000000
+      internalID: -2334795514204588928
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: HealthEmpty_1
+      name: PowerupNewPromptColor_1
       rect:
         serializedVersion: 2
-        x: 284
-        y: 28
-        width: 13
-        height: 12
+        x: 56
+        y: 46
+        width: 12
+        height: 15
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -151,8 +157,50 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: dfa8cf3df10e83960800000000000000
-      internalID: 7582056399983381245
+      spriteID: 54ca2212144138860800000000000000
+      internalID: 7530885271854951493
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PowerupNewPromptColor_2
+      rect:
+        serializedVersion: 2
+        x: 6
+        y: 17
+        width: 10
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 09098b50e0fb0d1d0800000000000000
+      internalID: -3327950057680367472
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PowerupNewPromptColor_3
+      rect:
+        serializedVersion: 2
+        x: 17
+        y: 12
+        width: 38
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4dfb094086d864b30800000000000000
+      internalID: 4271256774500204500
       vertices: []
       indices: 
       edges: []
@@ -160,16 +208,14 @@ TextureImporter:
     outline: []
     physicsShape: []
     bones: []
-    spriteID: 5e97eb03825dee720800000000000000
+    spriteID: 
     internalID: 0
     vertices: []
     indices: 
     edges: []
     weights: []
     secondaryTextures: []
-    nameFileIdTable:
-      HealthEmpty_0: 5259807336482286798
-      HealthEmpty_1: 7582056399983381245
+    nameFileIdTable: {}
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

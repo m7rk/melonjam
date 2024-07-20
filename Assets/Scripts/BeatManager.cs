@@ -27,6 +27,11 @@ public class BeatManager : MonoBehaviour
         return _eventPos;
     }
 
+    public float getBarLen()
+    {
+        return (4 * (60f / BPM));
+    }
+
     public void Update()
     {
         int curr = GetEventPos_FromEventEmitter(GetComponent<FMODUnity.StudioEventEmitter>());
@@ -34,12 +39,13 @@ public class BeatManager : MonoBehaviour
         {
             loops += 1;
         }
-        var barlen = (4 * (60f / BPM));
-        bars = loops + ((curr/1000f) / barlen);
+        var barlen = 
+        bars = loops + ((curr/1000f) / getBarLen());
         lastCurr = curr;
     }
 
-    public float getBars()
+    // define phrase as 2 bars
+    public float getPhrase()
     {
         // cheating, don't tell
         return SPEEDUP * (bars / 2);

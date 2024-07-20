@@ -1,13 +1,13 @@
 fileFormatVersion: 2
-guid: 874c598ba5f27964e95f2a1bc524aa17
+guid: 5ddebafb831be674fa3dee81f0aebcde
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 5259807336482286798
-    second: HealthEmpty_0
+      213: 8410467913192289104
+    second: HealthGreyscale_0
   - first:
-      213: 7582056399983381245
-    second: HealthEmpty_1
+      213: -5534559654866030009
+    second: HealthGreyscale_1
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -116,7 +116,7 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: HealthEmpty_0
+      name: HealthGreyscale_0
       rect:
         serializedVersion: 2
         x: 4
@@ -130,14 +130,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: ecc2506a7e69ef840800000000000000
-      internalID: 5259807336482286798
+      spriteID: 053b5a8a10cf7b470800000000000000
+      internalID: 8410467913192289104
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: HealthEmpty_1
+      name: HealthGreyscale_1
       rect:
         serializedVersion: 2
         x: 284
@@ -151,8 +151,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: dfa8cf3df10e83960800000000000000
-      internalID: 7582056399983381245
+      spriteID: 7427087315b4133b0800000000000000
+      internalID: -5534559654866030009
       vertices: []
       indices: 
       edges: []
@@ -168,8 +168,8 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      HealthEmpty_0: 5259807336482286798
-      HealthEmpty_1: 7582056399983381245
+      HealthGreyscale_0: 8410467913192289104
+      HealthGreyscale_1: -5534559654866030009
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
