@@ -15,10 +15,10 @@ public class EnemyManager : MonoBehaviour
 
     private Queue<Tuple<float,Minion>> minions = new Queue<Tuple<float, Minion>>();
 
-    // measure in phrases. 0.125 is a beat
-    private const float THRESH_CLOSE = 0.03f;
-    private const float THRESH_MISS = 0.6f;
-    private const float THRESH_EARLY = 0.12f;
+    // measures in phrases
+    private const float THRESH_CLOSE = 0.02f; //0 - 0.03
+    private const float THRESH_MISS = 0.04f; // 0.03 - 0.06
+    private const float THRESH_EARLY = 0.08f; // 0.06 - 0.12
 
 
     public void Update()
@@ -50,11 +50,13 @@ public class EnemyManager : MonoBehaviour
         {
             // spawn enemy... the indicator is at x = -3
             // enemies ALWAYS travel 2 unity unit per bar
+            float delay = 12;
+
             var go = Instantiate(enemyPrefab);
-            go.transform.position = new Vector3(-3 + 16,-0.5f, 0);
+            go.transform.position = new Vector3(-2 + delay ,-0.5f, 0);
             lastBar = ((int)bm.getPhrase());
 
-            minions.Enqueue(new Tuple<float, Minion>(lastBar + 2, go.GetComponent<Minion>()));
+            minions.Enqueue(new Tuple<float, Minion>(lastBar + delay / 8, go.GetComponent<Minion>()));
         }
 
         // dequeue all passed minons
@@ -66,7 +68,7 @@ public class EnemyManager : MonoBehaviour
             {
                 missFirstMinionInQueue();
             }
-
+            //Debug.Log(first.Item1 + "/" + bm.getPhrase());
         }
     }
 
@@ -95,7 +97,6 @@ public class EnemyManager : MonoBehaviour
             // solid hit
             if (curr.Item2.direction == direction)
             {
-                Debug.Log("solid!");
                 minions.Peek().Item2.Slay();
                 minions.Dequeue();
                 sc.minionHit();
@@ -110,7 +111,6 @@ public class EnemyManager : MonoBehaviour
         {
             if (curr.Item2.direction == direction)
             {
-                Debug.Log("late!");
                 minions.Peek().Item2.Slay();
                 minions.Dequeue();
                 sc.minionLate();
@@ -123,7 +123,6 @@ public class EnemyManager : MonoBehaviour
         // miss
         else if (diff < THRESH_EARLY)
         {
-            Debug.Log("total miss!");
             missFirstMinionInQueue();
         }
 
