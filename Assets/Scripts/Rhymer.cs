@@ -8,15 +8,32 @@ public class Rhymer : MonoBehaviour
 {
     public TextAsset cmufile;
     public TextAsset partofspeech;
+    public TextAsset mostcommonwords;
 
     private Dictionary<string, List<string[]>> tocmu = new Dictionary<string, List<string[]>>();
     private Dictionary<string, string[]> topos = new Dictionary<string, string[]>();
+    private Dictionary<string, int> mcw = new Dictionary<string, int>();
 
     // Start is called before the first frame update
     void Start()
     {
         createPOS();
         createCMU();
+        createMCW();
+    }
+
+    private void createMCW()
+    {
+        var lines = mostcommonwords.text.Split('\n');
+        int i = 0;
+        foreach (var line in lines)
+        {
+            if (!mcw.ContainsKey(line))
+            {
+                mcw[line.ToUpper()] = i;
+            }
+            ++i;
+        }
     }
 
     private void createPOS()
@@ -127,14 +144,14 @@ public class Rhymer : MonoBehaviour
         return false;
     }
 
-    public string getRandomWord(string pos)
+    public string getRandomWord(string pos, int intelligence)
     {
         var keys = tocmu.Keys.ToList();
         var random = new System.Random();
         while (true)
         {
             var word = keys[random.Next(keys.Count)];
-            if (isPOS(word, pos, true))
+            if (isPOS(word, pos, true) && aiKnowsWord(word,intelligence))
             {
                 return word;
             }
@@ -142,13 +159,18 @@ public class Rhymer : MonoBehaviour
 
     }
 
-    public string getRandomWordRhymesWith(string pos, string lastWord, int attempts)
+    public bool aiKnowsWord(string word, int intelligence)
+    {
+        return mcw.ContainsKey(word) && mcw[word] < intelligence;
+    }
+
+    public string getRandomWordRhymesWith(string pos, string lastWord, int intelligence)
     {
         var keys = tocmu.Keys.ToList();
         List<string> words = new List<string>();
         foreach(var word in keys) 
         {
-            if (isPOS(word, pos, true) && rhymes(word, lastWord))
+            if (isPOS(word, pos, true) && rhymes(word, lastWord) && aiKnowsWord(word, intelligence) && word != lastWord)
             {
                 words.Add(word);
             }
@@ -159,6 +181,6 @@ public class Rhymer : MonoBehaviour
             var random = new System.Random();
             return words[random.Next(words.Count)];
         }
-        return getRandomWord(pos);
+        return getRandomWord(pos, intelligence);
     }
 }

@@ -39,6 +39,6 @@ public class LyricScoreBox : MonoBehaviour
 
     public void Update()
     {
-        text.color = Color.Lerp(text.color, Color.clear, 2* Time.deltaTime);
+        text.color = Color.Lerp(text.color, Color.clear, Time.deltaTime);
     }
 }

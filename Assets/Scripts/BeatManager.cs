@@ -1,3 +1,4 @@
+using FMOD.Studio;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -5,25 +6,42 @@ using UnityEngine;
 public class BeatManager : MonoBehaviour
 {
     [SerializeField] public float BPM = 90f;
-    public static float BPMmeter;
-    public static int BeatNumber = 1;
-    public static float LastBeatTime;
-    private Timer beatTimer;
 
-    private void Start()
+    private float bars = 0;
+    private int loops;
+    private float lastCurr = 0;
+
+
+    [SerializeField] public float SPEEDUP = 1f;
+
+    // ask FMOD where the beat is.
+    int GetEventPos_FromEventEmitter(FMODUnity.StudioEventEmitter _eventEmitter)
     {
-        beatTimer = new(60 / BPM);
-        beatTimer.ResetTimer();
+        FMOD.RESULT res;
+        int _eventPos;
+        EventInstance[] _events;
+        EventInstance eventInstance;
+        res = FMODUnity.RuntimeManager.GetEventDescription(_eventEmitter.EventReference).getInstanceList(out _events); // .Events;
+        eventInstance = _events[0]; //return the first instance of the event
+        res = eventInstance.getTimelinePosition(out _eventPos);
+        return _eventPos;
     }
 
-    void Update()
+    public void Update()
     {
-        BPMmeter = BPM;
-        if (beatTimer.IsDone())
+        int curr = GetEventPos_FromEventEmitter(GetComponent<FMODUnity.StudioEventEmitter>());
+        if (curr < lastCurr)
         {
-            BeatNumber++;
-            beatTimer.ResetTimer();
-            LastBeatTime = Time.time;   
+            loops += 1;
         }
+        var barlen = (4 * (60f / BPM));
+        bars = loops + ((curr/1000f) / barlen);
+        lastCurr = curr;
+    }
+
+    public float getBars()
+    {
+        // cheating, don't tell
+        return SPEEDUP * (bars / 2);
     }
 }

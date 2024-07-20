@@ -69,7 +69,7 @@ public class EnemyManager : MonoBehaviour
         Destroy(ArrowsList[0].gameObject);
         ArrowsList.RemoveAt(0);
 
-        timeOffNote = Mathf.Min(Time.time - BeatManager.LastBeatTime, Mathf.Abs(Time.time - (BeatManager.LastBeatTime + BeatManager.BPMmeter)));
+        timeOffNote = 0f;// for now Mathf.Min(Time.time - BeatManager.LastBeatTime, Mathf.Abs(Time.time - (BeatManager.LastBeatTime + BeatManager.BPMmeter)));
         Debug.Log(timeOffNote);
         return timeOffNote;
     }
