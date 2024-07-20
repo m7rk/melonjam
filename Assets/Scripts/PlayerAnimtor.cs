@@ -9,6 +9,7 @@ public class PlayerAnimtor : MonoBehaviour
     public GameObject left;
     public GameObject right;
     public GameObject down;
+    public GameObject hurt;
 
     float animTime = 0f;
 
@@ -22,6 +23,7 @@ public class PlayerAnimtor : MonoBehaviour
         left.SetActive(false);
         right.SetActive(false);
         down.SetActive(false);
+        hurt.SetActive(false);
 
         if (anim == "up")
         {
@@ -39,6 +41,10 @@ public class PlayerAnimtor : MonoBehaviour
         {
             down.SetActive(true);
         }
+        else if (anim == "hurt")
+        {
+            hurt.SetActive(true);
+        }
     }
     // Update is called once per frame
     void Update()
@@ -51,6 +57,7 @@ public class PlayerAnimtor : MonoBehaviour
             left.SetActive(false);
             right.SetActive(false);
             down.SetActive(false);
+            hurt.SetActive(false);
         }
     }
 }

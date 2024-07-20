@@ -31,13 +31,17 @@ public class Scorer : MonoBehaviour
     private const int SCORE_NO_MATCH = -400;
     private const int SCORE_NOT_WORD = -500;
 
-    public const int SCORE_MAX = 5000;
+    private const int SCORE_MINION_HIT = 50;
+    private const int SCORE_MINION_LATE = 25;
+    private const int SCORE_MINION_MISS = -25;
+
+    public const int SCORE_MAX = 10000;
     private int currentScore = SCORE_MAX / 2;
 
     public void applyScore(int amt, bool playerScoring)
     {
-        currentScore += (playerScoring ? 1 : -1) * SCORE_REPEAT;
-        scoreSlider.set(currentScore / SCORE_MAX);
+        currentScore += (playerScoring ? 1 : -1) * amt;
+        scoreSlider.set((float)(currentScore / (float)SCORE_MAX));
     }
 
     public void submitWord(string word, string targetpos, bool playerScoring, bool isEnd)
@@ -129,5 +133,20 @@ public class Scorer : MonoBehaviour
         {
             return null;
         }
+    }
+    public void minionHit()
+    {
+        applyScore(SCORE_MINION_HIT, true);
+    }
+
+    public void minionLate()
+    {
+        applyScore(SCORE_MINION_LATE, true);
+    }
+
+    public void minionMiss()
+    {
+        applyScore(SCORE_MINION_MISS, true);
+
     }
 }

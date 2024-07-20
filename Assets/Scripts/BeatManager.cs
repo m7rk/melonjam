@@ -42,6 +42,8 @@ public class BeatManager : MonoBehaviour
         var barlen = 
         bars = loops + ((curr/1000f) / getBarLen());
         lastCurr = curr;
+
+
     }
 
     // define phrase as 2 bars
