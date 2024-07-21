@@ -27,6 +27,34 @@ MonoBehaviour:
   MinDistance: 1
   MaxDistance: 20
   Length: 927
+--- !u!114 &-5579443595876624325
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/amb
+  m_EditorClassIdentifier: 
+  Path: event:/amb
+  Guid:
+    Data1: -28209339
+    Data2: 1243400052
+    Data3: 729567131
+    Data4: -1422079577
+  Banks:
+  - {fileID: 5754947486295702288}
+  IsStream: 1
+  Is3D: 0
+  IsOneShot: 0
+  Parameters:
+  - {fileID: 7616130743489399719}
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 18852
 --- !u!114 &-4648060675957363289
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -42,13 +70,40 @@ MonoBehaviour:
   Path: FMOD/Build/Desktop/Master.strings.bank
   Name: Master.strings
   StudioPath: bank:/Master.strings
-  lastModified: 638571545140602866
+  lastModified: 638572009849866049
   FileSizes:
   - Name: Desktop
-    Value: 1870
+    Value: 1756
   - Name: HTML5
-    Value: 1870
+    Value: 1756
   Exists: 1
+--- !u!114 &-3838623729758874531
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/jingle_loose
+  m_EditorClassIdentifier: 
+  Path: event:/jingle_loose
+  Guid:
+    Data1: -2082345317
+    Data2: 1296903839
+    Data3: -2095783276
+    Data4: -1324105796
+  Banks:
+  - {fileID: 5754947486295702288}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 0
 --- !u!114 &-3699106448772728266
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -99,6 +154,57 @@ MonoBehaviour:
   Parameters: []
   MinDistance: 0
   MaxDistance: 0
+  Length: 0
+--- !u!114 &-2186125466717401728
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: parameter:/Level_1/rapping
+  m_EditorClassIdentifier: 
+  Name: rapping
+  StudioPath: 
+  Min: 0
+  Max: 1
+  Default: 1
+  ID:
+    data1: 2293372113
+    data2: 2822395143
+  Type: 0
+  IsGlobal: 0
+  Labels: []
+  Exists: 1
+--- !u!114 &-1278758365046077040
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/jingle_win
+  m_EditorClassIdentifier: 
+  Path: event:/jingle_win
+  Guid:
+    Data1: -101508750
+    Data2: 1141656426
+    Data3: -619189073
+    Data4: 138572691
+  Banks:
+  - {fileID: 5754947486295702288}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
   Length: 0
 --- !u!114 &-1065850588965795614
 MonoBehaviour:
@@ -151,13 +257,17 @@ MonoBehaviour:
   - {fileID: 9067746778398351760}
   - {fileID: 548506255281709545}
   - {fileID: -7897924393033770746}
+  - {fileID: 6580733292207957661}
+  - {fileID: -5579443595876624325}
+  - {fileID: -1278758365046077040}
+  - {fileID: -3838623729758874531}
   EditorParameters:
   - {fileID: 1155496892484761346}
   MasterBanks:
   - {fileID: 5754947486295702288}
   StringsBanks:
   - {fileID: -4648060675957363289}
-  cacheTime: 638571545140602866
+  cacheTime: 638572009849866049
   cacheVersion: 131619
 --- !u!114 &548506255281709545
 MonoBehaviour:
@@ -307,10 +417,10 @@ MonoBehaviour:
   Path: FMOD/Build/Desktop/Master.bank
   Name: Master
   StudioPath: bank:/Master
-  lastModified: 638571545140592867
+  lastModified: 638572009849786114
   FileSizes:
   - Name: Desktop
-    Value: 9897952
+    Value: 10393152
   - Name: HTML5
     Value: 5341664
   Exists: 1
@@ -365,6 +475,33 @@ MonoBehaviour:
   IsGlobal: 0
   Labels: []
   Exists: 1
+--- !u!114 &6580733292207957661
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/UI_Click
+  m_EditorClassIdentifier: 
+  Path: event:/UI_Click
+  Guid:
+    Data1: -461423829
+    Data2: 1127092408
+    Data3: -717503073
+    Data4: 1207325211
+  Banks:
+  - {fileID: 5754947486295702288}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 85
 --- !u!114 &6887339932038330329
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -394,9 +531,34 @@ MonoBehaviour:
   - {fileID: 5808148306502735896}
   - {fileID: 1196052706130781673}
   - {fileID: -3699106448772728266}
+  - {fileID: -2186125466717401728}
   MinDistance: 1
   MaxDistance: 20
   Length: 263756
+--- !u!114 &7616130743489399719
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: parameter:/amb/Menu
+  m_EditorClassIdentifier: 
+  Name: Menu
+  StudioPath: 
+  Min: 0
+  Max: 1
+  Default: 0
+  ID:
+    data1: 1910562973
+    data2: 2997905650
+  Type: 0
+  IsGlobal: 1
+  Labels: []
+  Exists: 1
 --- !u!114 &8122597106541600090
 MonoBehaviour:
   m_ObjectHideFlags: 0
