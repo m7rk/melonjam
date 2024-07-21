@@ -82,6 +82,7 @@ public class BeatManager : MonoBehaviour
             // skip happened in music.. dead reckon now.
             if (Mathf.Abs(curr - lastCurr) > 1000 && lastCurr != 0)
             {
+                UnityEngine.Debug.Log("dead reckoning starts");
                 followingTrack = false;
                 // add an extra time.
                 lastCurr += (1000 * Time.deltaTime);
@@ -94,7 +95,6 @@ public class BeatManager : MonoBehaviour
         else
         {
             // we lost main track so use unity...
-            UnityEngine.Debug.Log("dead reckoning.");
             lastCurr += (1000 * Time.deltaTime);
             bars = ((lastCurr / 1000f) / getBarLen());
         }

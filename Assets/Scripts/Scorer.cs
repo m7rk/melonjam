@@ -16,10 +16,15 @@ public class Scorer : MonoBehaviour
 
     public SpriteBar scoreSlider;
     public ScoreDecal scoreDecal;
+    public ScoreDecal minionDecal;
 
+
+    public GameObject[] bossEnable;
+    public GameObject[] defeatEnable;
 
     public void Start()
     {
+        bossEnable[APPSTATE.LEVEL].SetActive(true);
     }
 
     public enum LYRICSCORE
@@ -91,6 +96,8 @@ public class Scorer : MonoBehaviour
             }
             else
             {
+                bossEnable[APPSTATE.LEVEL].SetActive(false);
+                defeatEnable[APPSTATE.LEVEL].SetActive(true);
                 APPSTATE.LEVEL++;
                 FindObjectOfType<SceneTransition>().setState("bossDown");
                 Invoke("toIntermission", 2f);
@@ -227,16 +234,21 @@ public class Scorer : MonoBehaviour
     public void minionHit()
     {
         applyScore(SCORE_MINION_HIT, true);
+        GetComponent<StudioEventEmitter>().Play();
+        minionDecal.newWord(SCORE_MINION_HIT, true);
     }
 
     public void minionLate()
     {
         applyScore(SCORE_MINION_LATE, true);
+        GetComponent<StudioEventEmitter>().Play();
+        minionDecal.newWord(SCORE_MINION_LATE, true);
     }
 
     public void minionMiss()
     {
         applyScore(SCORE_MINION_MISS, true);
+        minionDecal.newWord(SCORE_MINION_MISS, true);
 
     }
 }

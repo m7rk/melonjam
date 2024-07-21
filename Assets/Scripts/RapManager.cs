@@ -24,6 +24,9 @@ public class RapManager : MonoBehaviour
     public TMP_Text wordTextBox;
 
     // bars of song
+    private List<string> baseBars = new List<string>();
+
+
     private List<string> bars = new List<string>();
 
     // current word typed
@@ -40,15 +43,29 @@ public class RapManager : MonoBehaviour
     public SpriteBar playerSlider;
     public SpriteBar bossSlider;
 
+    public Material sideMaterial;
+
 
     // Start is called before the first frame update
     void Start()
     {
         foreach (var v in songAsset.text.Split("\n"))
         {
-            bars.Add(v);
+            baseBars.Add(v);
         }
+        shuffleBars();
 
+    }
+
+
+    void shuffleBars()
+    {
+        bars.Clear();
+        // pick 8
+        while(bars.Count < 8)
+        {
+            bars.Add(baseBars[Random.Range(0, baseBars.Count)]);
+        }
     }
 
     // Update is called once per frame
@@ -103,7 +120,9 @@ public class RapManager : MonoBehaviour
             if (totalBarIndex % 8 == 0)
             {
                 // switch
+                shuffleBars();
                 bossBars = !bossBars;
+                sideMaterial.SetFloat("WhoPlays01", bossBars ? 1 : 0);
                 lyricBarIndex = 0;
             }
             return;
