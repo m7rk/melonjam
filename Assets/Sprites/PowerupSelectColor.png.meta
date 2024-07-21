@@ -193,7 +193,9 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      PowerupSelectColor_0: -7191376338904651054
+      PowerupSelectColor_1: -6827566573890950535
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

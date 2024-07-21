@@ -43,7 +43,22 @@ public class Rhymer : MonoBehaviour
             var split = line.Split("|");
             var word = split[0];
             var pos = split[1].Split(",");
-            topos[word.ToUpper()] = pos;
+            var posMod = new List<string>();
+
+            // count superlatives as adjectives!
+            foreach(var v in pos)
+            {
+                if (v.Contains("superl."))
+                {
+                    posMod.Add("a.");
+                }
+                else
+                {
+                    posMod.Add(v);
+                }
+            }
+
+            topos[word.ToUpper()] = posMod.ToArray();
         }
     }
 

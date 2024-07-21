@@ -265,7 +265,12 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      BossColor_0: -5364264729516400396
+      BossColor_1: -4846587470911218353
+      BossColor_2: 2300168814467328648
+      BossColor_3: -192713928229832570
+      BossColor_4: 8299227265912092641
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
