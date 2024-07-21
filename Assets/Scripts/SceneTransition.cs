@@ -7,6 +7,8 @@ public class SceneTransition : MonoBehaviour
     public GameObject bossDown;
     public GameObject YouLose;
     public GameObject YouWin;
+
+    private bool fallen = false;
     // Start is called before the first frame update
     void Start()
     {
@@ -16,7 +18,8 @@ public class SceneTransition : MonoBehaviour
 
     public void setState(string state)
     {
-        GetComponentInChildren<Animator>().SetBool("fall", true);
+        fallen = true;
+        GetComponentInChildren<Animator>().SetTrigger("Fall");
         bossDown.SetActive(state == "bossDown");
         YouLose.SetActive(state == "youLose");
         YouWin.SetActive(state == "youWin");
@@ -24,6 +27,10 @@ public class SceneTransition : MonoBehaviour
 
     public void clear()
     {
-        GetComponentInChildren<Animator>().SetBool("rise", true);
+        if (fallen)
+        {
+            GetComponentInChildren<Animator>().SetTrigger("Rise");
+        }
+        fallen = false;
     }
 }
