@@ -13,22 +13,19 @@ public class BeatManager : MonoBehaviour
     private float bars = 0;
     private int loops;
     private float lastCurr = 0;
+    private float offset = 0;
     private bool followingTrack = true;
 
 
     [SerializeField] public float SPEEDUP = 1f;
 
-    public void Start()
+    public void Awake()
     {
         // start right music and BPM
         switch(APPSTATE.LEVEL)
         {
             case 0:
                 BPM = 80;
-                if(APPSTATE.TUTORIAL_STAGE == 0)
-                {
-                    GetComponent<StudioEventEmitter>().EventInstance.setParameterByNameWithLabel("state", "tuto");
-                }
                 GetComponent<StudioEventEmitter>().EventInstance.setParameterByNameWithLabel("state", "lvl1");
                 break;
                 case 1:
@@ -62,16 +59,25 @@ public class BeatManager : MonoBehaviour
 
     public void Update()
     {
+        UnityEngine.Debug.Log(bars);
         if(APPSTATE.TUTORIAL_STAGE == 6)
         {
-            GetComponent<StudioEventEmitter>().EventInstance.setParameterByNameWithLabel("state", "lvl1");
+            // enable rapping
         }
 
         if (followingTrack)
         {
             // this is VERY fucking sketch.
             int curr = GetEventPos_FromEventEmitter(GetComponent<FMODUnity.StudioEventEmitter>());
-            if (curr < lastCurr)
+
+            // if we skip ahead (to a seperate track) offste.
+            if(lastCurr == 0 && curr != 0)
+            {
+                offset = curr;
+            }
+
+            // skip happened in music.
+            if (Mathf.Abs(curr - lastCurr) > 1)
             {
                 followingTrack = false;
                 // add an extra time.

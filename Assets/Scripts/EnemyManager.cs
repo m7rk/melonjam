@@ -26,7 +26,6 @@ public class EnemyManager : MonoBehaviour
     public List<float> generateRhythms(int count)
     {
         // if tutorial stage = 1
-        Debug.Log(APPSTATE.TUTORIAL_STAGE);
         if(APPSTATE.TUTORIAL_STAGE == 0)
         {
             return new List<float> { 8+0,  8+2,  8+4,  8+6, };
@@ -82,7 +81,6 @@ public class EnemyManager : MonoBehaviour
         go.GetComponent<Minion>().setDirection(dirs[UnityEngine.Random.Range(0, 4)]);
         go.GetComponent<Minion>().setSpriteOrder(spriteOrder);
         spriteOrder -= 2;
-        lastBar = ((int)bm.getPhrase());
         minions.Enqueue(new Tuple<float, Minion>(lastBar + (delay / 8), go.GetComponent<Minion>()));
     }
 
@@ -113,6 +111,7 @@ public class EnemyManager : MonoBehaviour
         // spawn an enemy when a new bar starts.
         if(lastBar != ((int)bm.getPhrase()))
         {
+            lastBar = ((int)bm.getPhrase());
             // spawn enemy... the indicator is at x = -3
             // enemies ALWAYS travel 2 unity unit per bar
             // they will arrive in four bars.
@@ -123,7 +122,7 @@ public class EnemyManager : MonoBehaviour
             var rhythmCount = ((lastBar % 16) > 5 && (lastBar % 16) < 5+8) ? UnityEngine.Random.Range(4,7) : UnityEngine.Random.Range(1, 2);
 
             // add difficulty here..
-            foreach(var v in generateRhythms(rhythmCount))
+            foreach (var v in generateRhythms(rhythmCount))
             {
                 makeMinionWithDelay(delay + v);
             }

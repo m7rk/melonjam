@@ -42,12 +42,36 @@ MonoBehaviour:
   Path: FMOD/Build/Desktop/Master.strings.bank
   Name: Master.strings
   StudioPath: bank:/Master.strings
-  lastModified: 638571514983469575
+  lastModified: 638571545140602866
   FileSizes:
   - Name: Desktop
-    Value: 1836
+    Value: 1870
   - Name: HTML5
-    Value: 1836
+    Value: 1870
+  Exists: 1
+--- !u!114 &-3699106448772728266
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: parameter:/Level_1/Menu
+  m_EditorClassIdentifier: 
+  Name: Menu
+  StudioPath: 
+  Min: 0
+  Max: 1
+  Default: 0
+  ID:
+    data1: 1910562973
+    data2: 2997905650
+  Type: 0
+  IsGlobal: 1
+  Labels: []
   Exists: 1
 --- !u!114 &-2948637322363374269
 MonoBehaviour:
@@ -127,12 +151,13 @@ MonoBehaviour:
   - {fileID: 9067746778398351760}
   - {fileID: 548506255281709545}
   - {fileID: -7897924393033770746}
-  EditorParameters: []
+  EditorParameters:
+  - {fileID: 1155496892484761346}
   MasterBanks:
   - {fileID: 5754947486295702288}
   StringsBanks:
   - {fileID: -4648060675957363289}
-  cacheTime: 638571514983469575
+  cacheTime: 638571545140602866
   cacheVersion: 131619
 --- !u!114 &548506255281709545
 MonoBehaviour:
@@ -161,6 +186,30 @@ MonoBehaviour:
   MinDistance: 0
   MaxDistance: 0
   Length: 0
+--- !u!114 &1155496892484761346
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: parameter:/Menu
+  m_EditorClassIdentifier: 
+  Name: Menu
+  StudioPath: parameter:/Menu
+  Min: 0
+  Max: 1
+  Default: 0
+  ID:
+    data1: 1910562973
+    data2: 2997905650
+  Type: 0
+  IsGlobal: 1
+  Labels: []
+  Exists: 1
 --- !u!114 &1196052706130781673
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -258,10 +307,10 @@ MonoBehaviour:
   Path: FMOD/Build/Desktop/Master.bank
   Name: Master
   StudioPath: bank:/Master
-  lastModified: 638571514983459575
+  lastModified: 638571545140592867
   FileSizes:
   - Name: Desktop
-    Value: 9896928
+    Value: 9897952
   - Name: HTML5
     Value: 5341664
   Exists: 1
@@ -344,6 +393,7 @@ MonoBehaviour:
   - {fileID: 8122597106541600090}
   - {fileID: 5808148306502735896}
   - {fileID: 1196052706130781673}
+  - {fileID: -3699106448772728266}
   MinDistance: 1
   MaxDistance: 20
   Length: 263756
