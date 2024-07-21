@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.02.00">
+	<object class="ParameterPreset" id="{f59f68ae-f990-4ac0-a9b2-7225bb7fd6be}">
+		<property name="name">
+			<value>rapping</value>
+		</property>
+		<relationship name="folder">
+			<destination>{a418e0de-c7d0-05c9-280a-b529dc02e12e}</destination>
+		</relationship>
+		<relationship name="parameter">
+			<destination>{66f68923-bf84-4f28-85ef-a044f5835b7b}</destination>
+		</relationship>
+	</object>
+	<object class="GameParameter" id="{66f68923-bf84-4f28-85ef-a044f5835b7b}">
+		<property name="initialValue">
+			<value>1</value>
+		</property>
+		<property name="seekSpeed">
+			<value>4.4000000953674316</value>
+		</property>
+	</object>
+</objects>
