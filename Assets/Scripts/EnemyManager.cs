@@ -112,6 +112,7 @@ public class EnemyManager : MonoBehaviour
         if(lastBar != ((int)bm.getPhrase()))
         {
             lastBar = ((int)bm.getPhrase());
+            Debug.Log(lastBar);
             // spawn enemy... the indicator is at x = -3
             // enemies ALWAYS travel 2 unity unit per bar
             // they will arrive in four bars.

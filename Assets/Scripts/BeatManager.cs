@@ -89,14 +89,14 @@ public class BeatManager : MonoBehaviour
                 return;
             }
 
-            bars = (0.5f + (((curr - offset) / 1000f) / getBarLen()));
+            bars = ((((curr - offset) / 1000f) / getBarLen()));
             lastCurr = curr;
         }
         else
         {
             // we lost main track so use unity...
             lastCurr += (1000 * Time.deltaTime);
-            bars = ((lastCurr / 1000f) / getBarLen());
+            bars = (((lastCurr - offset)/ 1000f) / getBarLen());
         }
     }
 

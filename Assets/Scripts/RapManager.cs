@@ -64,7 +64,11 @@ public class RapManager : MonoBehaviour
         // pick 8
         while(bars.Count < 8)
         {
-            bars.Add(baseBars[Random.Range(0, baseBars.Count)]);
+            var bar = baseBars[Random.Range(0, baseBars.Count)];
+            if (!bars.Contains(bar))
+            {
+                bars.Add(bar);
+            }
         }
     }
 
@@ -166,7 +170,6 @@ public class RapManager : MonoBehaviour
         }
     }
 
-    // fine for now...
     void AIWord(string targetPOS)
     {
         if (word == "" && bm.getPhrase() % 1 > 0.5f)
@@ -177,7 +180,27 @@ public class RapManager : MonoBehaviour
             }
             else if (word == "")
             {
-                word = rhymer.getRandomWordRhymesWith(targetPOS, scorer.getLastRhyme());
+                var dice = Random.Range(0, 6);
+
+                if (dice == 1)
+                {
+                    string[] confuse = new string[] { "ERRR", "UHHH", "UMMM", "HMMM" };
+                    word = confuse[Random.Range(0, confuse.Length)];
+                }
+                // throw in a noun randomly
+                else if (dice == 2)
+                {
+                    word = rhymer.getRandomWord("n.");
+                }
+                // start a new rhyme
+                else if (dice == 3)
+                {
+                    word = rhymer.getRandomWord(targetPOS);
+                }
+                else
+                {
+                    word = rhymer.getRandomWordRhymesWith(targetPOS, scorer.getLastRhyme());
+                }
 
             }
         }
