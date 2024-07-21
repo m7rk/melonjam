@@ -17,15 +17,26 @@ public class TutorialManager : MonoBehaviour
                 v.HideForTutorial();
             }
         }
+        else
+        {
+            // hide all text.
+            foreach (var v in tutorialObjects)
+            {
+                v.gameObject.SetActive(false);
+            }
+        }
     }
 
     public void setTutorialWindow()
     {
-        foreach (var v in tutorialObjects)
+        if (APPSTATE.TUTORIAL_STAGE >= 0)
         {
-            v.gameObject.SetActive(false);
+            foreach (var v in tutorialObjects)
+            {
+                v.gameObject.SetActive(false);
+            }
+            tutorialObjects[APPSTATE.TUTORIAL_STAGE].SetActive(true);
         }
-        tutorialObjects[APPSTATE.TUTORIAL_STAGE].SetActive(true);
     }
 
     // Update is called once per frame
@@ -33,17 +44,13 @@ public class TutorialManager : MonoBehaviour
     {
         // transitions.
         if (APPSTATE.TUTORIAL_STAGE >= 0)
-        {
-            if (bm.getPhrase() > 13)
+        {   
+            if (bm.getPhrase() > 11)
             {
+                tutorialObjects[APPSTATE.TUTORIAL_STAGE].SetActive(false);
                 APPSTATE.TUTORIAL_STAGE = -1;
-            }           
-            else if (bm.getPhrase() > 13)
-            {
-                // end.
-                APPSTATE.TUTORIAL_STAGE = 10;
             }
-            else if (bm.getPhrase() > 11)
+            else if (bm.getPhrase() > 10)
             {
                 // score
                 APPSTATE.TUTORIAL_STAGE = 9;

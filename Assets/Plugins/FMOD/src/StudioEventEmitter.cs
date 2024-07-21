@@ -26,9 +26,9 @@ namespace FMODUnity
         public float OverrideMinDistance = -1.0f;
         public float OverrideMaxDistance = -1.0f;
 
-        protected FmodStudioEventEmitter.Studio.EventDescription eventDescription;
+        protected FMOD.Studio.EventDescription eventDescription;
 
-        protected FmodStudioEventEmitter.Studio.EventInstance instance;
+        protected FMOD.Studio.EventInstance instance;
 
         private bool hasTriggered = false;
         private bool isQuitting = false;
@@ -39,9 +39,9 @@ namespace FMODUnity
 
         private const string SnapshotString = "snapshot";
 
-        public FmodStudioEventEmitter.Studio.EventDescription EventDescription { get { return eventDescription; } }
+        public FMOD.Studio.EventDescription EventDescription { get { return eventDescription; } }
 
-        public FmodStudioEventEmitter.Studio.EventInstance EventInstance { get { return instance; } }
+        public FMOD.Studio.EventInstance EventInstance { get { return instance; } }
 
         public bool IsActive { get; private set; }
 
@@ -182,7 +182,7 @@ namespace FMODUnity
             {
                 for (int i = 0; i < Params.Length; i++)
                 {
-                    FmodStudioEventEmitter.Studio.PARAMETER_DESCRIPTION param;
+                    FMOD.Studio.PARAMETER_DESCRIPTION param;
                     eventDescription.getParameterDescriptionByName(Params[i].Name, out param);
                     Params[i].ID = param.id;
                 }
@@ -294,8 +294,8 @@ namespace FMODUnity
 
             if (is3D && OverrideAttenuation)
             {
-                instance.setProperty(FmodStudioEventEmitter.Studio.EVENT_PROPERTY.MINIMUM_DISTANCE, OverrideMinDistance);
-                instance.setProperty(FmodStudioEventEmitter.Studio.EVENT_PROPERTY.MAXIMUM_DISTANCE, OverrideMaxDistance);
+                instance.setProperty(FMOD.Studio.EVENT_PROPERTY.MINIMUM_DISTANCE, OverrideMinDistance);
+                instance.setProperty(FMOD.Studio.EVENT_PROPERTY.MAXIMUM_DISTANCE, OverrideMaxDistance);
             }
 
             instance.start();
@@ -320,7 +320,7 @@ namespace FMODUnity
 
             if (instance.isValid())
             {
-                instance.stop(AllowFadeout ? FmodStudioEventEmitter.Studio.STOP_MODE.ALLOWFADEOUT : FmodStudioEventEmitter.Studio.STOP_MODE.IMMEDIATE);
+                instance.stop(AllowFadeout ? FMOD.Studio.STOP_MODE.ALLOWFADEOUT : FMOD.Studio.STOP_MODE.IMMEDIATE);
                 instance.release();
                 if (!AllowFadeout)
                 {
@@ -338,7 +338,7 @@ namespace FMODUnity
 
                 if (cachedParam == null)
                 {
-                    FmodStudioEventEmitter.Studio.PARAMETER_DESCRIPTION paramDesc;
+                    FMOD.Studio.PARAMETER_DESCRIPTION paramDesc;
                     eventDescription.getParameterDescriptionByName(name, out paramDesc);
 
                     cachedParam = new ParamRef();
@@ -356,16 +356,16 @@ namespace FMODUnity
             }
         }
 
-        public void SetParameter(FmodStudioEventEmitter.Studio.PARAMETER_ID id, float value, bool ignoreseekspeed = false)
+        public void SetParameter(FMOD.Studio.PARAMETER_ID id, float value, bool ignoreseekspeed = false)
         {
             if (Settings.Instance.StopEventsOutsideMaxDistance && IsActive)
             {
-                FmodStudioEventEmitter.Studio.PARAMETER_ID findId = id;
+                FMOD.Studio.PARAMETER_ID findId = id;
                 ParamRef cachedParam = cachedParams.Find(x => x.ID.Equals(findId));
 
                 if (cachedParam == null)
                 {
-                    FmodStudioEventEmitter.Studio.PARAMETER_DESCRIPTION paramDesc;
+                    FMOD.Studio.PARAMETER_DESCRIPTION paramDesc;
                     eventDescription.getParameterDescriptionByID(id, out paramDesc);
 
                     cachedParam = new ParamRef();
@@ -387,9 +387,9 @@ namespace FMODUnity
         {
             if (instance.isValid())
             {
-                FmodStudioEventEmitter.Studio.PLAYBACK_STATE playbackState;
+                FMOD.Studio.PLAYBACK_STATE playbackState;
                 instance.getPlaybackState(out playbackState);
-                return (playbackState != FmodStudioEventEmitter.Studio.PLAYBACK_STATE.STOPPED);
+                return (playbackState != FMOD.Studio.PLAYBACK_STATE.STOPPED);
             }
             return false;
         }

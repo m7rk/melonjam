@@ -40,7 +40,7 @@ namespace FMODUnity
         [Serializable]
         public struct ParameterID
         {
-            public static implicit operator ParameterID(FmodStudioEventEmitter.Studio.PARAMETER_ID source)
+            public static implicit operator ParameterID(FMOD.Studio.PARAMETER_ID source)
             {
                 return new ParameterID {
                     data1 = source.data1,
@@ -48,15 +48,15 @@ namespace FMODUnity
                 };
             }
 
-            public static implicit operator FmodStudioEventEmitter.Studio.PARAMETER_ID(ParameterID source)
+            public static implicit operator FMOD.Studio.PARAMETER_ID(ParameterID source)
             {
-                return new FmodStudioEventEmitter.Studio.PARAMETER_ID {
+                return new FMOD.Studio.PARAMETER_ID {
                     data1 = source.data1,
                     data2 = source.data2,
                 };
             }
 
-            public bool Equals(FmodStudioEventEmitter.Studio.PARAMETER_ID other)
+            public bool Equals(FMOD.Studio.PARAMETER_ID other)
             {
                 return data1 == other.data1 && data2 == other.data2;
             }

@@ -7,6 +7,6 @@ namespace FMODUnity
     {
         public string Name;
         public float Value;
-        public FmodStudioEventEmitter.Studio.PARAMETER_ID ID;
+        public FMOD.Studio.PARAMETER_ID ID;
     }
 }

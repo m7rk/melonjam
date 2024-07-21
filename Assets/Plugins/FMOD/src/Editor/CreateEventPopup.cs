@@ -352,7 +352,7 @@ namespace FMODUnity
                 }
 
                 string fullPath = "event:" + eventFolder + eventName;
-                outputProperty.SetEventReference(FmodStudioEventEmitter.GUID.Parse(eventGuid), fullPath);
+                outputProperty.SetEventReference(FMOD.GUID.Parse(eventGuid), fullPath);
                 EditorUtils.UpdateParamsOnEmitter(outputProperty.serializedObject, fullPath);
                 outputProperty.serializedObject.ApplyModifiedProperties();
             }

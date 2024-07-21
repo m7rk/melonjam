@@ -65,7 +65,7 @@ namespace FMODUnity
 
         public TimelineClip OwningClip { get; set; }
 
-        public void LinkParameters(FmodStudioEventEmitter.Studio.EventDescription eventDescription)
+        public void LinkParameters(FMOD.Studio.EventDescription eventDescription)
         {
 #if UNITY_EDITOR
             if (!EventReference.IsNull)
@@ -75,7 +75,7 @@ namespace FMODUnity
             {
                 for (int i = 0; i < Parameters.Length; i++)
                 {
-                    FmodStudioEventEmitter.Studio.PARAMETER_DESCRIPTION parameterDescription;
+                    FMOD.Studio.PARAMETER_DESCRIPTION parameterDescription;
                     eventDescription.getParameterDescriptionByName(Parameters[i].Name, out parameterDescription);
                     Parameters[i].ID = parameterDescription.id;
                 }
@@ -84,7 +84,7 @@ namespace FMODUnity
 
                 for (int i = 0; i < parameterLinks.Count; i++)
                 {
-                    FmodStudioEventEmitter.Studio.PARAMETER_DESCRIPTION parameterDescription;
+                    FMOD.Studio.PARAMETER_DESCRIPTION parameterDescription;
                     eventDescription.getParameterDescriptionByName(parameterLinks[i].Name, out parameterDescription);
                     parameterLinks[i].ID = parameterDescription.id;
                 }
@@ -157,7 +157,7 @@ namespace FMODUnity
     public class ParameterAutomationLink
     {
         public string Name;
-        public FmodStudioEventEmitter.Studio.PARAMETER_ID ID;
+        public FMOD.Studio.PARAMETER_ID ID;
         public int Slot;
     }
 
@@ -171,7 +171,7 @@ namespace FMODUnity
 
         public class EventArgs : System.EventArgs
         {
-            public FmodStudioEventEmitter.Studio.EventInstance eventInstance { get; set; }
+            public FMOD.Studio.EventInstance eventInstance { get; set; }
         }
 
         public static event System.EventHandler<EventArgs> Enter;
@@ -202,7 +202,7 @@ namespace FMODUnity
 
         private bool isPlayheadInside = false;
 
-        private FmodStudioEventEmitter.Studio.EventInstance eventInstance;
+        private FMOD.Studio.EventInstance eventInstance;
 
         public float ClipStartTime { get; private set; } = 0.0f;
 
@@ -283,7 +283,7 @@ namespace FMODUnity
                     {
                         if (StopType != STOP_MODE.None)
                         {
-                            eventInstance.stop(StopType == STOP_MODE.Immediate ? FmodStudioEventEmitter.Studio.STOP_MODE.IMMEDIATE : FmodStudioEventEmitter.Studio.STOP_MODE.ALLOWFADEOUT);
+                            eventInstance.stop(StopType == STOP_MODE.Immediate ? FMOD.Studio.STOP_MODE.IMMEDIATE : FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
                         }
                         eventInstance.release();
                         eventInstance.clearHandle();
@@ -342,7 +342,7 @@ namespace FMODUnity
             {
                 if (eventInstance.isValid())
                 {
-                    eventInstance.stop(FmodStudioEventEmitter.Studio.STOP_MODE.IMMEDIATE);
+                    eventInstance.stop(FMOD.Studio.STOP_MODE.IMMEDIATE);
                     eventInstance.release();
                     RuntimeManager.StudioSystem.update();
                 }

@@ -23,12 +23,12 @@ namespace FMODUnity
                 var emitterRef = Emitters[i];
                 if (emitterRef.Target != null && !emitterRef.Target.EventReference.IsNull)
                 {
-                    FmodStudioEventEmitter.Studio.EventDescription eventDesc = RuntimeManager.GetEventDescription(emitterRef.Target.EventReference);
+                    FMOD.Studio.EventDescription eventDesc = RuntimeManager.GetEventDescription(emitterRef.Target.EventReference);
                     if (eventDesc.isValid())
                     {
                         for (int j = 0; j < Emitters[i].Params.Length; j++)
                         {
-                            FmodStudioEventEmitter.Studio.PARAMETER_DESCRIPTION param;
+                            FMOD.Studio.PARAMETER_DESCRIPTION param;
                             eventDesc.getParameterDescriptionByName(emitterRef.Params[j].Name, out param);
                             emitterRef.Params[j].ID = param.id;
                         }

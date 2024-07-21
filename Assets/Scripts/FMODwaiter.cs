@@ -14,11 +14,11 @@ public class FMODwaiter : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (FMODUnity.RuntimeManager.HasBankLoaded("Music"))
+        if (FMODUnity.RuntimeManager.HasBankLoaded("Master"))
         {
             Debug.Log("Master Bank Loaded");
             gameObject.SetActive(false);
-            SceneManager.LoadScene("SampleScene", LoadSceneMode.Single);
+            SceneManager.LoadScene("Title", LoadSceneMode.Single);
         }
     }
 }

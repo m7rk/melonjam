@@ -19,7 +19,7 @@ namespace FMODUnity
             serializedObject.Update();
             EditorGUI.BeginDisabledGroup(true);
             int index = ((StudioListener)serializedObject.targetObject).ListenerNumber;
-            EditorGUILayout.IntSlider("Listener Index", index, 0, FmodStudioEventEmitter.CONSTANTS.MAX_LISTENERS - 1);
+            EditorGUILayout.IntSlider("Listener Index", index, 0, FMOD.CONSTANTS.MAX_LISTENERS - 1);
             EditorGUI.EndDisabledGroup();
 
             EditorGUILayout.PropertyField(attenuationObject);

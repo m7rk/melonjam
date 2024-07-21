@@ -153,8 +153,8 @@ namespace FMODUnity
         }
 
         private static OutputType[] sValidOutputTypes = {
-           new OutputType() { displayName = "Windows Audio Session API", outputType = FmodStudioEventEmitter.OUTPUTTYPE.WASAPI },
-           new OutputType() { displayName = "Windows Sonic", outputType = FmodStudioEventEmitter.OUTPUTTYPE.WINSONIC },
+           new OutputType() { displayName = "Windows Audio Session API", outputType = FMOD.OUTPUTTYPE.WASAPI },
+           new OutputType() { displayName = "Windows Sonic", outputType = FMOD.OUTPUTTYPE.WINSONIC },
         };
 
         internal override int CoreCount { get { return MaximumCoreCount; } }

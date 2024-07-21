@@ -42,7 +42,7 @@ namespace FMODUnity
 
         private SerializedProperty outputProperty;
 
-        public static FmodStudioEventEmitter.Studio.EventInstance PreviewEventInstance { get; private set; }
+        public static FMOD.Studio.EventInstance PreviewEventInstance { get; private set; }
 
         [MenuItem("FMOD/Event Browser", priority = 2)]
         public static void ShowWindow()
@@ -1034,7 +1034,7 @@ namespace FMODUnity
             {
                 AffirmResources();
 
-                FmodStudioEventEmitter.Studio.PLAYBACK_STATE previewState = FmodStudioEventEmitter.Studio.PLAYBACK_STATE.STOPPED;
+                FMOD.Studio.PLAYBACK_STATE previewState = FMOD.Studio.PLAYBACK_STATE.STOPPED;
                 bool paused = false;
 
                 if (PreviewEventInstance.isValid())
@@ -1043,8 +1043,8 @@ namespace FMODUnity
                     PreviewEventInstance.getPaused(out paused);
                 }
 
-                bool playing = previewState == FmodStudioEventEmitter.Studio.PLAYBACK_STATE.PLAYING;
-                bool stopped = previewState == FmodStudioEventEmitter.Studio.PLAYBACK_STATE.STOPPED;
+                bool playing = previewState == FMOD.Studio.PLAYBACK_STATE.PLAYING;
+                bool stopped = previewState == FMOD.Studio.PLAYBACK_STATE.STOPPED;
 
                 EditorGUILayout.BeginHorizontal();
 
@@ -1201,7 +1201,7 @@ namespace FMODUnity
                 if (PreviewEventInstance.isValid())
                 {
                     // Listener at origin
-                    FmodStudioEventEmitter.ATTRIBUTES_3D pos = new FmodStudioEventEmitter.ATTRIBUTES_3D();
+                    FMOD.ATTRIBUTES_3D pos = new FMOD.ATTRIBUTES_3D();
                     pos.position.x = (float)Math.Sin(eventOrientation) * eventDistance;
                     pos.position.y = (float)Math.Cos(eventOrientation) * eventDistance;
                     pos.forward.x = 1.0f;
@@ -1355,43 +1355,43 @@ namespace FMODUnity
                 }
             }
 
-            private FmodStudioEventEmitter.SPEAKERMODE speakerModeForChannelCount(int channelCount)
+            private FMOD.SPEAKERMODE speakerModeForChannelCount(int channelCount)
             {
                 switch(channelCount)
                 {
                 case 1:
-                    return FmodStudioEventEmitter.SPEAKERMODE.MONO;
+                    return FMOD.SPEAKERMODE.MONO;
                 case 4:
-                    return FmodStudioEventEmitter.SPEAKERMODE.QUAD;
+                    return FMOD.SPEAKERMODE.QUAD;
                 case 5:
-                    return FmodStudioEventEmitter.SPEAKERMODE.SURROUND;
+                    return FMOD.SPEAKERMODE.SURROUND;
                 case 6:
-                    return FmodStudioEventEmitter.SPEAKERMODE._5POINT1;
+                    return FMOD.SPEAKERMODE._5POINT1;
                 case 8:
-                    return FmodStudioEventEmitter.SPEAKERMODE._7POINT1;
+                    return FMOD.SPEAKERMODE._7POINT1;
                 case 12:
-                    return FmodStudioEventEmitter.SPEAKERMODE._7POINT1POINT4;
+                    return FMOD.SPEAKERMODE._7POINT1POINT4;
                 default:
-                    return FmodStudioEventEmitter.SPEAKERMODE.STEREO;
+                    return FMOD.SPEAKERMODE.STEREO;
                 }
             }
 
-            private List<float> meterPositionsForSpeakerMode(FmodStudioEventEmitter.SPEAKERMODE mode, float meterWidth, float groupGap, float lfeGap)
+            private List<float> meterPositionsForSpeakerMode(FMOD.SPEAKERMODE mode, float meterWidth, float groupGap, float lfeGap)
             {
                 List<float> offsets = new List<float>();
 
                 switch(mode)
                 {
-                case FmodStudioEventEmitter.SPEAKERMODE.MONO: // M
+                case FMOD.SPEAKERMODE.MONO: // M
                     offsets.Add(0);
                     break;
 
-                case FmodStudioEventEmitter.SPEAKERMODE.STEREO: // L R
+                case FMOD.SPEAKERMODE.STEREO: // L R
                     offsets.Add(0);
                     offsets.Add(meterWidth);
                     break;
 
-                case FmodStudioEventEmitter.SPEAKERMODE.QUAD:
+                case FMOD.SPEAKERMODE.QUAD:
                     switch(Settings.Instance.MeterChannelOrdering)
                     {
                     case MeterChannelOrderingType.Standard:
@@ -1410,7 +1410,7 @@ namespace FMODUnity
                     }
                     break;
 
-                case FmodStudioEventEmitter.SPEAKERMODE.SURROUND:
+                case FMOD.SPEAKERMODE.SURROUND:
                     switch(Settings.Instance.MeterChannelOrdering)
                     {
                     case MeterChannelOrderingType.Standard:
@@ -1431,7 +1431,7 @@ namespace FMODUnity
                     }
                     break;
 
-                case FmodStudioEventEmitter.SPEAKERMODE._5POINT1:
+                case FMOD.SPEAKERMODE._5POINT1:
                     switch(Settings.Instance.MeterChannelOrdering)
                     {
                     case MeterChannelOrderingType.Standard: // L R | C | LFE | LS RS
@@ -1461,7 +1461,7 @@ namespace FMODUnity
                     }
                     break;
 
-                case FmodStudioEventEmitter.SPEAKERMODE._7POINT1:
+                case FMOD.SPEAKERMODE._7POINT1:
                     switch(Settings.Instance.MeterChannelOrdering)
                     {
                     case MeterChannelOrderingType.Standard: // L R | C | LFE | LS RS | LSR RSR
@@ -1497,7 +1497,7 @@ namespace FMODUnity
                     }
                     break;
 
-                case FmodStudioEventEmitter.SPEAKERMODE._7POINT1POINT4:
+                case FMOD.SPEAKERMODE._7POINT1POINT4:
                     switch(Settings.Instance.MeterChannelOrdering)
                     {
                     case MeterChannelOrderingType.Standard: // L R | C | LFE | LS RS | LSR RSR | TFL TFR TBL TBR

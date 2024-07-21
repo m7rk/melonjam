@@ -12,7 +12,7 @@ namespace FMODUnity
         public string Path;
 
         [SerializeField]
-        public FmodStudioEventEmitter.GUID Guid;
+        public FMOD.GUID Guid;
 
         [SerializeField]
         public List<EditorBankRef> Banks;

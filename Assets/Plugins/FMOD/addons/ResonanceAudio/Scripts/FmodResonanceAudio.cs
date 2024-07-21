@@ -51,7 +51,7 @@ namespace FMODUnityResonance
         private static readonly string listenerPluginName = "Resonance Audio Listener";
 
         // Size of |RoomProperties| struct in bytes.
-        private static readonly int roomPropertiesSize = FmodStudioEventEmitter.MarshalHelper.SizeOf(typeof(RoomProperties));
+        private static readonly int roomPropertiesSize = FMOD.MarshalHelper.SizeOf(typeof(RoomProperties));
 
         // Plugin data parameter index for the room properties.
         private static readonly int roomPropertiesIndex = 1;
@@ -63,10 +63,10 @@ namespace FMODUnityResonance
         private static List<FmodResonanceAudioRoom> enabledRooms = new List<FmodResonanceAudioRoom>();
 
         // Current listener position.
-        private static FmodStudioEventEmitter.VECTOR listenerPositionFmod = new FmodStudioEventEmitter.VECTOR();
+        private static FMOD.VECTOR listenerPositionFmod = new FMOD.VECTOR();
 
         // FMOD Resonance Audio Listener Plugin.
-        private static FmodStudioEventEmitter.DSP listenerPlugin;
+        private static FMOD.DSP listenerPlugin;
 
         /// Updates the room effects of the environment with given |room| properties.
         /// @note This should only be called from the main Unity thread.
@@ -107,7 +107,7 @@ namespace FMODUnityResonance
         public static bool IsListenerInsideRoom(FmodResonanceAudioRoom room)
         {
             // Compute the room position relative to the listener.
-            FmodStudioEventEmitter.VECTOR unused;
+            FMOD.VECTOR unused;
             RuntimeManager.CoreSystem.get3DListenerAttributes(0, out listenerPositionFmod, out unused,
                                                                   out unused, out unused);
             Vector3 listenerPosition = new Vector3(listenerPositionFmod.x, listenerPositionFmod.y,
@@ -163,7 +163,7 @@ namespace FMODUnityResonance
         };
 
         // Returns the FMOD Resonance Audio Listener Plugin.
-        private static FmodStudioEventEmitter.DSP ListenerPlugin
+        private static FMOD.DSP ListenerPlugin
         {
             get
             {
@@ -239,18 +239,18 @@ namespace FMODUnityResonance
         }
 
         // Initializes and returns the FMOD Resonance Audio Listener Plugin.
-        private static FmodStudioEventEmitter.DSP Initialize()
+        private static FMOD.DSP Initialize()
         {
             // Search through all busses on in banks.
             int numBanks = 0;
-            FmodStudioEventEmitter.DSP dsp = new FmodStudioEventEmitter.DSP();
-            FmodStudioEventEmitter.Studio.Bank[] banks = null;
+            FMOD.DSP dsp = new FMOD.DSP();
+            FMOD.Studio.Bank[] banks = null;
             RuntimeManager.StudioSystem.getBankCount(out numBanks);
             RuntimeManager.StudioSystem.getBankList(out banks);
             for (int currentBank = 0; currentBank < numBanks; ++currentBank)
             {
                 int numBusses = 0;
-                FmodStudioEventEmitter.Studio.Bus[] busses = null;
+                FMOD.Studio.Bus[] busses = null;
                 banks[currentBank].getBusCount(out numBusses);
                 banks[currentBank].getBusList(out busses);
                 for (int currentBus = 0; currentBus < numBusses; ++currentBus)
@@ -261,7 +261,7 @@ namespace FMODUnityResonance
                     RuntimeManager.StudioSystem.getBus(busPath, out busses[currentBus]);
                     busses[currentBus].lockChannelGroup();
                     RuntimeManager.StudioSystem.flushCommands();
-                    FmodStudioEventEmitter.ChannelGroup channelGroup;
+                    FMOD.ChannelGroup channelGroup;
                     busses[currentBus].getChannelGroup(out channelGroup);
                     if (channelGroup.hasHandle())
                     {

@@ -155,7 +155,7 @@ namespace FMODUnity
         public EventLinkage EventLinkage = EventLinkage.Path;
 
         [SerializeField]
-        public FmodStudioEventEmitter.DEBUG_FLAGS LoggingLevel = FmodStudioEventEmitter.DEBUG_FLAGS.WARNING;
+        public FMOD.DEBUG_FLAGS LoggingLevel = FMOD.DEBUG_FLAGS.WARNING;
 
         [SerializeField]
         internal List<Legacy.PlatformIntSetting> SpeakerModeSettings;
@@ -286,8 +286,8 @@ namespace FMODUnity
                     RuntimeUtils.DebugLog("[FMOD] Cannot find integration settings, creating default settings");
                     instance = CreateInstance<Settings>();
                     instance.name = "FMOD Studio Integration Settings";
-                    instance.CurrentVersion = FmodStudioEventEmitter.VERSION.number;
-                    instance.LastEventReferenceScanVersion = FmodStudioEventEmitter.VERSION.number;
+                    instance.CurrentVersion = FMOD.VERSION.number;
+                    instance.LastEventReferenceScanVersion = FMOD.VERSION.number;
 
 #if UNITY_EDITOR
                     if (editorSettings != null)

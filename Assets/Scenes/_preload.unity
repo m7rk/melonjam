@@ -179,7 +179,7 @@ MonoBehaviour:
   LoadEvent: 1
   UnloadEvent: 0
   Banks:
-  - Music
+  - Master
   CollisionTag: 
   PreloadSamples: 0
 --- !u!1660057539 &9223372036854775807

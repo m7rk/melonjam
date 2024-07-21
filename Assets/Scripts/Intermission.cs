@@ -17,7 +17,7 @@ public class Intermission : MonoBehaviour
         
     }
 
-    void StartLevel()
+    public void StartLevel()
     {
         SceneManager.LoadScene("Main", LoadSceneMode.Single);
     }

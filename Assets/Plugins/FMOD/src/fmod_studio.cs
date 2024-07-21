@@ -11,7 +11,7 @@ using System.Text;
 using System.Runtime.InteropServices;
 using System.Collections;
 
-namespace FmodStudioEventEmitter.Studio
+namespace FMOD.Studio
 {
     public partial class STUDIO_VERSION
     {
@@ -404,7 +404,7 @@ namespace FmodStudioEventEmitter.Studio
             {
                 IntPtr userKey = settings.encryptionkey;
                 settings.encryptionkey = encoder.intptrFromStringUTF8(encryptionKey);
-                FmodStudioEventEmitter.RESULT result = setAdvancedSettings(settings);
+                FMOD.RESULT result = setAdvancedSettings(settings);
                 settings.encryptionkey = userKey;
                 return result;
             }
@@ -414,7 +414,7 @@ namespace FmodStudioEventEmitter.Studio
             settings.cbsize = MarshalHelper.SizeOf(typeof(ADVANCEDSETTINGS));
             return FMOD_Studio_System_GetAdvancedSettings(this.handle, out settings);
         }
-        public RESULT initialize(int maxchannels, INITFLAGS studioflags, FmodStudioEventEmitter.INITFLAGS flags, IntPtr extradriverdata)
+        public RESULT initialize(int maxchannels, INITFLAGS studioflags, FMOD.INITFLAGS flags, IntPtr extradriverdata)
         {
             return FMOD_Studio_System_Initialize(this.handle, maxchannels, studioflags, flags, extradriverdata);
         }
@@ -426,7 +426,7 @@ namespace FmodStudioEventEmitter.Studio
         {
             return FMOD_Studio_System_Update(this.handle);
         }
-        public RESULT getCoreSystem(out FmodStudioEventEmitter.System coresystem)
+        public RESULT getCoreSystem(out FMOD.System coresystem)
         {
             return FMOD_Studio_System_GetCoreSystem(this.handle, out coresystem.handle);
         }
@@ -788,7 +788,7 @@ namespace FmodStudioEventEmitter.Studio
 
             return RESULT.OK;
         }
-        public RESULT getCPUUsage(out CPU_USAGE usage, out FmodStudioEventEmitter.CPU_USAGE usage_core)
+        public RESULT getCPUUsage(out CPU_USAGE usage, out FMOD.CPU_USAGE usage_core)
         {
             return FMOD_Studio_System_GetCPUUsage(this.handle, out usage, out usage_core);
         }
@@ -831,7 +831,7 @@ namespace FmodStudioEventEmitter.Studio
         [DllImport(STUDIO_VERSION.dll)]
         private static extern RESULT FMOD_Studio_System_GetAdvancedSettings     (IntPtr system, out ADVANCEDSETTINGS settings);
         [DllImport(STUDIO_VERSION.dll)]
-        private static extern RESULT FMOD_Studio_System_Initialize              (IntPtr system, int maxchannels, INITFLAGS studioflags, FmodStudioEventEmitter.INITFLAGS flags, IntPtr extradriverdata);
+        private static extern RESULT FMOD_Studio_System_Initialize              (IntPtr system, int maxchannels, INITFLAGS studioflags, FMOD.INITFLAGS flags, IntPtr extradriverdata);
         [DllImport(STUDIO_VERSION.dll)]
         private static extern RESULT FMOD_Studio_System_Release                 (IntPtr system);
         [DllImport(STUDIO_VERSION.dll)]
@@ -925,7 +925,7 @@ namespace FmodStudioEventEmitter.Studio
         [DllImport(STUDIO_VERSION.dll)]
         private static extern RESULT FMOD_Studio_System_GetParameterDescriptionList(IntPtr system, [Out] PARAMETER_DESCRIPTION[] array, int capacity, out int count);
         [DllImport(STUDIO_VERSION.dll)]
-        private static extern RESULT FMOD_Studio_System_GetCPUUsage             (IntPtr system, out CPU_USAGE usage, out FmodStudioEventEmitter.CPU_USAGE usage_core);
+        private static extern RESULT FMOD_Studio_System_GetCPUUsage             (IntPtr system, out CPU_USAGE usage, out FMOD.CPU_USAGE usage_core);
         [DllImport(STUDIO_VERSION.dll)]
         private static extern RESULT FMOD_Studio_System_GetBufferUsage          (IntPtr system, out BUFFER_USAGE usage);
         [DllImport(STUDIO_VERSION.dll)]
@@ -1388,7 +1388,7 @@ namespace FmodStudioEventEmitter.Studio
         {
             return FMOD_Studio_EventInstance_GetPlaybackState(this.handle, out state);
         }
-        public RESULT getChannelGroup(out FmodStudioEventEmitter.ChannelGroup group)
+        public RESULT getChannelGroup(out FMOD.ChannelGroup group)
         {
             return FMOD_Studio_EventInstance_GetChannelGroup(this.handle, out group.handle);
         }
@@ -1651,7 +1651,7 @@ namespace FmodStudioEventEmitter.Studio
         {
             return FMOD_Studio_Bus_UnlockChannelGroup(this.handle);
         }
-        public RESULT getChannelGroup(out FmodStudioEventEmitter.ChannelGroup group)
+        public RESULT getChannelGroup(out FMOD.ChannelGroup group)
         {
             return FMOD_Studio_Bus_GetChannelGroup(this.handle, out group.handle);
         }

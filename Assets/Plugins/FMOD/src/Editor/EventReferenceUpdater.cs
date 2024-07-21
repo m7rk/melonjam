@@ -109,7 +109,7 @@ namespace FMODUnity
                 if (tasks.Count == 0)
                 {
                     SetStatus("No required tasks found. Event references are up to date.");
-                    Settings.Instance.LastEventReferenceScanVersion = FmodStudioEventEmitter.VERSION.number;
+                    Settings.Instance.LastEventReferenceScanVersion = FMOD.VERSION.number;
                     EditorUtility.SetDirty(Settings.Instance);
 
                     SetupWizardWindow.SetUpdateTaskComplete(SetupWizardWindow.UpdateTaskType.UpdateEventReferences);
@@ -941,7 +941,7 @@ namespace FMODUnity
             }
 
             public static Task UpdateEventReferencePath(string subObjectPath, string fieldName,
-                string oldPath, string newPath, FmodStudioEventEmitter.GUID guid)
+                string oldPath, string newPath, FMOD.GUID guid)
             {
                 return new Task()
                 {
@@ -951,7 +951,7 @@ namespace FMODUnity
             }
 
             public static Task UpdateEventReferenceGuid(string subObjectPath, string fieldName,
-                FmodStudioEventEmitter.GUID oldGuid, FmodStudioEventEmitter.GUID newGuid, string path)
+                FMOD.GUID oldGuid, FMOD.GUID newGuid, string path)
             {
                 return new Task()
                 {
@@ -1415,7 +1415,7 @@ namespace FMODUnity
                         FieldInfo field = targetType.GetField(data[1], DefaultBindingFlags);
 
                         EventReference value = (EventReference)field.GetValue(target);
-                        value.Guid = FmodStudioEventEmitter.GUID.Parse(data[3]);
+                        value.Guid = FMOD.GUID.Parse(data[3]);
 
                         field.SetValue(target, value);
 

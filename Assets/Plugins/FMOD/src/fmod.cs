@@ -11,7 +11,7 @@ using System.Text;
 using System.Runtime.InteropServices;
 using System.Collections.Generic;
 
-namespace FmodStudioEventEmitter
+namespace FMOD
 {
     /*
         FMOD version number.  Check this against FMOD::System::getVersion / System_GetVersion

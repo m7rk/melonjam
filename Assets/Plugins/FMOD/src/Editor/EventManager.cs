@@ -80,12 +80,12 @@ namespace FMODUnity
                     return null;
                 }
 
-                if (eventCache == null || eventCache.cacheVersion != FmodStudioEventEmitter.VERSION.number)
+                if (eventCache == null || eventCache.cacheVersion != FMOD.VERSION.number)
                 {
                     RuntimeUtils.DebugLog("FMOD: Event cache is missing or in an old format; creating a new instance.");
 
                     eventCache = ScriptableObject.CreateInstance<EventCache>();
-                    eventCache.cacheVersion = FmodStudioEventEmitter.VERSION.number;
+                    eventCache.cacheVersion = FMOD.VERSION.number;
 
                     Directory.CreateDirectory(Path.GetDirectoryName(CacheAssetFullName));
                     AssetDatabase.CreateAsset(eventCache, CacheAssetFullName);
@@ -170,12 +170,12 @@ namespace FMODUnity
             }
 
             List<string> reducedStringBanksList = new List<string>();
-            HashSet<FmodStudioEventEmitter.GUID> stringBankGuids = new HashSet<FmodStudioEventEmitter.GUID>();
+            HashSet<FMOD.GUID> stringBankGuids = new HashSet<FMOD.GUID>();
 
             foreach (string stringBankPath in stringBanks)
             {
-                FmodStudioEventEmitter.Studio.Bank stringBank;
-                EditorUtils.CheckResult(EditorUtils.System.loadBankFile(stringBankPath, FmodStudioEventEmitter.Studio.LOAD_BANK_FLAGS.NORMAL, out stringBank));
+                FMOD.Studio.Bank stringBank;
+                EditorUtils.CheckResult(EditorUtils.System.loadBankFile(stringBankPath, FMOD.Studio.LOAD_BANK_FLAGS.NORMAL, out stringBank));
 
                 if (!stringBank.isValid())
                 {
@@ -187,7 +187,7 @@ namespace FMODUnity
                     stringBank.unload();
                 }
 
-                FmodStudioEventEmitter.GUID stringBankGuid;
+                FMOD.GUID stringBankGuid;
                 EditorUtils.CheckResult(stringBank.getID(out stringBankGuid));
 
                 if (!stringBankGuids.Add(stringBankGuid))
@@ -203,7 +203,7 @@ namespace FMODUnity
             stringBanks = reducedStringBanksList;
 
             // Reload the strings banks
-            List<FmodStudioEventEmitter.Studio.Bank> loadedStringsBanks = new List<FmodStudioEventEmitter.Studio.Bank>();
+            List<FMOD.Studio.Bank> loadedStringsBanks = new List<FMOD.Studio.Bank>();
 
             bool eventRenameOccurred = false;
 
@@ -216,8 +216,8 @@ namespace FMODUnity
 
                 foreach (string stringBankPath in stringBanks)
                 {
-                    FmodStudioEventEmitter.Studio.Bank stringBank;
-                    EditorUtils.CheckResult(EditorUtils.System.loadBankFile(stringBankPath, FmodStudioEventEmitter.Studio.LOAD_BANK_FLAGS.NORMAL, out stringBank));
+                    FMOD.Studio.Bank stringBank;
+                    EditorUtils.CheckResult(EditorUtils.System.loadBankFile(stringBankPath, FMOD.Studio.LOAD_BANK_FLAGS.NORMAL, out stringBank));
 
                     if (!stringBank.isValid())
                     {
@@ -395,10 +395,10 @@ namespace FMODUnity
             // Clear out any cached events from this bank
             eventCache.EditorEvents.ForEach((x) => x.Banks.Remove(bankRef));
 
-            FmodStudioEventEmitter.Studio.Bank bank;
-            FmodStudioEventEmitter.RESULT loadResult = EditorUtils.System.loadBankFile(bankRef.Path, FmodStudioEventEmitter.Studio.LOAD_BANK_FLAGS.NORMAL, out bank);
+            FMOD.Studio.Bank bank;
+            FMOD.RESULT loadResult = EditorUtils.System.loadBankFile(bankRef.Path, FMOD.Studio.LOAD_BANK_FLAGS.NORMAL, out bank);
 
-            if (loadResult == FmodStudioEventEmitter.RESULT.OK)
+            if (loadResult == FMOD.RESULT.OK)
             {
                 // Get studio path
                 string studioPath;
@@ -406,16 +406,16 @@ namespace FMODUnity
                 bankRef.SetStudioPath(studioPath);
 
                 // Iterate all events in the bank and cache them
-                FmodStudioEventEmitter.Studio.EventDescription[] eventList;
+                FMOD.Studio.EventDescription[] eventList;
                 var result = bank.getEventList(out eventList);
-                if (result == FmodStudioEventEmitter.RESULT.OK)
+                if (result == FMOD.RESULT.OK)
                 {
                     foreach (var eventDesc in eventList)
                     {
                         string path;
                         result = eventDesc.getPath(out path);
 
-                        FmodStudioEventEmitter.GUID guid;
+                        FMOD.GUID guid;
                         eventDesc.getID(out guid);
 
                         EditorEventRef eventRef = eventCache.EditorEvents.Find((x) => x.Path == path);
@@ -456,10 +456,10 @@ namespace FMODUnity
                         eventRef.Parameters.ForEach((x) => x.Exists = false);
                         for (int paramIndex = 0; paramIndex < paramCount; paramIndex++)
                         {
-                            FmodStudioEventEmitter.Studio.PARAMETER_DESCRIPTION param;
+                            FMOD.Studio.PARAMETER_DESCRIPTION param;
                             eventDesc.getParameterDescriptionByIndex(paramIndex, out param);
                             // Skip if readonly and not global
-                            if ((param.flags & FmodStudioEventEmitter.Studio.PARAMETER_FLAGS.READONLY) != 0 && (param.flags & FmodStudioEventEmitter.Studio.PARAMETER_FLAGS.GLOBAL) == 0)
+                            if ((param.flags & FMOD.Studio.PARAMETER_FLAGS.READONLY) != 0 && (param.flags & FMOD.Studio.PARAMETER_FLAGS.GLOBAL) == 0)
                             {
                                 continue;
                             }
@@ -487,14 +487,14 @@ namespace FMODUnity
                 }
 
                 // Update global parameter list for each bank
-                FmodStudioEventEmitter.Studio.PARAMETER_DESCRIPTION[] parameterDescriptions;
+                FMOD.Studio.PARAMETER_DESCRIPTION[] parameterDescriptions;
                 result = EditorUtils.System.getParameterDescriptionList(out parameterDescriptions);
-                if (result == FmodStudioEventEmitter.RESULT.OK)
+                if (result == FMOD.RESULT.OK)
                 {
                     for (int i = 0; i < parameterDescriptions.Length; i++)
                     {
-                        FmodStudioEventEmitter.Studio.PARAMETER_DESCRIPTION param = parameterDescriptions[i];
-                        if ((param.flags & FmodStudioEventEmitter.Studio.PARAMETER_FLAGS.GLOBAL) == FmodStudioEventEmitter.Studio.PARAMETER_FLAGS.GLOBAL)
+                        FMOD.Studio.PARAMETER_DESCRIPTION param = parameterDescriptions[i];
+                        if ((param.flags & FMOD.Studio.PARAMETER_FLAGS.GLOBAL) == FMOD.Studio.PARAMETER_FLAGS.GLOBAL)
                         {
                             EditorParamRef paramRef = eventCache.EditorParameters.Find((x) => x.ID.Equals(param.id));
                             if (paramRef == null)
@@ -521,12 +521,12 @@ namespace FMODUnity
             }
             else
             {
-                RuntimeUtils.DebugLogError(string.Format("FMOD Studio: Unable to load {0}: {1}", bankRef.Name, FmodStudioEventEmitter.Error.String(loadResult)));
+                RuntimeUtils.DebugLogError(string.Format("FMOD Studio: Unable to load {0}: {1}", bankRef.Name, FMOD.Error.String(loadResult)));
                 eventCache.CacheTime = DateTime.MinValue;
             }
         }
 
-        private static void InitializeParamRef(EditorParamRef paramRef, FmodStudioEventEmitter.Studio.PARAMETER_DESCRIPTION description,
+        private static void InitializeParamRef(EditorParamRef paramRef, FMOD.Studio.PARAMETER_DESCRIPTION description,
             Func<int, string> getLabel)
         {
             paramRef.Name = description.name;
@@ -534,14 +534,14 @@ namespace FMODUnity
             paramRef.Max = description.maximum;
             paramRef.Default = description.defaultvalue;
             paramRef.ID = description.id;
-            paramRef.IsGlobal = (description.flags & FmodStudioEventEmitter.Studio.PARAMETER_FLAGS.GLOBAL) != 0;
+            paramRef.IsGlobal = (description.flags & FMOD.Studio.PARAMETER_FLAGS.GLOBAL) != 0;
 
-            if ((description.flags & FmodStudioEventEmitter.Studio.PARAMETER_FLAGS.LABELED) != 0)
+            if ((description.flags & FMOD.Studio.PARAMETER_FLAGS.LABELED) != 0)
             {
                 paramRef.Type = ParameterType.Labeled;
                 paramRef.Labels = GetParameterLabels(description, getLabel);
             }
-            else if ((description.flags & FmodStudioEventEmitter.Studio.PARAMETER_FLAGS.DISCRETE) != 0)
+            else if ((description.flags & FMOD.Studio.PARAMETER_FLAGS.DISCRETE) != 0)
             {
                 paramRef.Type = ParameterType.Discrete;
             }
@@ -551,7 +551,7 @@ namespace FMODUnity
             }
         }
 
-        private static string[] GetParameterLabels(FmodStudioEventEmitter.Studio.PARAMETER_DESCRIPTION parameterDescription,
+        private static string[] GetParameterLabels(FMOD.Studio.PARAMETER_DESCRIPTION parameterDescription,
             Func<int, string> getLabel)
         {
             string[] labels = new string[(int)parameterDescription.maximum + 1];
@@ -580,7 +580,7 @@ namespace FMODUnity
             EventReference.GuidLookupDelegate = (path) => {
                 EditorEventRef editorEventRef = EventFromPath(path);
 
-                return (editorEventRef != null) ? editorEventRef.Guid : new FmodStudioEventEmitter.GUID();
+                return (editorEventRef != null) ? editorEventRef.Guid : new FMOD.GUID();
             };
 
             // Avoid throwing exceptions so we don't stop other startup code from running
@@ -1210,7 +1210,7 @@ namespace FMODUnity
             EditorEventRef eventRef;
             if (pathOrGuid.StartsWith("{"))
             {
-                eventRef = EventFromGUID(FmodStudioEventEmitter.GUID.Parse(pathOrGuid));
+                eventRef = EventFromGUID(FMOD.GUID.Parse(pathOrGuid));
             }
             else
             {
@@ -1225,7 +1225,7 @@ namespace FMODUnity
             return eventCache.EditorEvents.Find((x) => x.Path.Equals(path, StringComparison.CurrentCultureIgnoreCase));
         }
 
-        public static EditorEventRef EventFromGUID(FmodStudioEventEmitter.GUID guid)
+        public static EditorEventRef EventFromGUID(FMOD.GUID guid)
         {
             AffirmEventCache();
             return eventCache.EditorEvents.Find((x) => x.Guid == guid);

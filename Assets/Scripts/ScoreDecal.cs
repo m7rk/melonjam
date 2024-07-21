@@ -13,19 +13,27 @@ public class ScoreDecal : MonoBehaviour
         start = this.transform.position;
     }
 
-    public void newWord(int score)
+    public void newWord(int score, bool playerScoring)
     {
-        var stext = (score > 0 ? "+" : "") + score;
+        if(!playerScoring)
+        {
+            score = -score;
+        }
+        var stext = (score > 0 ? "<color=green>+" : "<color=red>+") + Mathf.Abs(score);
         text.text = stext;
-        text.color = Color.black;
+        text.color = Color.white;
         this.transform.position = start;
     }
 
-    public void flowBonus(int score, int cnt)
+    public void flowBonus(int score, int cnt, bool playerScoring)
     {
-        var stext = cnt + " rhyme flow! " + ((score > 0 ? "+" : "") + score);
+        if (!playerScoring)
+        {
+            score = -score;
+        }
+        var stext = cnt + " rhyme flow! " + ((score > 0 ? "<color=green>+" : "<color=red>+") + Mathf.Abs(score));
         text.text = stext;
-        text.color = Color.black;
+        text.color = Color.yellow;
         this.transform.position = start;
     }
 

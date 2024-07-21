@@ -41,7 +41,7 @@ public class Scorer : MonoBehaviour
     private const int SCORE_NO_MATCH = -400;
     private const int SCORE_NOT_WORD = -500;
 
-    private const int SCORE_MINION_HIT = 50;
+    private const int SCORE_MINION_HIT = 100;
     private const int SCORE_MINION_LATE = 25;
     private const int SCORE_MINION_MISS = -25;
 
@@ -71,7 +71,7 @@ public class Scorer : MonoBehaviour
     {
         if(APPSTATE.TUTORIAL_STAGE == 1)
         {
-            currentScore = 8000;
+            currentScore = 7000;
         }
     }
 
@@ -90,7 +90,7 @@ public class Scorer : MonoBehaviour
                     // lose some points for a repeat, but keep combo.
                     feedbackBox.newWord(LYRICSCORE.REPEAT);
                     applyScore(SCORE_REPEAT, playerScoring);
-                    scoreDecal.newWord(SCORE_REPEAT);
+                    scoreDecal.newWord(SCORE_REPEAT, playerScoring);
                     beatManager.GetComponent<StudioEventEmitter>().EventInstance.setParameterByNameWithLabel("Rhyme", "Incorrect");
                 }
                 else if (rhymed && waspos)
@@ -100,14 +100,14 @@ public class Scorer : MonoBehaviour
                         // get a nice amount for a match
                         feedbackBox.newWord(LYRICSCORE.MATCH_BOTH);
                         applyScore(SCORE_MATCH_BOTH, playerScoring);
-                        scoreDecal.newWord(SCORE_MATCH_BOTH);
+                        scoreDecal.newWord(SCORE_MATCH_BOTH, playerScoring);
                     }
                     else
                     {
                         // get a nice amount for a match
                         feedbackBox.newWord(LYRICSCORE.MATCH_BOTH_LONG);
                         applyScore(SCORE_MATCH_BOTH_LONG, playerScoring);
-                        scoreDecal.newWord(SCORE_MATCH_BOTH_LONG);
+                        scoreDecal.newWord(SCORE_MATCH_BOTH_LONG, playerScoring);
                     }
 
                     beatManager.GetComponent<StudioEventEmitter>().EventInstance.setParameterByNameWithLabel("Rhyme", "Rhyme");
@@ -117,7 +117,7 @@ public class Scorer : MonoBehaviour
                     // get no points for keeping the rhyme alive.
                     feedbackBox.newWord(LYRICSCORE.RHYME_ONLY);
                     applyScore(SCORE_RHYME_ONLY, playerScoring);
-                    scoreDecal.newWord(SCORE_RHYME_ONLY);
+                    scoreDecal.newWord(SCORE_RHYME_ONLY, playerScoring);
 
                     beatManager.GetComponent<StudioEventEmitter>().EventInstance.setParameterByNameWithLabel("Rhyme", "Incorrect");
                 }
@@ -127,7 +127,7 @@ public class Scorer : MonoBehaviour
                     if(previousWords.Count > 1)
                     {
                         applyScore(SCORE_FLOW_BONUS * previousWords.Count, playerScoring);
-                        scoreDecal.flowBonus((SCORE_FLOW_BONUS * previousWords.Count), previousWords.Count);
+                        scoreDecal.flowBonus((SCORE_FLOW_BONUS * previousWords.Count), previousWords.Count, playerScoring);
                     }
 
                     beatManager.GetComponent<StudioEventEmitter>().EventInstance.setParameterByNameWithLabel("Rhyme", "New_Rhyme");
@@ -139,7 +139,7 @@ public class Scorer : MonoBehaviour
                 {
                     // lose many points for a nonsenstical word, but the rhyme is at least set..
                     applyScore(SCORE_NO_MATCH, playerScoring);
-                    scoreDecal.newWord(SCORE_NO_MATCH);
+                    scoreDecal.newWord(SCORE_NO_MATCH, playerScoring);
                     beatManager.GetComponent<StudioEventEmitter>().EventInstance.setParameterByNameWithLabel("Rhyme", "Incorrect");
 
                     feedbackBox.newWord(LYRICSCORE.NO_MATCH);
@@ -172,7 +172,7 @@ public class Scorer : MonoBehaviour
             if (previousWords.Count > 1)
             {
                 applyScore(SCORE_FLOW_BONUS * previousWords.Count, playerScoring);
-                scoreDecal.flowBonus((SCORE_FLOW_BONUS * previousWords.Count), previousWords.Count);
+                scoreDecal.flowBonus((SCORE_FLOW_BONUS * previousWords.Count), previousWords.Count, playerScoring);
             }
             previous.text = "";
             previousWords = new List<string>();

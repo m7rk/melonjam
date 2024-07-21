@@ -24,24 +24,24 @@ namespace FMODUnity
     {
         public const string BuildFolder = "Build";
 
-        private static FmodStudioEventEmitter.Studio.System system;
-        private static FmodStudioEventEmitter.SPEAKERMODE speakerMode;
+        private static FMOD.Studio.System system;
+        private static FMOD.SPEAKERMODE speakerMode;
         private static string encryptionKey;
 
-        private static List<FmodStudioEventEmitter.Studio.Bank> loadedPreviewBanks = new List<FmodStudioEventEmitter.Studio.Bank>();
-        private static FmodStudioEventEmitter.Studio.EventDescription previewEventDesc;
-        private static FmodStudioEventEmitter.Studio.EventInstance previewEventInstance;
+        private static List<FMOD.Studio.Bank> loadedPreviewBanks = new List<FMOD.Studio.Bank>();
+        private static FMOD.Studio.EventDescription previewEventDesc;
+        private static FMOD.Studio.EventInstance previewEventInstance;
 
         private const int StudioScriptPort = 3663;
         private static NetworkStream networkStream = null;
         private static Socket socket = null;
         private static IAsyncResult socketConnection = null;
 
-        public static void CheckResult(FmodStudioEventEmitter.RESULT result)
+        public static void CheckResult(FMOD.RESULT result)
         {
-            if (result != FmodStudioEventEmitter.RESULT.OK)
+            if (result != FMOD.RESULT.OK)
             {
-                RuntimeUtils.DebugLogError(string.Format("FMOD Studio: Encountered Error: {0} {1}", result, FmodStudioEventEmitter.Error.String(result)));
+                RuntimeUtils.DebugLogError(string.Format("FMOD Studio: Encountered Error: {0} {1}", result, FMOD.Error.String(result)));
             }
         }
 
@@ -415,9 +415,9 @@ namespace FMODUnity
                 var instance = previewEventInstances[i];
                 if (instance.isValid())
                 {
-                    FmodStudioEventEmitter.Studio.PLAYBACK_STATE state;
+                    FMOD.Studio.PLAYBACK_STATE state;
                     instance.getPlaybackState(out state);
-                    if (state == FmodStudioEventEmitter.Studio.PLAYBACK_STATE.STOPPED)
+                    if (state == FMOD.Studio.PLAYBACK_STATE.STOPPED)
                     {
                         PreviewStop(instance);
                         i--;
@@ -475,7 +475,7 @@ namespace FMODUnity
                 FMODEventPlayableBehavior behavior = sender as FMODEventPlayableBehavior;
                 if (behavior.StopType != STOP_MODE.None)
                 {
-                    FmodStudioEventEmitter.Studio.STOP_MODE stopType = behavior.StopType == STOP_MODE.Immediate ? FmodStudioEventEmitter.Studio.STOP_MODE.IMMEDIATE : FmodStudioEventEmitter.Studio.STOP_MODE.ALLOWFADEOUT;
+                    FMOD.Studio.STOP_MODE stopType = behavior.StopType == STOP_MODE.Immediate ? FMOD.Studio.STOP_MODE.IMMEDIATE : FMOD.Studio.STOP_MODE.ALLOWFADEOUT;
                     PreviewStop(args.eventInstance, stopType);
                 }
             };
@@ -491,7 +491,7 @@ namespace FMODUnity
                 if (playable.Parameters.Length > 0 || playable.Template.ParameterLinks.Count > 0)
                 {
                     LoadPreviewBanks();
-                    FmodStudioEventEmitter.Studio.EventDescription eventDescription;
+                    FMOD.Studio.EventDescription eventDescription;
                     system.getEventByID(playable.EventReference.Guid, out eventDescription);
                     playable.LinkParameters(eventDescription);
                 }
@@ -528,15 +528,15 @@ namespace FMODUnity
             RuntimeUtils.DebugLog("FMOD Studio: Creating editor system instance");
             RuntimeUtils.EnforceLibraryOrder();
 
-            FmodStudioEventEmitter.RESULT result = FmodStudioEventEmitter.Debug.Initialize(FmodStudioEventEmitter.DEBUG_FLAGS.LOG, FmodStudioEventEmitter.DEBUG_MODE.FILE, null, "fmod_editor.log");
-            if (result != FmodStudioEventEmitter.RESULT.OK)
+            FMOD.RESULT result = FMOD.Debug.Initialize(FMOD.DEBUG_FLAGS.LOG, FMOD.DEBUG_MODE.FILE, null, "fmod_editor.log");
+            if (result != FMOD.RESULT.OK)
             {
                 RuntimeUtils.DebugLogWarning("FMOD Studio: Cannot open fmod_editor.log. Logging will be disabled for importing and previewing");
             }
 
-            CheckResult(FmodStudioEventEmitter.Studio.System.create(out system));
+            CheckResult(FMOD.Studio.System.create(out system));
 
-            FmodStudioEventEmitter.System lowlevel;
+            FMOD.System lowlevel;
             CheckResult(system.getCoreSystem(out lowlevel));
 
             // Use play-in-editor speaker mode for event browser preview and metering
@@ -546,16 +546,16 @@ namespace FMODUnity
             encryptionKey = Settings.Instance.EncryptionKey;
             if (!string.IsNullOrEmpty(encryptionKey))
             {
-                FmodStudioEventEmitter.Studio.ADVANCEDSETTINGS studioAdvancedSettings = new FmodStudioEventEmitter.Studio.ADVANCEDSETTINGS();
+                FMOD.Studio.ADVANCEDSETTINGS studioAdvancedSettings = new FMOD.Studio.ADVANCEDSETTINGS();
                 CheckResult(system.setAdvancedSettings(studioAdvancedSettings, encryptionKey));
             }
 
-            CheckResult(system.initialize(256, FmodStudioEventEmitter.Studio.INITFLAGS.ALLOW_MISSING_PLUGINS | FmodStudioEventEmitter.Studio.INITFLAGS.SYNCHRONOUS_UPDATE, FmodStudioEventEmitter.INITFLAGS.NORMAL, IntPtr.Zero));
+            CheckResult(system.initialize(256, FMOD.Studio.INITFLAGS.ALLOW_MISSING_PLUGINS | FMOD.Studio.INITFLAGS.SYNCHRONOUS_UPDATE, FMOD.INITFLAGS.NORMAL, IntPtr.Zero));
 
-            FmodStudioEventEmitter.ChannelGroup master;
+            FMOD.ChannelGroup master;
             CheckResult(lowlevel.getMasterChannelGroup(out master));
-            FmodStudioEventEmitter.DSP masterHead;
-            CheckResult(master.getDSP(FmodStudioEventEmitter.CHANNELCONTROL_DSP_INDEX.HEAD, out masterHead));
+            FMOD.DSP masterHead;
+            CheckResult(master.getDSP(FMOD.CHANNELCONTROL_DSP_INDEX.HEAD, out masterHead));
             CheckResult(masterHead.setMeteringEnabled(false, true));
         }
 
@@ -607,7 +607,7 @@ namespace FMODUnity
             emitter.OverrideMaxDistance = eventRef.MaxDistance;
         }
 
-        public static FmodStudioEventEmitter.Studio.System System
+        public static FMOD.Studio.System System
         {
             get
             {
@@ -652,7 +652,7 @@ namespace FMODUnity
         public static void OpenOnlineDocumentation(string section, string page = null, string anchor = null)
         {
             const string Prefix = "https://fmod.com/docs/";
-            string version = string.Format("{0:X}.{1:X}", FmodStudioEventEmitter.VERSION.number >> 16, (FmodStudioEventEmitter.VERSION.number >> 8) & 0xFF);
+            string version = string.Format("{0:X}.{1:X}", FMOD.VERSION.number >> 16, (FMOD.VERSION.number >> 8) & 0xFF);
             string url;
 
             if (!string.IsNullOrEmpty(page))
@@ -677,7 +677,7 @@ namespace FMODUnity
         [MenuItem("FMOD/About Integration", priority = 7)]
         public static void About()
         {
-            FmodStudioEventEmitter.System lowlevel;
+            FMOD.System lowlevel;
             CheckResult(System.getCoreSystem(out lowlevel));
 
             uint version;
@@ -691,7 +691,7 @@ namespace FMODUnity
             EditorUtility.DisplayDialog("FMOD Studio Unity Integration", text, "OK");
         }
 
-        private static List<FmodStudioEventEmitter.Studio.EventInstance> previewEventInstances = new List<FmodStudioEventEmitter.Studio.EventInstance>();
+        private static List<FMOD.Studio.EventInstance> previewEventInstances = new List<FMOD.Studio.EventInstance>();
 
         public static bool PreviewBanksLoaded
         {
@@ -707,9 +707,9 @@ namespace FMODUnity
 
             foreach (var bank in EventManager.Banks)
             {
-                FmodStudioEventEmitter.Studio.Bank previewBank;
-                FmodStudioEventEmitter.RESULT result = System.loadBankFile(bank.Path, FmodStudioEventEmitter.Studio.LOAD_BANK_FLAGS.NORMAL, out previewBank);
-                if (result != FmodStudioEventEmitter.RESULT.ERR_EVENT_ALREADY_LOADED) // ignore error when a bank is already loaded, e.g. localized banks.
+                FMOD.Studio.Bank previewBank;
+                FMOD.RESULT result = System.loadBankFile(bank.Path, FMOD.Studio.LOAD_BANK_FLAGS.NORMAL, out previewBank);
+                if (result != FMOD.RESULT.ERR_EVENT_ALREADY_LOADED) // ignore error when a bank is already loaded, e.g. localized banks.
                 {
                     CheckResult(result);
                 }
@@ -728,17 +728,17 @@ namespace FMODUnity
             loadedPreviewBanks.Clear();
         }
 
-        public static FmodStudioEventEmitter.Studio.EventInstance PreviewEvent(EditorEventRef eventRef, Dictionary<string, float> previewParamValues, float volume = 1, float startTime = 0.0f)
+        public static FMOD.Studio.EventInstance PreviewEvent(EditorEventRef eventRef, Dictionary<string, float> previewParamValues, float volume = 1, float startTime = 0.0f)
         {
-            FmodStudioEventEmitter.Studio.EventDescription eventDescription;
-            FmodStudioEventEmitter.Studio.EventInstance eventInstance;
+            FMOD.Studio.EventDescription eventDescription;
+            FMOD.Studio.EventInstance eventInstance;
 
             CheckResult(System.getEventByID(eventRef.Guid, out eventDescription));
             CheckResult(eventDescription.createInstance(out eventInstance));
 
             foreach (EditorParamRef param in eventRef.Parameters)
             {
-                FmodStudioEventEmitter.Studio.PARAMETER_DESCRIPTION paramDesc;
+                FMOD.Studio.PARAMETER_DESCRIPTION paramDesc;
                 if (param.IsGlobal)
                 {
                     CheckResult(System.getParameterDescriptionByName(param.Name, out paramDesc));
@@ -770,7 +770,7 @@ namespace FMODUnity
             return eventInstance;
         }
 
-        public static void PreviewPause(FmodStudioEventEmitter.Studio.EventInstance eventInstance)
+        public static void PreviewPause(FMOD.Studio.EventInstance eventInstance)
         {
             if (eventInstance.isValid() && previewEventInstances.Contains(eventInstance))
             {
@@ -780,7 +780,7 @@ namespace FMODUnity
             }
         }
 
-        public static void PreviewStop(FmodStudioEventEmitter.Studio.EventInstance eventInstance, FmodStudioEventEmitter.Studio.STOP_MODE stopMode = FmodStudioEventEmitter.Studio.STOP_MODE.IMMEDIATE)
+        public static void PreviewStop(FMOD.Studio.EventInstance eventInstance, FMOD.Studio.STOP_MODE stopMode = FMOD.Studio.STOP_MODE.IMMEDIATE)
         {
             if (previewEventInstances.Contains(eventInstance))
             {
@@ -796,7 +796,7 @@ namespace FMODUnity
 
         public static void StopAllPreviews()
         {
-            foreach (FmodStudioEventEmitter.Studio.EventInstance eventInstance in previewEventInstances)
+            foreach (FMOD.Studio.EventInstance eventInstance in previewEventInstances)
             {
                 PreviewStop(eventInstance);
             }
@@ -804,17 +804,17 @@ namespace FMODUnity
 
         public static float[] GetMetering()
         {
-            FmodStudioEventEmitter.System lowlevel;
+            FMOD.System lowlevel;
             CheckResult(System.getCoreSystem(out lowlevel));
-            FmodStudioEventEmitter.ChannelGroup master;
+            FMOD.ChannelGroup master;
             CheckResult(lowlevel.getMasterChannelGroup(out master));
-            FmodStudioEventEmitter.DSP masterHead;
-            CheckResult(master.getDSP(FmodStudioEventEmitter.CHANNELCONTROL_DSP_INDEX.HEAD, out masterHead));
+            FMOD.DSP masterHead;
+            CheckResult(master.getDSP(FMOD.CHANNELCONTROL_DSP_INDEX.HEAD, out masterHead));
 
-            FmodStudioEventEmitter.DSP_METERING_INFO outputMetering;
+            FMOD.DSP_METERING_INFO outputMetering;
             CheckResult(masterHead.getMeteringInfo(IntPtr.Zero, out outputMetering));
 
-            FmodStudioEventEmitter.SPEAKERMODE mode;
+            FMOD.SPEAKERMODE mode;
             int rate, raw;
             lowlevel.getSoftwareFormat(out rate, out mode, out raw);
             int channels;
@@ -1819,9 +1819,9 @@ namespace FMODUnity
             }
         }
 
-        private static FmodStudioEventEmitter.GUID GetGuid(this SerializedProperty property)
+        private static FMOD.GUID GetGuid(this SerializedProperty property)
         {
-            return new FmodStudioEventEmitter.GUID() {
+            return new FMOD.GUID() {
                 Data1 = property.FindPropertyRelative("Data1").intValue,
                 Data2 = property.FindPropertyRelative("Data2").intValue,
                 Data3 = property.FindPropertyRelative("Data3").intValue,
@@ -1829,7 +1829,7 @@ namespace FMODUnity
             };
         }
 
-        public static void SetGuid(this SerializedProperty property, FmodStudioEventEmitter.GUID guid)
+        public static void SetGuid(this SerializedProperty property, FMOD.GUID guid)
         {
             property.FindPropertyRelative("Data1").intValue = guid.Data1;
             property.FindPropertyRelative("Data2").intValue = guid.Data2;
@@ -1837,7 +1837,7 @@ namespace FMODUnity
             property.FindPropertyRelative("Data4").intValue = guid.Data4;
         }
 
-        public static void SetEventReference(this SerializedProperty property, FmodStudioEventEmitter.GUID guid, string path)
+        public static void SetEventReference(this SerializedProperty property, FMOD.GUID guid, string path)
         {
             SerializedProperty guidProperty = property.FindPropertyRelative("Guid");
             guidProperty.SetGuid(guid);
