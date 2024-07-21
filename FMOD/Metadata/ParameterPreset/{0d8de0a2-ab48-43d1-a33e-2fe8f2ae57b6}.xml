@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.02.00">
+	<object class="ParameterPreset" id="{0d8de0a2-ab48-43d1-a33e-2fe8f2ae57b6}">
+		<property name="name">
+			<value>Flow_Bar</value>
+		</property>
+		<relationship name="folder">
+			<destination>{a418e0de-c7d0-05c9-280a-b529dc02e12e}</destination>
+		</relationship>
+		<relationship name="parameter">
+			<destination>{12326d18-cf5c-4d77-a530-c8aa008a4536}</destination>
+		</relationship>
+	</object>
+	<object class="GameParameter" id="{12326d18-cf5c-4d77-a530-c8aa008a4536}">
+		<property name="maximum">
+			<value>100</value>
+		</property>
+		<property name="initialValue">
+			<value>0</value>
+		</property>
+		<property name="seekSpeed">
+			<value>35</value>
+		</property>
+		<property name="seekSpeedDescending">
+			<value>36</value>
+		</property>
+		<property name="seekSpeedAsymmetric">
+			<value>true</value>
+		</property>
+	</object>
+</objects>
