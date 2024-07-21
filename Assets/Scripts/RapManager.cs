@@ -75,7 +75,8 @@ public class RapManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(APPSTATE.TUTORIAL_STAGE >= 0 && APPSTATE.TUTORIAL_STAGE < 5)
+        sideMaterial.SetFloat("_WhoPlays01", Random.RandomRange(0f,1f));
+        if (APPSTATE.TUTORIAL_STAGE >= 0 && APPSTATE.TUTORIAL_STAGE < 5)
         {
             // keep up.
             totalBarIndex = (int)bm.getPhrase();
