@@ -67,6 +67,14 @@ public class Scorer : MonoBehaviour
         }
     }
 
+    public void Update()
+    {
+        if(APPSTATE.TUTORIAL_STAGE == 1)
+        {
+            currentScore = 8000;
+        }
+    }
+
     public void submitWord(string word, string targetpos, bool playerScoring, bool isEnd, int syllableCount)
     {
         if (rhymer.validWord(word))

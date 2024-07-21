@@ -40,8 +40,6 @@ public class RapManager : MonoBehaviour
     public SpriteBar playerSlider;
     public SpriteBar bossSlider;
 
-    private const int INTEL = 10000;
-
 
     // Start is called before the first frame update
     void Start()
@@ -56,6 +54,13 @@ public class RapManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if(APPSTATE.TUTORIAL_STAGE >= 0 && APPSTATE.TUTORIAL_STAGE < 5)
+        {
+            // keep up.
+            totalBarIndex = (int)bm.getPhrase();
+            return;
+        }
+
         // get the current bar and bar character.
         var currentBar = bars[lyricBarIndex];
         var barProgress = bm.getPhrase() % 1;

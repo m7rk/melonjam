@@ -22,10 +22,20 @@ public class EnemyManager : MonoBehaviour
     private const float THRESH_MISS = 0.04f; // 0.03 - 0.06
     private const float THRESH_EARLY = 0.08f; // 0.06 - 0.12
 
-    private const float DIFFICULTY = 1.0f;
 
     public List<float> generateRhythms(int count)
     {
+        // if tutorial stage = 1
+        Debug.Log(APPSTATE.TUTORIAL_STAGE);
+        if(APPSTATE.TUTORIAL_STAGE == 0)
+        {
+            return new List<float> { 8+0,  8+2,  8+4,  8+6, };
+        }
+        else if (APPSTATE.TUTORIAL_STAGE > 0 && APPSTATE.TUTORIAL_STAGE < 6)
+        {
+            return new List<float>();
+        }
+
         if(count > 16)
         {
             count = 16;
@@ -60,6 +70,7 @@ public class EnemyManager : MonoBehaviour
             eigths.RemoveAt(idx);
         }
         sends.Sort();
+
         return sends;
     }
     public void makeMinionWithDelay(float delay)
@@ -109,7 +120,10 @@ public class EnemyManager : MonoBehaviour
             // we are free to add minions in increments of 1/2.
 
             // 5 is very hard.. use 1/3 when player rapping
-            foreach(var v in generateRhythms(2))
+            var rhythmCount = ((lastBar % 16) > 5 && (lastBar % 16) < 5+8) ? UnityEngine.Random.Range(4,7) : UnityEngine.Random.Range(1, 2);
+
+            // add difficulty here..
+            foreach(var v in generateRhythms(rhythmCount))
             {
                 makeMinionWithDelay(delay + v);
             }
