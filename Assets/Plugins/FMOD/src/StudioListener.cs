@@ -63,19 +63,19 @@ namespace FMODUnity
             }
 
             // If already at the max numListeners
-            if (listeners.Count >= FMOD.CONSTANTS.MAX_LISTENERS)
+            if (listeners.Count >= FmodStudioEventEmitter.CONSTANTS.MAX_LISTENERS)
             {
-                Debug.LogWarning(string.Format(("[FMOD] Max number of listeners reached : {0}."), FMOD.CONSTANTS.MAX_LISTENERS));
+                Debug.LogWarning(string.Format(("[FMOD] Max number of listeners reached : {0}."), FmodStudioEventEmitter.CONSTANTS.MAX_LISTENERS));
             }
 
             listeners.Add(listener);
-            RuntimeManager.StudioSystem.setNumListeners(Mathf.Clamp(listeners.Count, 1, FMOD.CONSTANTS.MAX_LISTENERS));
+            RuntimeManager.StudioSystem.setNumListeners(Mathf.Clamp(listeners.Count, 1, FmodStudioEventEmitter.CONSTANTS.MAX_LISTENERS));
         }
 
         private static void RemoveListener(StudioListener listener)
         {
             listeners.Remove(listener);
-            RuntimeManager.StudioSystem.setNumListeners(Mathf.Clamp(listeners.Count, 1, FMOD.CONSTANTS.MAX_LISTENERS));
+            RuntimeManager.StudioSystem.setNumListeners(Mathf.Clamp(listeners.Count, 1, FmodStudioEventEmitter.CONSTANTS.MAX_LISTENERS));
         }
 
         private void OnEnable()
@@ -97,7 +97,7 @@ namespace FMODUnity
 
         private void Update()
         {
-            if (ListenerNumber >= 0 && ListenerNumber < FMOD.CONSTANTS.MAX_LISTENERS)
+            if (ListenerNumber >= 0 && ListenerNumber < FmodStudioEventEmitter.CONSTANTS.MAX_LISTENERS)
             {
                 SetListenerLocation();
             }

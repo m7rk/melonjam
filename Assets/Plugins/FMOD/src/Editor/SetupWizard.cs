@@ -183,7 +183,7 @@ fmod_editor.log";
 
             Settings settings = Settings.Instance;
 
-            if (settings.CurrentVersion != FMOD.VERSION.number)
+            if (settings.CurrentVersion != FmodStudioEventEmitter.VERSION.number)
             {
                 // We're updating an existing installation; unhide the setup wizard if needed
 
@@ -194,7 +194,7 @@ fmod_editor.log";
                     settings.HideSetupWizard = false;
                 }
 
-                settings.CurrentVersion = FMOD.VERSION.number;
+                settings.CurrentVersion = FmodStudioEventEmitter.VERSION.number;
                 EditorUtility.SetDirty(settings);
             }
 
@@ -420,7 +420,7 @@ fmod_editor.log";
             GUILayout.FlexibleSpace();
 
             string message = string.Format("Welcome to FMOD for Unity {0}.",
-                EditorUtils.VersionString(FMOD.VERSION.number));
+                EditorUtils.VersionString(FmodStudioEventEmitter.VERSION.number));
 
             EditorGUILayout.LabelField(message, titleStyle);
 
@@ -903,7 +903,7 @@ fmod_editor.log";
             GUILayout.Space(25);
 
             string message = string.Format("Welcome to FMOD for Unity {0}.",
-                EditorUtils.VersionString(FMOD.VERSION.number));
+                EditorUtils.VersionString(FmodStudioEventEmitter.VERSION.number));
 
             EditorGUILayout.LabelField(message, titleStyle);
 

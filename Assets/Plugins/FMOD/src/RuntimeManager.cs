@@ -31,16 +31,16 @@ namespace FMODUnity
         private static RuntimeManager instance;
 
         private Platform currentPlatform;
-        private FMOD.DEBUG_CALLBACK debugCallback;
-        private FMOD.SYSTEM_CALLBACK errorCallback;
+        private FmodStudioEventEmitter.DEBUG_CALLBACK debugCallback;
+        private FmodStudioEventEmitter.SYSTEM_CALLBACK errorCallback;
 
-        private FMOD.Studio.System studioSystem;
-        private FMOD.System coreSystem;
-        private FMOD.DSP mixerHead;
+        private FmodStudioEventEmitter.Studio.System studioSystem;
+        private FmodStudioEventEmitter.System coreSystem;
+        private FmodStudioEventEmitter.DSP mixerHead;
 
         private bool isMuted = false;
 
-        private Dictionary<FMOD.GUID, FMOD.Studio.EventDescription> cachedDescriptions = new Dictionary<FMOD.GUID, FMOD.Studio.EventDescription>(new GuidComparer());
+        private Dictionary<FmodStudioEventEmitter.GUID, FmodStudioEventEmitter.Studio.EventDescription> cachedDescriptions = new Dictionary<FmodStudioEventEmitter.GUID, FmodStudioEventEmitter.Studio.EventDescription>(new GuidComparer());
 
         private Dictionary<string, LoadedBank> loadedBanks = new Dictionary<string, LoadedBank>();
         private List<string> sampleLoadRequests = new List<string>();
@@ -48,7 +48,7 @@ namespace FMODUnity
         private List<AttachedInstance> attachedInstances = new List<AttachedInstance>(128);
 
 #if UNITY_EDITOR
-        private List<FMOD.Studio.EventInstance> eventPositionWarnings = new List<FMOD.Studio.EventInstance>();
+        private List<FmodStudioEventEmitter.Studio.EventInstance> eventPositionWarnings = new List<FmodStudioEventEmitter.Studio.EventInstance>();
 #endif
 
         private bool listenerWarningIssued = false;
@@ -92,56 +92,56 @@ namespace FMODUnity
             }
         }
 
-        [AOT.MonoPInvokeCallback(typeof(FMOD.DEBUG_CALLBACK))]
-        private static FMOD.RESULT DEBUG_CALLBACK(FMOD.DEBUG_FLAGS flags, IntPtr filePtr, int line, IntPtr funcPtr, IntPtr messagePtr)
+        [AOT.MonoPInvokeCallback(typeof(FmodStudioEventEmitter.DEBUG_CALLBACK))]
+        private static FmodStudioEventEmitter.RESULT DEBUG_CALLBACK(FmodStudioEventEmitter.DEBUG_FLAGS flags, IntPtr filePtr, int line, IntPtr funcPtr, IntPtr messagePtr)
         {
-            FMOD.StringWrapper file = new FMOD.StringWrapper(filePtr);
-            FMOD.StringWrapper func = new FMOD.StringWrapper(funcPtr);
-            FMOD.StringWrapper message = new FMOD.StringWrapper(messagePtr);
+            FmodStudioEventEmitter.StringWrapper file = new FmodStudioEventEmitter.StringWrapper(filePtr);
+            FmodStudioEventEmitter.StringWrapper func = new FmodStudioEventEmitter.StringWrapper(funcPtr);
+            FmodStudioEventEmitter.StringWrapper message = new FmodStudioEventEmitter.StringWrapper(messagePtr);
 
-            if (flags == FMOD.DEBUG_FLAGS.ERROR)
+            if (flags == FmodStudioEventEmitter.DEBUG_FLAGS.ERROR)
             {
                 RuntimeUtils.DebugLogError(string.Format(("[FMOD] {0} : {1}"), (string)func, (string)message));
             }
-            else if (flags == FMOD.DEBUG_FLAGS.WARNING)
+            else if (flags == FmodStudioEventEmitter.DEBUG_FLAGS.WARNING)
             {
                 RuntimeUtils.DebugLogWarning(string.Format(("[FMOD] {0} : {1}"), (string)func, (string)message));
             }
-            else if (flags == FMOD.DEBUG_FLAGS.LOG)
+            else if (flags == FmodStudioEventEmitter.DEBUG_FLAGS.LOG)
             {
                 RuntimeUtils.DebugLog(string.Format(("[FMOD] {0} : {1}"), (string)func, (string)message));
             }
-            return FMOD.RESULT.OK;
+            return FmodStudioEventEmitter.RESULT.OK;
         }
 
-        [AOT.MonoPInvokeCallback(typeof(FMOD.SYSTEM_CALLBACK))]
-        private static FMOD.RESULT ERROR_CALLBACK(IntPtr system, FMOD.SYSTEM_CALLBACK_TYPE type, IntPtr commanddata1, IntPtr commanddata2, IntPtr userdata)
+        [AOT.MonoPInvokeCallback(typeof(FmodStudioEventEmitter.SYSTEM_CALLBACK))]
+        private static FmodStudioEventEmitter.RESULT ERROR_CALLBACK(IntPtr system, FmodStudioEventEmitter.SYSTEM_CALLBACK_TYPE type, IntPtr commanddata1, IntPtr commanddata2, IntPtr userdata)
         {
-            FMOD.ERRORCALLBACK_INFO callbackInfo = (FMOD.ERRORCALLBACK_INFO)FMOD.MarshalHelper.PtrToStructure(commanddata1, typeof(FMOD.ERRORCALLBACK_INFO));
+            FmodStudioEventEmitter.ERRORCALLBACK_INFO callbackInfo = (FmodStudioEventEmitter.ERRORCALLBACK_INFO)FmodStudioEventEmitter.MarshalHelper.PtrToStructure(commanddata1, typeof(FmodStudioEventEmitter.ERRORCALLBACK_INFO));
 
             // Filter out benign expected errors.
-            if ((callbackInfo.instancetype == FMOD.ERRORCALLBACK_INSTANCETYPE.CHANNEL || callbackInfo.instancetype == FMOD.ERRORCALLBACK_INSTANCETYPE.CHANNELCONTROL)
-                && callbackInfo.result == FMOD.RESULT.ERR_INVALID_HANDLE)
+            if ((callbackInfo.instancetype == FmodStudioEventEmitter.ERRORCALLBACK_INSTANCETYPE.CHANNEL || callbackInfo.instancetype == FmodStudioEventEmitter.ERRORCALLBACK_INSTANCETYPE.CHANNELCONTROL)
+                && callbackInfo.result == FmodStudioEventEmitter.RESULT.ERR_INVALID_HANDLE)
             {
-                return FMOD.RESULT.OK;
+                return FmodStudioEventEmitter.RESULT.OK;
             }
-            if (callbackInfo.instancetype == FMOD.ERRORCALLBACK_INSTANCETYPE.STUDIO_EVENTINSTANCE
+            if (callbackInfo.instancetype == FmodStudioEventEmitter.ERRORCALLBACK_INSTANCETYPE.STUDIO_EVENTINSTANCE
                 && callbackInfo.functionname.Equals(eventSet3DAttributes)
-                && callbackInfo.result == FMOD.RESULT.ERR_INVALID_HANDLE)
+                && callbackInfo.result == FmodStudioEventEmitter.RESULT.ERR_INVALID_HANDLE)
             {
-                return FMOD.RESULT.OK;
+                return FmodStudioEventEmitter.RESULT.OK;
             }
-            if (callbackInfo.instancetype == FMOD.ERRORCALLBACK_INSTANCETYPE.STUDIO_SYSTEM
+            if (callbackInfo.instancetype == FmodStudioEventEmitter.ERRORCALLBACK_INSTANCETYPE.STUDIO_SYSTEM
                 && callbackInfo.functionname.Equals(systemGetBus)
-                && callbackInfo.result == FMOD.RESULT.ERR_EVENT_NOTFOUND
+                && callbackInfo.result == FmodStudioEventEmitter.RESULT.ERR_EVENT_NOTFOUND
                 && callbackInfo.functionparams.StartsWith(masterBusPrefix))
             {
-                return FMOD.RESULT.OK;
+                return FmodStudioEventEmitter.RESULT.OK;
             }
 
             RuntimeUtils.DebugLogError(string.Format("[FMOD] {0}({1}) returned {2} for {3} (0x{4}).",
                 (string)callbackInfo.functionname, (string)callbackInfo.functionparams, callbackInfo.result, callbackInfo.instancetype, callbackInfo.instance.ToString("X")));
-            return FMOD.RESULT.OK;
+            return FmodStudioEventEmitter.RESULT.OK;
         }
 
         private static RuntimeManager Instance
@@ -162,7 +162,7 @@ namespace FMODUnity
                         return null;
                     }
 
-                    FMOD.RESULT initResult = FMOD.RESULT.OK; // Initialize can return an error code if it falls back to NO_SOUND, throw it as a non-cached exception
+                    FmodStudioEventEmitter.RESULT initResult = FmodStudioEventEmitter.RESULT.OK; // Initialize can return an error code if it falls back to NO_SOUND, throw it as a non-cached exception
 
                     // When reloading scripts the static instance pointer will be cleared, find the old manager and clean it up
                     foreach (RuntimeManager manager in Resources.FindObjectsOfTypeAll<RuntimeManager>())
@@ -220,39 +220,39 @@ namespace FMODUnity
             }
         }
 
-        public static FMOD.Studio.System StudioSystem
+        public static FmodStudioEventEmitter.Studio.System StudioSystem
         {
             get { return Instance.studioSystem; }
         }
 
-        public static FMOD.System CoreSystem
+        public static FmodStudioEventEmitter.System CoreSystem
         {
             get { return Instance.coreSystem; }
         }
 
         private struct LoadedBank
         {
-            public FMOD.Studio.Bank Bank;
+            public FmodStudioEventEmitter.Studio.Bank Bank;
             public int RefCount;
         }
 
         // Explicit comparer to avoid issues on platforms that don't support JIT compilation
-        private class GuidComparer : IEqualityComparer<FMOD.GUID>
+        private class GuidComparer : IEqualityComparer<FmodStudioEventEmitter.GUID>
         {
-            bool IEqualityComparer<FMOD.GUID>.Equals(FMOD.GUID x, FMOD.GUID y)
+            bool IEqualityComparer<FmodStudioEventEmitter.GUID>.Equals(FmodStudioEventEmitter.GUID x, FmodStudioEventEmitter.GUID y)
             {
                 return x.Equals(y);
             }
 
-            int IEqualityComparer<FMOD.GUID>.GetHashCode(FMOD.GUID obj)
+            int IEqualityComparer<FmodStudioEventEmitter.GUID>.GetHashCode(FmodStudioEventEmitter.GUID obj)
             {
                 return obj.GetHashCode();
             }
         }
 
-        private void CheckInitResult(FMOD.RESULT result, string cause)
+        private void CheckInitResult(FmodStudioEventEmitter.RESULT result, string cause)
         {
-            if (result != FMOD.RESULT.OK)
+            if (result != FmodStudioEventEmitter.RESULT.OK)
             {
                 ReleaseStudioSystem();
                 throw new SystemNotInitializedException(result, cause);
@@ -268,15 +268,15 @@ namespace FMODUnity
             }
         }
 
-        private FMOD.RESULT Initialize()
+        private FmodStudioEventEmitter.RESULT Initialize()
         {
             #if UNITY_EDITOR
             EditorApplication.playModeStateChanged += HandlePlayModeStateChange;
             AppDomain.CurrentDomain.DomainUnload += HandleDomainUnload;
             #endif // UNITY_EDITOR
 
-            FMOD.RESULT result = FMOD.RESULT.OK;
-            FMOD.RESULT initResult = FMOD.RESULT.OK;
+            FmodStudioEventEmitter.RESULT result = FmodStudioEventEmitter.RESULT.OK;
+            FmodStudioEventEmitter.RESULT initResult = FmodStudioEventEmitter.RESULT.OK;
             Settings fmodSettings = Settings.Instance;
             currentPlatform = fmodSettings.FindCurrentPlatform();
 
@@ -285,10 +285,10 @@ namespace FMODUnity
             int virtualChannels = currentPlatform.VirtualChannelCount;
             uint dspBufferLength = (uint)currentPlatform.DSPBufferLength;
             int dspBufferCount = currentPlatform.DSPBufferCount;
-            FMOD.SPEAKERMODE speakerMode = currentPlatform.SpeakerMode;
-            FMOD.OUTPUTTYPE outputType = currentPlatform.GetOutputType();
+            FmodStudioEventEmitter.SPEAKERMODE speakerMode = currentPlatform.SpeakerMode;
+            FmodStudioEventEmitter.OUTPUTTYPE outputType = currentPlatform.GetOutputType();
 
-            FMOD.ADVANCEDSETTINGS advancedSettings = new FMOD.ADVANCEDSETTINGS();
+            FmodStudioEventEmitter.ADVANCEDSETTINGS advancedSettings = new FmodStudioEventEmitter.ADVANCEDSETTINGS();
             advancedSettings.randomSeed = (uint)DateTime.UtcNow.Ticks;
             advancedSettings.maxAT9Codecs = GetChannelCountForFormat(CodecType.AT9);
             advancedSettings.maxFADPCMCodecs = GetChannelCountForFormat(CodecType.FADPCM);
@@ -301,9 +301,9 @@ namespace FMODUnity
             currentPlatform.PreSystemCreate(CheckInitResult);
 
             #if UNITY_EDITOR || DEVELOPMENT_BUILD
-            debugCallback = new FMOD.DEBUG_CALLBACK(DEBUG_CALLBACK);
-            result = FMOD.Debug.Initialize(fmodSettings.LoggingLevel, FMOD.DEBUG_MODE.CALLBACK, debugCallback, null);
-            if(result == FMOD.RESULT.ERR_UNSUPPORTED)
+            debugCallback = new FmodStudioEventEmitter.DEBUG_CALLBACK(DEBUG_CALLBACK);
+            result = FmodStudioEventEmitter.Debug.Initialize(fmodSettings.LoggingLevel, FmodStudioEventEmitter.DEBUG_MODE.CALLBACK, debugCallback, null);
+            if(result == FmodStudioEventEmitter.RESULT.ERR_UNSUPPORTED)
             {
                 RuntimeUtils.DebugLogWarning("[FMOD] Unable to initialize debug logging: Logging will be disabled.\nCheck the Import Settings of the FMOD libs to enable the logging library.");
             }
@@ -313,15 +313,15 @@ namespace FMODUnity
             }
             #endif
 
-            FMOD.Studio.INITFLAGS studioInitFlags = FMOD.Studio.INITFLAGS.NORMAL | FMOD.Studio.INITFLAGS.DEFERRED_CALLBACKS;
+            FmodStudioEventEmitter.Studio.INITFLAGS studioInitFlags = FmodStudioEventEmitter.Studio.INITFLAGS.NORMAL | FmodStudioEventEmitter.Studio.INITFLAGS.DEFERRED_CALLBACKS;
             if (currentPlatform.IsLiveUpdateEnabled)
             {
-                studioInitFlags |= FMOD.Studio.INITFLAGS.LIVEUPDATE;
+                studioInitFlags |= FmodStudioEventEmitter.Studio.INITFLAGS.LIVEUPDATE;
                 advancedSettings.profilePort = (ushort)currentPlatform.LiveUpdatePort;
             }
 
 retry:
-            result = FMOD.Studio.System.create(out studioSystem);
+            result = FmodStudioEventEmitter.Studio.System.create(out studioSystem);
             CheckInitResult(result, "FMOD.Studio.System.create");
 
             result = studioSystem.getCoreSystem(out coreSystem);
@@ -347,21 +347,21 @@ retry:
 
             if (fmodSettings.EnableErrorCallback)
             {
-                errorCallback = new FMOD.SYSTEM_CALLBACK(ERROR_CALLBACK);
-                result = coreSystem.setCallback(errorCallback, FMOD.SYSTEM_CALLBACK_TYPE.ERROR);
+                errorCallback = new FmodStudioEventEmitter.SYSTEM_CALLBACK(ERROR_CALLBACK);
+                result = coreSystem.setCallback(errorCallback, FmodStudioEventEmitter.SYSTEM_CALLBACK_TYPE.ERROR);
                 CheckInitResult(result, "FMOD.System.setCallback");
             }
 
             if (!string.IsNullOrEmpty(fmodSettings.EncryptionKey))
             {
-                FMOD.Studio.ADVANCEDSETTINGS studioAdvancedSettings = new FMOD.Studio.ADVANCEDSETTINGS();
+                FmodStudioEventEmitter.Studio.ADVANCEDSETTINGS studioAdvancedSettings = new FmodStudioEventEmitter.Studio.ADVANCEDSETTINGS();
                 result = studioSystem.setAdvancedSettings(studioAdvancedSettings, Settings.Instance.EncryptionKey);
                 CheckInitResult(result, "FMOD.Studio.System.setAdvancedSettings");
             }
 
             if (fmodSettings.EnableMemoryTracking)
             {
-                studioInitFlags |= FMOD.Studio.INITFLAGS.MEMORY_TRACKING;
+                studioInitFlags |= FmodStudioEventEmitter.Studio.INITFLAGS.MEMORY_TRACKING;
             }
 
             currentPlatform.PreInitialize(studioSystem);
@@ -373,11 +373,11 @@ retry:
                 callbackHandler.PreInitialize(studioSystem, CheckInitResult);
             }
 
-            result = studioSystem.initialize(virtualChannels, studioInitFlags, FMOD.INITFLAGS.NORMAL, IntPtr.Zero);
-            if (result != FMOD.RESULT.OK && initResult == FMOD.RESULT.OK)
+            result = studioSystem.initialize(virtualChannels, studioInitFlags, FmodStudioEventEmitter.INITFLAGS.NORMAL, IntPtr.Zero);
+            if (result != FmodStudioEventEmitter.RESULT.OK && initResult == FmodStudioEventEmitter.RESULT.OK)
             {
                 initResult = result; // Save this to throw at the end (we'll attempt NO SOUND to shield ourselves from unexpected device failures)
-                outputType = FMOD.OUTPUTTYPE.NOSOUND;
+                outputType = FmodStudioEventEmitter.OUTPUTTYPE.NOSOUND;
                 RuntimeUtils.DebugLogErrorFormat("[FMOD] Studio::System::initialize returned {0}, defaulting to no-sound mode.", result.ToString());
 
                 goto retry;
@@ -385,14 +385,14 @@ retry:
             CheckInitResult(result, "Studio::System::initialize");
 
             // Test network functionality triggered during System::update
-            if ((studioInitFlags & FMOD.Studio.INITFLAGS.LIVEUPDATE) != 0)
+            if ((studioInitFlags & FmodStudioEventEmitter.Studio.INITFLAGS.LIVEUPDATE) != 0)
             {
                 studioSystem.flushCommands(); // Any error will be returned through Studio.System.update
 
                 result = studioSystem.update();
-                if (result == FMOD.RESULT.ERR_NET_SOCKET_ERROR)
+                if (result == FmodStudioEventEmitter.RESULT.ERR_NET_SOCKET_ERROR)
                 {
-                    studioInitFlags &= ~FMOD.Studio.INITFLAGS.LIVEUPDATE;
+                    studioInitFlags &= ~FmodStudioEventEmitter.Studio.INITFLAGS.LIVEUPDATE;
                     RuntimeUtils.DebugLogWarning("[FMOD] Cannot open network port for Live Update (in-use), restarting with Live Update disabled.");
 
                     result = studioSystem.release();
@@ -429,17 +429,17 @@ retry:
             {
                 foreach (ThreadType thread in group.threads)
                 {
-                    FMOD.THREAD_TYPE fmodThread = RuntimeUtils.ToFMODThreadType(thread);
-                    FMOD.THREAD_AFFINITY fmodAffinity = RuntimeUtils.ToFMODThreadAffinity(group.affinity);
+                    FmodStudioEventEmitter.THREAD_TYPE fmodThread = RuntimeUtils.ToFMODThreadType(thread);
+                    FmodStudioEventEmitter.THREAD_AFFINITY fmodAffinity = RuntimeUtils.ToFMODThreadAffinity(group.affinity);
 
-                    FMOD.Thread.SetAttributes(fmodThread, fmodAffinity);
+                    FmodStudioEventEmitter.Thread.SetAttributes(fmodThread, fmodAffinity);
                 }
             }
         }
 
         private class AttachedInstance
         {
-            public FMOD.Studio.EventInstance instance;
+            public FmodStudioEventEmitter.Studio.EventInstance instance;
             public Transform transform;
             #if UNITY_PHYSICS_EXIST
             public Rigidbody rigidBody;
@@ -465,13 +465,13 @@ retry:
 
                 for (int i = 0; i < attachedInstances.Count; i++)
                 {
-                    FMOD.Studio.PLAYBACK_STATE playbackState = FMOD.Studio.PLAYBACK_STATE.STOPPED;
+                    FmodStudioEventEmitter.Studio.PLAYBACK_STATE playbackState = FmodStudioEventEmitter.Studio.PLAYBACK_STATE.STOPPED;
                     if (attachedInstances[i].instance.isValid())
                     {
                         attachedInstances[i].instance.getPlaybackState(out playbackState);
                     }
 
-                    if (playbackState == FMOD.Studio.PLAYBACK_STATE.STOPPED ||
+                    if (playbackState == FmodStudioEventEmitter.Studio.PLAYBACK_STATE.STOPPED ||
                         attachedInstances[i].transform == null // destroyed game object
                         )
                     {
@@ -522,14 +522,14 @@ retry:
                 {
                     if (eventPositionWarnings[i].isValid())
                     {
-                        FMOD.ATTRIBUTES_3D attribs;
+                        FmodStudioEventEmitter.ATTRIBUTES_3D attribs;
                         eventPositionWarnings[i].get3DAttributes(out attribs);
                         if (attribs.position.x == 1e+18F &&
                             attribs.position.y == 1e+18F &&
                             attribs.position.z == 1e+18F)
                         {
                             string path;
-                            FMOD.Studio.EventDescription desc;
+                            FmodStudioEventEmitter.Studio.EventDescription desc;
                             eventPositionWarnings[i].getDescription(out desc);
                             desc.getPath(out path);
                             RuntimeUtils.DebugLogWarningFormat("[FMOD] Instance of Event {0} has not had EventInstance.set3DAttributes() called on it yet!", path);
@@ -565,7 +565,7 @@ retry:
             }
         }
 
-        private static AttachedInstance FindOrAddAttachedInstance(FMOD.Studio.EventInstance instance, Transform transform, FMOD.ATTRIBUTES_3D attributes)
+        private static AttachedInstance FindOrAddAttachedInstance(FmodStudioEventEmitter.Studio.EventInstance instance, Transform transform, FmodStudioEventEmitter.ATTRIBUTES_3D attributes)
         {
             AttachedInstance attachedInstance = Instance.attachedInstances.Find(x => x.instance.handle == instance.handle);
             if (attachedInstance == null)
@@ -579,7 +579,7 @@ retry:
             return attachedInstance;
         }
 
-        public static void AttachInstanceToGameObject(FMOD.Studio.EventInstance instance, Transform transform, bool nonRigidbodyVelocity = false)
+        public static void AttachInstanceToGameObject(FmodStudioEventEmitter.Studio.EventInstance instance, Transform transform, bool nonRigidbodyVelocity = false)
         {
             AttachedInstance attachedInstance = FindOrAddAttachedInstance(instance, transform, RuntimeUtils.To3DAttributes(transform));
 
@@ -591,7 +591,7 @@ retry:
         }
 
 #if UNITY_PHYSICS_EXIST
-        public static void AttachInstanceToGameObject(FMOD.Studio.EventInstance instance, Transform transform, Rigidbody rigidBody)
+        public static void AttachInstanceToGameObject(FmodStudioEventEmitter.Studio.EventInstance instance, Transform transform, Rigidbody rigidBody)
         {
             AttachedInstance attachedInstance = FindOrAddAttachedInstance(instance, transform, RuntimeUtils.To3DAttributes(transform, rigidBody));
 
@@ -600,7 +600,7 @@ retry:
 #endif
 
 #if UNITY_PHYSICS2D_EXIST
-        public static void AttachInstanceToGameObject(FMOD.Studio.EventInstance instance, Transform transform, Rigidbody2D rigidBody2D)
+        public static void AttachInstanceToGameObject(FmodStudioEventEmitter.Studio.EventInstance instance, Transform transform, Rigidbody2D rigidBody2D)
         {
             AttachedInstance attachedInstance = FindOrAddAttachedInstance(instance, transform, RuntimeUtils.To3DAttributes(transform, rigidBody2D));
 
@@ -608,7 +608,7 @@ retry:
         }
 #endif
 
-        public static void DetachInstanceFromGameObject(FMOD.Studio.EventInstance instance)
+        public static void DetachInstanceFromGameObject(FmodStudioEventEmitter.Studio.EventInstance instance)
         {
             var manager = Instance;
             for (int i = 0; i < manager.attachedInstances.Count; i++)
@@ -664,7 +664,7 @@ retry:
                 {
                     if (!mixerHead.hasHandle())
                     {
-                        FMOD.ChannelGroup master;
+                        FmodStudioEventEmitter.ChannelGroup master;
                         coreSystem.getMasterChannelGroup(out master);
                         master.getDSP(0, out mixerHead);
                         mixerHead.setMeteringEnabled(false, true);
@@ -672,20 +672,20 @@ retry:
 
                     StringBuilder debug = new StringBuilder();
 
-                    FMOD.Studio.CPU_USAGE cpuUsage;
-                    FMOD.CPU_USAGE cpuUsage_core;
+                    FmodStudioEventEmitter.Studio.CPU_USAGE cpuUsage;
+                    FmodStudioEventEmitter.CPU_USAGE cpuUsage_core;
                     studioSystem.getCPUUsage(out cpuUsage, out cpuUsage_core);
                     debug.AppendFormat("CPU: dsp = {0:F1}%, studio = {1:F1}%\n", cpuUsage_core.dsp, cpuUsage.update);
 
                     int currentAlloc, maxAlloc;
-                    FMOD.Memory.GetStats(out currentAlloc, out maxAlloc);
+                    FmodStudioEventEmitter.Memory.GetStats(out currentAlloc, out maxAlloc);
                     debug.AppendFormat("MEMORY: cur = {0}MB, max = {1}MB\n", currentAlloc >> 20, maxAlloc >> 20);
 
                     int realchannels, channels;
                     coreSystem.getChannelsPlaying(out channels, out realchannels);
                     debug.AppendFormat("CHANNELS: real = {0}, total = {1}\n", realchannels, channels);
 
-                    FMOD.DSP_METERING_INFO outputMetering;
+                    FmodStudioEventEmitter.DSP_METERING_INFO outputMetering;
                     mixerHead.getMeteringInfo(IntPtr.Zero, out outputMetering);
                     float rms = 0;
                     for (int i = 0; i < outputMetering.numchannels; i++)
@@ -811,9 +811,9 @@ retry:
             Instance.loadedBanks[bankName] = loadedBank; // Save the incremented reference count
         }
 
-        private void RegisterLoadedBank(LoadedBank loadedBank, string bankPath, string bankName, bool loadSamples, FMOD.RESULT loadResult)
+        private void RegisterLoadedBank(LoadedBank loadedBank, string bankPath, string bankName, bool loadSamples, FmodStudioEventEmitter.RESULT loadResult)
         {
-            if (loadResult == FMOD.RESULT.OK)
+            if (loadResult == FmodStudioEventEmitter.RESULT.OK)
             {
                 loadedBank.RefCount = 1;
 
@@ -824,7 +824,7 @@ retry:
 
                 Instance.loadedBanks.Add(bankName, loadedBank);
             }
-            else if (loadResult == FMOD.RESULT.ERR_EVENT_ALREADY_LOADED)
+            else if (loadResult == FmodStudioEventEmitter.RESULT.ERR_EVENT_ALREADY_LOADED)
             {
                 RuntimeUtils.DebugLogWarningFormat("[FMOD] Unable to load {0} - bank already loaded. This may occur when attempting to load another localized bank before the first is unloaded, or if a bank has been loaded via the API.", bankName);
             }
@@ -865,15 +865,15 @@ retry:
         private IEnumerator loadFromWeb(string bankPath, string bankName, bool loadSamples)
         {
             byte[] loadWebResult;
-            FMOD.RESULT loadResult;
+            FmodStudioEventEmitter.RESULT loadResult;
 
             UnityEngine.Networking.UnityWebRequest www = UnityEngine.Networking.UnityWebRequest.Get(bankPath);
             yield return www.SendWebRequest();
             loadWebResult = www.downloadHandler.data;
 
             LoadedBank loadedBank = new LoadedBank();
-            loadResult = Instance.studioSystem.loadBankMemory(loadWebResult, FMOD.Studio.LOAD_BANK_FLAGS.NORMAL, out loadedBank.Bank);
-            if (loadResult != FMOD.RESULT.OK)
+            loadResult = Instance.studioSystem.loadBankMemory(loadWebResult, FmodStudioEventEmitter.Studio.LOAD_BANK_FLAGS.NORMAL, out loadedBank.Bank);
+            if (loadResult != FmodStudioEventEmitter.RESULT.OK)
             {
                 RuntimeUtils.DebugLogWarningFormat("[FMOD] loadFromWeb.  Path = {0}, result = {1}.", bankPath, loadResult);
             }
@@ -934,7 +934,7 @@ retry:
 #endif // (UNITY_ANDROID || UNITY_WEBGL) && !UNITY_EDITOR
                 {
                     LoadedBank loadedBank = new LoadedBank();
-                    FMOD.RESULT loadResult = Instance.studioSystem.loadBankFile(bankPath, FMOD.Studio.LOAD_BANK_FLAGS.NORMAL, out loadedBank.Bank);
+                    FmodStudioEventEmitter.RESULT loadResult = Instance.studioSystem.loadBankFile(bankPath, FmodStudioEventEmitter.Studio.LOAD_BANK_FLAGS.NORMAL, out loadedBank.Bank);
                     Instance.RegisterLoadedBank(loadedBank, bankPath, bankId, loadSamples, loadResult);
                     Instance.loadingBanksRef--;
                 }
@@ -965,7 +965,7 @@ retry:
 #endif
 
                 LoadedBank loadedBank = new LoadedBank();
-                FMOD.RESULT loadResult = Instance.studioSystem.loadBankMemory(asset.bytes, FMOD.Studio.LOAD_BANK_FLAGS.NORMAL, out loadedBank.Bank);
+                FmodStudioEventEmitter.RESULT loadResult = Instance.studioSystem.loadBankMemory(asset.bytes, FmodStudioEventEmitter.Studio.LOAD_BANK_FLAGS.NORMAL, out loadedBank.Bank);
                 Instance.RegisterLoadedBank(loadedBank, bankId, bankId, loadSamples, loadResult);
             }
         }
@@ -1102,9 +1102,9 @@ retry:
             bool loading = false;
             foreach (LoadedBank bank in Instance.loadedBanks.Values)
             {
-                FMOD.Studio.LOADING_STATE loadingState;
+                FmodStudioEventEmitter.Studio.LOADING_STATE loadingState;
                 bank.Bank.getSampleLoadingState(out loadingState);
-                loading |= (loadingState == FMOD.Studio.LOADING_STATE.LOADING);
+                loading |= (loadingState == FmodStudioEventEmitter.Studio.LOADING_STATE.LOADING);
             }
             return loading;
         }
@@ -1120,17 +1120,17 @@ retry:
             Instance.studioSystem.flushSampleLoading();
         }
 
-        public static FMOD.GUID PathToGUID(string path)
+        public static FmodStudioEventEmitter.GUID PathToGUID(string path)
         {
-            FMOD.GUID guid;
+            FmodStudioEventEmitter.GUID guid;
             if (path.StartsWith("{"))
             {
-                FMOD.Studio.Util.parseID(path, out guid);
+                FmodStudioEventEmitter.Studio.Util.parseID(path, out guid);
             }
             else
             {
                 var result = Instance.studioSystem.lookupID(path, out guid);
-                if (result == FMOD.RESULT.ERR_EVENT_NOTFOUND)
+                if (result == FmodStudioEventEmitter.RESULT.ERR_EVENT_NOTFOUND)
                 {
                     throw new EventNotFoundException(path);
                 }
@@ -1140,7 +1140,7 @@ retry:
 
         public static EventReference PathToEventReference(string path)
         {
-            FMOD.GUID guid;
+            FmodStudioEventEmitter.GUID guid;
 
             try
             {
@@ -1148,7 +1148,7 @@ retry:
             }
             catch (EventNotFoundException)
             {
-                guid = new FMOD.GUID();
+                guid = new FmodStudioEventEmitter.GUID();
             }
 
 #if UNITY_EDITOR
@@ -1158,7 +1158,7 @@ retry:
 #endif
         }
 
-        public static FMOD.Studio.EventInstance CreateInstance(EventReference eventReference)
+        public static FmodStudioEventEmitter.Studio.EventInstance CreateInstance(EventReference eventReference)
         {
             try
             {
@@ -1170,7 +1170,7 @@ retry:
             }
         }
 
-        public static FMOD.Studio.EventInstance CreateInstance(string path)
+        public static FmodStudioEventEmitter.Studio.EventInstance CreateInstance(string path)
         {
             try
             {
@@ -1183,10 +1183,10 @@ retry:
             }
         }
 
-        public static FMOD.Studio.EventInstance CreateInstance(FMOD.GUID guid)
+        public static FmodStudioEventEmitter.Studio.EventInstance CreateInstance(FmodStudioEventEmitter.GUID guid)
         {
-            FMOD.Studio.EventDescription eventDesc = GetEventDescription(guid);
-            FMOD.Studio.EventInstance newInstance;
+            FmodStudioEventEmitter.Studio.EventDescription eventDesc = GetEventDescription(guid);
+            FmodStudioEventEmitter.Studio.EventInstance newInstance;
             eventDesc.createInstance(out newInstance);
 
             #if UNITY_EDITOR
@@ -1227,7 +1227,7 @@ retry:
             }
         }
 
-        public static void PlayOneShot(FMOD.GUID guid, Vector3 position = new Vector3())
+        public static void PlayOneShot(FmodStudioEventEmitter.GUID guid, Vector3 position = new Vector3())
         {
             var instance = CreateInstance(guid);
             instance.set3DAttributes(RuntimeUtils.To3DAttributes(position));
@@ -1259,7 +1259,7 @@ retry:
             }
         }
 
-        public static void PlayOneShotAttached(FMOD.GUID guid, GameObject gameObject)
+        public static void PlayOneShotAttached(FmodStudioEventEmitter.GUID guid, GameObject gameObject)
         {
             var instance = CreateInstance(guid);
             #if UNITY_PHYSICS_EXIST
@@ -1273,7 +1273,7 @@ retry:
             instance.release();
         }
 
-        public static FMOD.Studio.EventDescription GetEventDescription(EventReference eventReference)
+        public static FmodStudioEventEmitter.Studio.EventDescription GetEventDescription(EventReference eventReference)
         {
             try
             {
@@ -1285,7 +1285,7 @@ retry:
             }
         }
 
-        public static FMOD.Studio.EventDescription GetEventDescription(string path)
+        public static FmodStudioEventEmitter.Studio.EventDescription GetEventDescription(string path)
         {
             try
             {
@@ -1297,9 +1297,9 @@ retry:
             }
         }
 
-        public static FMOD.Studio.EventDescription GetEventDescription(FMOD.GUID guid)
+        public static FmodStudioEventEmitter.Studio.EventDescription GetEventDescription(FmodStudioEventEmitter.GUID guid)
         {
-            FMOD.Studio.EventDescription eventDesc;
+            FmodStudioEventEmitter.Studio.EventDescription eventDesc;
             if (Instance.cachedDescriptions.ContainsKey(guid) && Instance.cachedDescriptions[guid].isValid())
             {
                 eventDesc = Instance.cachedDescriptions[guid];
@@ -1308,7 +1308,7 @@ retry:
             {
                 var result = Instance.studioSystem.getEventByID(guid, out eventDesc);
 
-                if (result != FMOD.RESULT.OK)
+                if (result != FmodStudioEventEmitter.RESULT.OK)
                 {
                     throw new EventNotFoundException(guid);
                 }
@@ -1376,20 +1376,20 @@ retry:
             }
         }
 
-        public static FMOD.Studio.Bus GetBus(string path)
+        public static FmodStudioEventEmitter.Studio.Bus GetBus(string path)
         {
-            FMOD.Studio.Bus bus;
-            if (StudioSystem.getBus(path, out bus) != FMOD.RESULT.OK)
+            FmodStudioEventEmitter.Studio.Bus bus;
+            if (StudioSystem.getBus(path, out bus) != FmodStudioEventEmitter.RESULT.OK)
             {
                 throw new BusNotFoundException(path);
             }
             return bus;
         }
 
-        public static FMOD.Studio.VCA GetVCA(string path)
+        public static FmodStudioEventEmitter.Studio.VCA GetVCA(string path)
         {
-            FMOD.Studio.VCA vca;
-            if (StudioSystem.getVCA(path, out vca) != FMOD.RESULT.OK)
+            FmodStudioEventEmitter.Studio.VCA vca;
+            if (StudioSystem.getVCA(path, out vca) != FmodStudioEventEmitter.RESULT.OK)
             {
                 throw new VCANotFoundException(path);
             }
@@ -1398,8 +1398,8 @@ retry:
 
         public static void PauseAllEvents(bool paused)
         {
-            FMOD.Studio.Bus masterBus;
-            if (StudioSystem.getBus("bus:/", out masterBus) == FMOD.RESULT.OK)
+            FmodStudioEventEmitter.Studio.Bus masterBus;
+            if (StudioSystem.getBus("bus:/", out masterBus) == FmodStudioEventEmitter.RESULT.OK)
             {
                 masterBus.setPaused(paused);
             }
@@ -1414,8 +1414,8 @@ retry:
 
         private static void ApplyMuteState()
         {
-            FMOD.Studio.Bus masterBus;
-            if (StudioSystem.getBus("bus:/", out masterBus) == FMOD.RESULT.OK)
+            FmodStudioEventEmitter.Studio.Bus masterBus;
+            if (StudioSystem.getBus("bus:/", out masterBus) == FmodStudioEventEmitter.RESULT.OK)
             {
 #if UNITY_EDITOR
                 masterBus.setMute(Instance.isMuted || EditorUtility.audioMasterMute);

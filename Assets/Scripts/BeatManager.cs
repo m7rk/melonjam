@@ -1,4 +1,4 @@
-using FMOD.Studio;
+using FmodStudioEventEmitter.Studio;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -17,7 +17,7 @@ public class BeatManager : MonoBehaviour
     // ask FMOD where the beat is.
     int GetEventPos_FromEventEmitter(FMODUnity.StudioEventEmitter _eventEmitter)
     {
-        FMOD.RESULT res;
+        FmodStudioEventEmitter.RESULT res;
         int _eventPos;
         EventInstance[] _events;
         EventInstance eventInstance;

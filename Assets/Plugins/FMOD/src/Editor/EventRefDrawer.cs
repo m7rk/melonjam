@@ -331,7 +331,7 @@ namespace FMODUnity
             }
             else
             {
-                property.SetEventReference(new FMOD.GUID(), path);
+                property.SetEventReference(new FmodStudioEventEmitter.GUID(), path);
             }
         }
 

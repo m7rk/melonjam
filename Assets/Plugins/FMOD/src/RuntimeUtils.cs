@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEditor;
 #endif
 
-namespace FMOD
+namespace FmodStudioEventEmitter
 {
     [Serializable]
     public partial struct GUID : IEquatable<GUID>
@@ -91,7 +91,7 @@ namespace FMODUnity
 {
     public class EventNotFoundException : Exception
     {
-        public FMOD.GUID Guid;
+        public FmodStudioEventEmitter.GUID Guid;
         public string Path;
 
         public EventNotFoundException(string path)
@@ -100,7 +100,7 @@ namespace FMODUnity
             Path = path;
         }
 
-        public EventNotFoundException(FMOD.GUID guid)
+        public EventNotFoundException(FmodStudioEventEmitter.GUID guid)
             : base("[FMOD] Event not found: " + guid)
         {
             Guid = guid;
@@ -142,10 +142,10 @@ namespace FMODUnity
     public class BankLoadException : Exception
     {
         public string Path;
-        public FMOD.RESULT Result;
+        public FmodStudioEventEmitter.RESULT Result;
 
-        public BankLoadException(string path, FMOD.RESULT result)
-            : base(string.Format("[FMOD] Could not load bank '{0}' : {1} : {2}", path, result.ToString(), FMOD.Error.String(result)))
+        public BankLoadException(string path, FmodStudioEventEmitter.RESULT result)
+            : base(string.Format("[FMOD] Could not load bank '{0}' : {1} : {2}", path, result.ToString(), FmodStudioEventEmitter.Error.String(result)))
         {
             Path = path;
             Result = result;
@@ -154,17 +154,17 @@ namespace FMODUnity
             : base(string.Format("[FMOD] Could not load bank '{0}' : {1}", path, error))
         {
             Path = path;
-            Result = FMOD.RESULT.ERR_INTERNAL;
+            Result = FmodStudioEventEmitter.RESULT.ERR_INTERNAL;
         }
     }
 
     public class SystemNotInitializedException : Exception
     {
-        public FMOD.RESULT Result;
+        public FmodStudioEventEmitter.RESULT Result;
         public string Location;
 
-        public SystemNotInitializedException(FMOD.RESULT result, string location)
-            : base(string.Format("[FMOD] Initialization failed : {2} : {0} : {1}", result.ToString(), FMOD.Error.String(result), location))
+        public SystemNotInitializedException(FmodStudioEventEmitter.RESULT result, string location)
+            : base(string.Format("[FMOD] Initialization failed : {2} : {0} : {1}", result.ToString(), FmodStudioEventEmitter.Error.String(result), location))
         {
             Result = result;
             Location = location;
@@ -343,9 +343,9 @@ namespace FMODUnity
             return path.Replace('\\', '/');
         }
 
-        public static FMOD.VECTOR ToFMODVector(this Vector3 vec)
+        public static FmodStudioEventEmitter.VECTOR ToFMODVector(this Vector3 vec)
         {
-            FMOD.VECTOR temp;
+            FmodStudioEventEmitter.VECTOR temp;
             temp.x = vec.x;
             temp.y = vec.y;
             temp.z = vec.z;
@@ -353,9 +353,9 @@ namespace FMODUnity
             return temp;
         }
 
-        public static FMOD.ATTRIBUTES_3D To3DAttributes(this Vector3 pos)
+        public static FmodStudioEventEmitter.ATTRIBUTES_3D To3DAttributes(this Vector3 pos)
         {
-            FMOD.ATTRIBUTES_3D attributes = new FMOD.ATTRIBUTES_3D();
+            FmodStudioEventEmitter.ATTRIBUTES_3D attributes = new FmodStudioEventEmitter.ATTRIBUTES_3D();
             attributes.forward = ToFMODVector(Vector3.forward);
             attributes.up = ToFMODVector(Vector3.up);
             attributes.position = ToFMODVector(pos);
@@ -363,9 +363,9 @@ namespace FMODUnity
             return attributes;
         }
 
-        public static FMOD.ATTRIBUTES_3D To3DAttributes(this Transform transform)
+        public static FmodStudioEventEmitter.ATTRIBUTES_3D To3DAttributes(this Transform transform)
         {
-            FMOD.ATTRIBUTES_3D attributes = new FMOD.ATTRIBUTES_3D();
+            FmodStudioEventEmitter.ATTRIBUTES_3D attributes = new FmodStudioEventEmitter.ATTRIBUTES_3D();
             attributes.forward = transform.forward.ToFMODVector();
             attributes.up = transform.up.ToFMODVector();
             attributes.position = transform.position.ToFMODVector();
@@ -373,9 +373,9 @@ namespace FMODUnity
             return attributes;
         }
 
-        public static FMOD.ATTRIBUTES_3D To3DAttributes(this Transform transform, Vector3 velocity)
+        public static FmodStudioEventEmitter.ATTRIBUTES_3D To3DAttributes(this Transform transform, Vector3 velocity)
         {
-            FMOD.ATTRIBUTES_3D attributes = new FMOD.ATTRIBUTES_3D();
+            FmodStudioEventEmitter.ATTRIBUTES_3D attributes = new FmodStudioEventEmitter.ATTRIBUTES_3D();
             attributes.forward = transform.forward.ToFMODVector();
             attributes.up = transform.up.ToFMODVector();
             attributes.position = transform.position.ToFMODVector();
@@ -384,15 +384,15 @@ namespace FMODUnity
             return attributes;
         }
 
-        public static FMOD.ATTRIBUTES_3D To3DAttributes(this GameObject go)
+        public static FmodStudioEventEmitter.ATTRIBUTES_3D To3DAttributes(this GameObject go)
         {
             return go.transform.To3DAttributes();
         }
 
 #if UNITY_PHYSICS_EXIST
-        public static FMOD.ATTRIBUTES_3D To3DAttributes(Transform transform, Rigidbody rigidbody = null)
+        public static FmodStudioEventEmitter.ATTRIBUTES_3D To3DAttributes(Transform transform, Rigidbody rigidbody = null)
         {
-            FMOD.ATTRIBUTES_3D attributes = transform.To3DAttributes();
+            FmodStudioEventEmitter.ATTRIBUTES_3D attributes = transform.To3DAttributes();
 
             if (rigidbody)
             {
@@ -406,9 +406,9 @@ namespace FMODUnity
             return attributes;
         }
 
-        public static FMOD.ATTRIBUTES_3D To3DAttributes(GameObject go, Rigidbody rigidbody)
+        public static FmodStudioEventEmitter.ATTRIBUTES_3D To3DAttributes(GameObject go, Rigidbody rigidbody)
         {
-            FMOD.ATTRIBUTES_3D attributes = go.transform.To3DAttributes();
+            FmodStudioEventEmitter.ATTRIBUTES_3D attributes = go.transform.To3DAttributes();
 
             if (rigidbody)
             {
@@ -424,13 +424,13 @@ namespace FMODUnity
 #endif
 
 #if UNITY_PHYSICS2D_EXIST
-        public static FMOD.ATTRIBUTES_3D To3DAttributes(Transform transform, Rigidbody2D rigidbody)
+        public static FmodStudioEventEmitter.ATTRIBUTES_3D To3DAttributes(Transform transform, Rigidbody2D rigidbody)
         {
-            FMOD.ATTRIBUTES_3D attributes = transform.To3DAttributes();
+            FmodStudioEventEmitter.ATTRIBUTES_3D attributes = transform.To3DAttributes();
 
             if (rigidbody)
             {
-                FMOD.VECTOR vel;
+                FmodStudioEventEmitter.VECTOR vel;
                 vel.x = rigidbody.velocity.x;
                 vel.y = rigidbody.velocity.y;
                 vel.z = 0;
@@ -441,13 +441,13 @@ namespace FMODUnity
         }
 
 
-        public static FMOD.ATTRIBUTES_3D To3DAttributes(GameObject go, Rigidbody2D rigidbody)
+        public static FmodStudioEventEmitter.ATTRIBUTES_3D To3DAttributes(GameObject go, Rigidbody2D rigidbody)
         {
-            FMOD.ATTRIBUTES_3D attributes = go.transform.To3DAttributes();
+            FmodStudioEventEmitter.ATTRIBUTES_3D attributes = go.transform.To3DAttributes();
 
             if (rigidbody)
             {
-                FMOD.VECTOR vel;
+                FmodStudioEventEmitter.VECTOR vel;
                 vel.x = rigidbody.velocity.x;
                 vel.y = rigidbody.velocity.y;
                 vel.z = 0;
@@ -458,36 +458,36 @@ namespace FMODUnity
         }
 #endif
 
-        public static FMOD.THREAD_TYPE ToFMODThreadType(ThreadType threadType)
+        public static FmodStudioEventEmitter.THREAD_TYPE ToFMODThreadType(ThreadType threadType)
         {
             switch (threadType)
             {
                 case ThreadType.Mixer:
-                    return FMOD.THREAD_TYPE.MIXER;
+                    return FmodStudioEventEmitter.THREAD_TYPE.MIXER;
                 case ThreadType.Feeder:
-                    return FMOD.THREAD_TYPE.FEEDER;
+                    return FmodStudioEventEmitter.THREAD_TYPE.FEEDER;
                 case ThreadType.Stream:
-                    return FMOD.THREAD_TYPE.STREAM;
+                    return FmodStudioEventEmitter.THREAD_TYPE.STREAM;
                 case ThreadType.File:
-                    return FMOD.THREAD_TYPE.FILE;
+                    return FmodStudioEventEmitter.THREAD_TYPE.FILE;
                 case ThreadType.Nonblocking:
-                    return FMOD.THREAD_TYPE.NONBLOCKING;
+                    return FmodStudioEventEmitter.THREAD_TYPE.NONBLOCKING;
                 case ThreadType.Record:
-                    return FMOD.THREAD_TYPE.RECORD;
+                    return FmodStudioEventEmitter.THREAD_TYPE.RECORD;
                 case ThreadType.Geometry:
-                    return FMOD.THREAD_TYPE.GEOMETRY;
+                    return FmodStudioEventEmitter.THREAD_TYPE.GEOMETRY;
                 case ThreadType.Profiler:
-                    return FMOD.THREAD_TYPE.PROFILER;
+                    return FmodStudioEventEmitter.THREAD_TYPE.PROFILER;
                 case ThreadType.Studio_Update:
-                    return FMOD.THREAD_TYPE.STUDIO_UPDATE;
+                    return FmodStudioEventEmitter.THREAD_TYPE.STUDIO_UPDATE;
                 case ThreadType.Studio_Load_Bank:
-                    return FMOD.THREAD_TYPE.STUDIO_LOAD_BANK;
+                    return FmodStudioEventEmitter.THREAD_TYPE.STUDIO_LOAD_BANK;
                 case ThreadType.Studio_Load_Sample:
-                    return FMOD.THREAD_TYPE.STUDIO_LOAD_SAMPLE;
+                    return FmodStudioEventEmitter.THREAD_TYPE.STUDIO_LOAD_SAMPLE;
                 case ThreadType.Convolution_1:
-                    return FMOD.THREAD_TYPE.CONVOLUTION1;
+                    return FmodStudioEventEmitter.THREAD_TYPE.CONVOLUTION1;
                 case ThreadType.Convolution_2:
-                    return FMOD.THREAD_TYPE.CONVOLUTION2;
+                    return FmodStudioEventEmitter.THREAD_TYPE.CONVOLUTION2;
                 default:
                     throw new ArgumentException("Unrecognised thread type '" + threadType.ToString() + "'");
             }
@@ -498,32 +498,32 @@ namespace FMODUnity
             return thread.ToString().Replace('_', ' ');
         }
 
-        public static FMOD.THREAD_AFFINITY ToFMODThreadAffinity(ThreadAffinity affinity)
+        public static FmodStudioEventEmitter.THREAD_AFFINITY ToFMODThreadAffinity(ThreadAffinity affinity)
         {
-            FMOD.THREAD_AFFINITY fmodAffinity = FMOD.THREAD_AFFINITY.CORE_ALL;
+            FmodStudioEventEmitter.THREAD_AFFINITY fmodAffinity = FmodStudioEventEmitter.THREAD_AFFINITY.CORE_ALL;
 
-            SetFMODAffinityBit(affinity, ThreadAffinity.Core0, FMOD.THREAD_AFFINITY.CORE_0, ref fmodAffinity);
-            SetFMODAffinityBit(affinity, ThreadAffinity.Core1, FMOD.THREAD_AFFINITY.CORE_1, ref fmodAffinity);
-            SetFMODAffinityBit(affinity, ThreadAffinity.Core2, FMOD.THREAD_AFFINITY.CORE_2, ref fmodAffinity);
-            SetFMODAffinityBit(affinity, ThreadAffinity.Core3, FMOD.THREAD_AFFINITY.CORE_3, ref fmodAffinity);
-            SetFMODAffinityBit(affinity, ThreadAffinity.Core4, FMOD.THREAD_AFFINITY.CORE_4, ref fmodAffinity);
-            SetFMODAffinityBit(affinity, ThreadAffinity.Core5, FMOD.THREAD_AFFINITY.CORE_5, ref fmodAffinity);
-            SetFMODAffinityBit(affinity, ThreadAffinity.Core6, FMOD.THREAD_AFFINITY.CORE_6, ref fmodAffinity);
-            SetFMODAffinityBit(affinity, ThreadAffinity.Core7, FMOD.THREAD_AFFINITY.CORE_7, ref fmodAffinity);
-            SetFMODAffinityBit(affinity, ThreadAffinity.Core8, FMOD.THREAD_AFFINITY.CORE_8, ref fmodAffinity);
-            SetFMODAffinityBit(affinity, ThreadAffinity.Core9, FMOD.THREAD_AFFINITY.CORE_9, ref fmodAffinity);
-            SetFMODAffinityBit(affinity, ThreadAffinity.Core10, FMOD.THREAD_AFFINITY.CORE_10, ref fmodAffinity);
-            SetFMODAffinityBit(affinity, ThreadAffinity.Core11, FMOD.THREAD_AFFINITY.CORE_11, ref fmodAffinity);
-            SetFMODAffinityBit(affinity, ThreadAffinity.Core12, FMOD.THREAD_AFFINITY.CORE_12, ref fmodAffinity);
-            SetFMODAffinityBit(affinity, ThreadAffinity.Core13, FMOD.THREAD_AFFINITY.CORE_13, ref fmodAffinity);
-            SetFMODAffinityBit(affinity, ThreadAffinity.Core14, FMOD.THREAD_AFFINITY.CORE_14, ref fmodAffinity);
-            SetFMODAffinityBit(affinity, ThreadAffinity.Core15, FMOD.THREAD_AFFINITY.CORE_15, ref fmodAffinity);
+            SetFMODAffinityBit(affinity, ThreadAffinity.Core0, FmodStudioEventEmitter.THREAD_AFFINITY.CORE_0, ref fmodAffinity);
+            SetFMODAffinityBit(affinity, ThreadAffinity.Core1, FmodStudioEventEmitter.THREAD_AFFINITY.CORE_1, ref fmodAffinity);
+            SetFMODAffinityBit(affinity, ThreadAffinity.Core2, FmodStudioEventEmitter.THREAD_AFFINITY.CORE_2, ref fmodAffinity);
+            SetFMODAffinityBit(affinity, ThreadAffinity.Core3, FmodStudioEventEmitter.THREAD_AFFINITY.CORE_3, ref fmodAffinity);
+            SetFMODAffinityBit(affinity, ThreadAffinity.Core4, FmodStudioEventEmitter.THREAD_AFFINITY.CORE_4, ref fmodAffinity);
+            SetFMODAffinityBit(affinity, ThreadAffinity.Core5, FmodStudioEventEmitter.THREAD_AFFINITY.CORE_5, ref fmodAffinity);
+            SetFMODAffinityBit(affinity, ThreadAffinity.Core6, FmodStudioEventEmitter.THREAD_AFFINITY.CORE_6, ref fmodAffinity);
+            SetFMODAffinityBit(affinity, ThreadAffinity.Core7, FmodStudioEventEmitter.THREAD_AFFINITY.CORE_7, ref fmodAffinity);
+            SetFMODAffinityBit(affinity, ThreadAffinity.Core8, FmodStudioEventEmitter.THREAD_AFFINITY.CORE_8, ref fmodAffinity);
+            SetFMODAffinityBit(affinity, ThreadAffinity.Core9, FmodStudioEventEmitter.THREAD_AFFINITY.CORE_9, ref fmodAffinity);
+            SetFMODAffinityBit(affinity, ThreadAffinity.Core10, FmodStudioEventEmitter.THREAD_AFFINITY.CORE_10, ref fmodAffinity);
+            SetFMODAffinityBit(affinity, ThreadAffinity.Core11, FmodStudioEventEmitter.THREAD_AFFINITY.CORE_11, ref fmodAffinity);
+            SetFMODAffinityBit(affinity, ThreadAffinity.Core12, FmodStudioEventEmitter.THREAD_AFFINITY.CORE_12, ref fmodAffinity);
+            SetFMODAffinityBit(affinity, ThreadAffinity.Core13, FmodStudioEventEmitter.THREAD_AFFINITY.CORE_13, ref fmodAffinity);
+            SetFMODAffinityBit(affinity, ThreadAffinity.Core14, FmodStudioEventEmitter.THREAD_AFFINITY.CORE_14, ref fmodAffinity);
+            SetFMODAffinityBit(affinity, ThreadAffinity.Core15, FmodStudioEventEmitter.THREAD_AFFINITY.CORE_15, ref fmodAffinity);
 
             return fmodAffinity;
         }
 
         private static void SetFMODAffinityBit(ThreadAffinity affinity, ThreadAffinity mask,
-            FMOD.THREAD_AFFINITY fmodMask, ref FMOD.THREAD_AFFINITY fmodAffinity)
+            FmodStudioEventEmitter.THREAD_AFFINITY fmodMask, ref FmodStudioEventEmitter.THREAD_AFFINITY fmodAffinity)
         {
             if ((affinity & mask) != 0)
             {
@@ -535,15 +535,15 @@ namespace FMODUnity
         {
             // Call a function in fmod.dll to make sure it's loaded before fmodstudio.dll
             int temp1, temp2;
-            FMOD.Memory.GetStats(out temp1, out temp2);
+            FmodStudioEventEmitter.Memory.GetStats(out temp1, out temp2);
 
-            FMOD.GUID temp3;
-            FMOD.Studio.Util.parseID("", out temp3);
+            FmodStudioEventEmitter.GUID temp3;
+            FmodStudioEventEmitter.Studio.Util.parseID("", out temp3);
         }
 
         public static void DebugLog(string message)
         {
-            if (!Settings.IsInitialized() || Settings.Instance.LoggingLevel == FMOD.DEBUG_FLAGS.LOG)
+            if (!Settings.IsInitialized() || Settings.Instance.LoggingLevel == FmodStudioEventEmitter.DEBUG_FLAGS.LOG)
             {
                 Debug.Log(message);
             }
@@ -551,7 +551,7 @@ namespace FMODUnity
 
         public static void DebugLogFormat(string format, params object[] args)
         {
-            if (!Settings.IsInitialized() || Settings.Instance.LoggingLevel == FMOD.DEBUG_FLAGS.LOG)
+            if (!Settings.IsInitialized() || Settings.Instance.LoggingLevel == FmodStudioEventEmitter.DEBUG_FLAGS.LOG)
             {
                 Debug.LogFormat(format, args);
             }
@@ -559,7 +559,7 @@ namespace FMODUnity
 
         public static void DebugLogWarning(string message)
         {
-            if (!Settings.IsInitialized() || Settings.Instance.LoggingLevel >= FMOD.DEBUG_FLAGS.WARNING)
+            if (!Settings.IsInitialized() || Settings.Instance.LoggingLevel >= FmodStudioEventEmitter.DEBUG_FLAGS.WARNING)
             {
                 Debug.LogWarning(message);
             }
@@ -567,7 +567,7 @@ namespace FMODUnity
 
         public static void DebugLogWarningFormat(string format, params object[] args)
         {
-            if (!Settings.IsInitialized() || Settings.Instance.LoggingLevel >= FMOD.DEBUG_FLAGS.WARNING)
+            if (!Settings.IsInitialized() || Settings.Instance.LoggingLevel >= FmodStudioEventEmitter.DEBUG_FLAGS.WARNING)
             {
                 Debug.LogWarningFormat(format, args);
             }
@@ -575,7 +575,7 @@ namespace FMODUnity
 
         public static void DebugLogError(string message)
         {
-            if (!Settings.IsInitialized() || Settings.Instance.LoggingLevel >= FMOD.DEBUG_FLAGS.ERROR)
+            if (!Settings.IsInitialized() || Settings.Instance.LoggingLevel >= FmodStudioEventEmitter.DEBUG_FLAGS.ERROR)
             {
                 Debug.LogError(message);
             }
@@ -583,7 +583,7 @@ namespace FMODUnity
 
         public static void DebugLogErrorFormat(string format, params object[] args)
         {
-            if (!Settings.IsInitialized() || Settings.Instance.LoggingLevel >= FMOD.DEBUG_FLAGS.ERROR)
+            if (!Settings.IsInitialized() || Settings.Instance.LoggingLevel >= FmodStudioEventEmitter.DEBUG_FLAGS.ERROR)
             {
                 Debug.LogErrorFormat(format, args);
             }
@@ -591,7 +591,7 @@ namespace FMODUnity
 
         public static void DebugLogException(Exception e)
         {
-            if (!Settings.IsInitialized() || Settings.Instance.LoggingLevel >= FMOD.DEBUG_FLAGS.ERROR)
+            if (!Settings.IsInitialized() || Settings.Instance.LoggingLevel >= FmodStudioEventEmitter.DEBUG_FLAGS.ERROR)
             {
                 Debug.LogException(e);
             }

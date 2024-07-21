@@ -267,9 +267,9 @@ namespace FMODUnity
             };
 
             var speakerModeSettings = RuntimeSettings.SpeakerModeSettings.ConvertAll(
-                setting => new Legacy.PlatformSetting<FMOD.SPEAKERMODE>()
+                setting => new Legacy.PlatformSetting<FmodStudioEventEmitter.SPEAKERMODE>()
                 {
-                    Value = (FMOD.SPEAKERMODE)setting.Value,
+                    Value = (FmodStudioEventEmitter.SPEAKERMODE)setting.Value,
                     Platform = setting.Platform
                 }
                 );

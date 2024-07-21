@@ -9,7 +9,7 @@ using UnityEngine.Serialization;
 using UnityEditor;
 #endif
 
-namespace FMOD
+namespace FmodStudioEventEmitter
 {
     public partial class VERSION
     {
@@ -21,7 +21,7 @@ namespace FMOD
     }
 }
 
-namespace FMOD.Studio
+namespace FmodStudioEventEmitter.Studio
 {
     public partial class STUDIO_VERSION
     {
@@ -40,7 +40,7 @@ namespace FMODUnity
         // A hook for custom initialization logic. RuntimeManager.Initialize calls this
         // just before calling system.Initialize.
         // Call reportResult() with the result of each FMOD call to use FMOD's error handling logic.
-        public virtual void PreInitialize(FMOD.Studio.System system, Action<FMOD.RESULT, string> reportResult)
+        public virtual void PreInitialize(FmodStudioEventEmitter.Studio.System system, Action<FmodStudioEventEmitter.RESULT, string> reportResult)
         {
         }
     }
@@ -155,13 +155,13 @@ namespace FMODUnity
 
         // A hook for platform-specific initialization logic. RuntimeManager.Initialize calls this
         // before calling FMOD.Studio.System.create.
-        internal virtual void PreSystemCreate(Action<FMOD.RESULT, string> reportResult)
+        internal virtual void PreSystemCreate(Action<FmodStudioEventEmitter.RESULT, string> reportResult)
         {
         }
 
         // A hook for platform-specific initialization logic. RuntimeManager.Initialize calls this
         // just before calling studioSystem.Initialize.
-        internal virtual void PreInitialize(FMOD.Studio.System studioSystem)
+        internal virtual void PreInitialize(FmodStudioEventEmitter.Studio.System studioSystem)
         {
         }
 
@@ -511,14 +511,14 @@ namespace FMODUnity
         }
 
         // Loads static and dynamic FMOD plugins for this platform.
-        internal virtual void LoadPlugins(FMOD.System coreSystem, Action<FMOD.RESULT, string> reportResult)
+        internal virtual void LoadPlugins(FmodStudioEventEmitter.System coreSystem, Action<FmodStudioEventEmitter.RESULT, string> reportResult)
         {
             LoadDynamicPlugins(coreSystem, reportResult);
             LoadStaticPlugins(coreSystem, reportResult);
         }
 
         // Loads dynamic FMOD plugins for this platform.
-        internal virtual void LoadDynamicPlugins(FMOD.System coreSystem, Action<FMOD.RESULT, string> reportResult)
+        internal virtual void LoadDynamicPlugins(FmodStudioEventEmitter.System coreSystem, Action<FmodStudioEventEmitter.RESULT, string> reportResult)
         {
             List<string> pluginNames = Plugins;
 
@@ -537,11 +537,11 @@ namespace FMODUnity
                 string pluginPath = GetPluginPath(pluginName);
                 uint handle;
 
-                FMOD.RESULT result = coreSystem.loadPlugin(pluginPath, out handle);
+                FmodStudioEventEmitter.RESULT result = coreSystem.loadPlugin(pluginPath, out handle);
 
 #if UNITY_64 || UNITY_EDITOR_64
                 // Add a "64" suffix and try again
-                if (result == FMOD.RESULT.ERR_FILE_BAD || result == FMOD.RESULT.ERR_FILE_NOTFOUND)
+                if (result == FmodStudioEventEmitter.RESULT.ERR_FILE_BAD || result == FmodStudioEventEmitter.RESULT.ERR_FILE_NOTFOUND)
                 {
                     string pluginPath64 = GetPluginPath(pluginName + "64");
                     result = coreSystem.loadPlugin(pluginPath64, out handle);
@@ -553,7 +553,7 @@ namespace FMODUnity
         }
 
         // Loads static FMOD plugins for this platform.
-        internal virtual void LoadStaticPlugins(FMOD.System coreSystem, Action<FMOD.RESULT, string> reportResult)
+        internal virtual void LoadStaticPlugins(FmodStudioEventEmitter.System coreSystem, Action<FmodStudioEventEmitter.RESULT, string> reportResult)
         {
             if (StaticPlugins.Count > 0)
             {
@@ -713,7 +713,7 @@ namespace FMODUnity
         }
 
         [Serializable]
-        public class PropertySpeakerMode : Property<FMOD.SPEAKERMODE>
+        public class PropertySpeakerMode : Property<FmodStudioEventEmitter.SPEAKERMODE>
         {
         }
 
@@ -864,7 +864,7 @@ namespace FMODUnity
         public TriStateBool Logging { get { return PropertyAccessors.Logging.Get(this); } }
         public int SampleRate { get { return PropertyAccessors.SampleRate.Get(this); } }
         public string BuildDirectory { get { return PropertyAccessors.BuildDirectory.Get(this); } }
-        public FMOD.SPEAKERMODE SpeakerMode { get { return PropertyAccessors.SpeakerMode.Get(this); } }
+        public FmodStudioEventEmitter.SPEAKERMODE SpeakerMode { get { return PropertyAccessors.SpeakerMode.Get(this); } }
         public int VirtualChannelCount { get { return PropertyAccessors.VirtualChannelCount.Get(this); } }
         public int RealChannelCount { get { return PropertyAccessors.RealChannelCount.Get(this); } }
         public int DSPBufferLength { get { return PropertyAccessors.DSPBufferLength.Get(this); } }
@@ -898,8 +898,8 @@ namespace FMODUnity
             public static readonly PropertyAccessor<string> BuildDirectory
                     = new PropertyAccessor<string>(properties => properties.BuildDirectory, "Desktop");
 
-            public static readonly PropertyAccessor<FMOD.SPEAKERMODE> SpeakerMode
-                    = new PropertyAccessor<FMOD.SPEAKERMODE>(properties => properties.SpeakerMode, FMOD.SPEAKERMODE.STEREO);
+            public static readonly PropertyAccessor<FmodStudioEventEmitter.SPEAKERMODE> SpeakerMode
+                    = new PropertyAccessor<FmodStudioEventEmitter.SPEAKERMODE>(properties => properties.SpeakerMode, FmodStudioEventEmitter.SPEAKERMODE.STEREO);
 
             public static readonly PropertyAccessor<int> VirtualChannelCount
                     = new PropertyAccessor<int>(properties => properties.VirtualChannelCount, 128);
@@ -955,20 +955,20 @@ namespace FMODUnity
             }
         }
 
-        internal FMOD.OUTPUTTYPE GetOutputType()
+        internal FmodStudioEventEmitter.OUTPUTTYPE GetOutputType()
         {
-            if (Enum.IsDefined(typeof(FMOD.OUTPUTTYPE), OutputTypeName))
+            if (Enum.IsDefined(typeof(FmodStudioEventEmitter.OUTPUTTYPE), OutputTypeName))
             {
-                return (FMOD.OUTPUTTYPE)Enum.Parse(typeof(FMOD.OUTPUTTYPE), OutputTypeName);
+                return (FmodStudioEventEmitter.OUTPUTTYPE)Enum.Parse(typeof(FmodStudioEventEmitter.OUTPUTTYPE), OutputTypeName);
             }
-            return FMOD.OUTPUTTYPE.AUTODETECT;
+            return FmodStudioEventEmitter.OUTPUTTYPE.AUTODETECT;
         }
 
 #if UNITY_EDITOR
         public struct OutputType
         {
             public string displayName;
-            public FMOD.OUTPUTTYPE outputType;
+            public FmodStudioEventEmitter.OUTPUTTYPE outputType;
         }
 
         internal abstract OutputType[] ValidOutputTypes { get; }

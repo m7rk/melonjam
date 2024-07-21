@@ -90,7 +90,7 @@ namespace FMODUnity
         }
 
         private static OutputType[] sValidOutputTypes = {
-           new OutputType() { displayName = "Core Audio", outputType = FMOD.OUTPUTTYPE.COREAUDIO },
+           new OutputType() { displayName = "Core Audio", outputType = FmodStudioEventEmitter.OUTPUTTYPE.COREAUDIO },
         };
 #endif
     }

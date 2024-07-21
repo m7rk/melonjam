@@ -11,5 +11,11 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Main.unity
     guid: 2cda990e2423bbf4892e6590ba056729
+  - enabled: 1
+    path: Assets/Scenes/Intermission.unity
+    guid: 73979709a5d9c00498707deb0096f33d
+  - enabled: 1
+    path: Assets/Scenes/Title.unity
+    guid: eacff4deba9c27a47821aae2e06be46a
   m_configObjects: {}
   m_UseUCBPForAssetBundles: 0

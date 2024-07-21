@@ -6,12 +6,12 @@ namespace FMODUnity
     [Serializable]
     public struct EventReference
     {
-        public FMOD.GUID Guid;
+        public FmodStudioEventEmitter.GUID Guid;
 
 #if UNITY_EDITOR
         public string Path;
 
-        public static Func<string, FMOD.GUID> GuidLookupDelegate;
+        public static Func<string, FmodStudioEventEmitter.GUID> GuidLookupDelegate;
 
         public override string ToString()
         {

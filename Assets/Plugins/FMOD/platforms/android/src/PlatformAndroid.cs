@@ -116,9 +116,9 @@ namespace FMODUnity
         }
 
         private static OutputType[] sValidOutputTypes = {
-           new OutputType() { displayName = "Java Audio Track", outputType = FMOD.OUTPUTTYPE.AUDIOTRACK },
-           new OutputType() { displayName = "OpenSL ES", outputType = FMOD.OUTPUTTYPE.OPENSL },
-           new OutputType() { displayName = "AAudio", outputType = FMOD.OUTPUTTYPE.AAUDIO },
+           new OutputType() { displayName = "Java Audio Track", outputType = FmodStudioEventEmitter.OUTPUTTYPE.AUDIOTRACK },
+           new OutputType() { displayName = "OpenSL ES", outputType = FmodStudioEventEmitter.OUTPUTTYPE.OPENSL },
+           new OutputType() { displayName = "AAudio", outputType = FmodStudioEventEmitter.OUTPUTTYPE.AAUDIO },
         };
 
         internal override int CoreCount { get { return MaximumCoreCount; } }

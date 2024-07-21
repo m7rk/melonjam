@@ -36,11 +36,11 @@ namespace FMODUnity
             "Surround 7.1.4"
         };
 
-        private static readonly FMOD.SPEAKERMODE[] SpeakerModeValues = new FMOD.SPEAKERMODE[] {
-            FMOD.SPEAKERMODE.STEREO,
-            FMOD.SPEAKERMODE._5POINT1,
-            FMOD.SPEAKERMODE._7POINT1,
-            FMOD.SPEAKERMODE._7POINT1POINT4
+        private static readonly FmodStudioEventEmitter.SPEAKERMODE[] SpeakerModeValues = new FmodStudioEventEmitter.SPEAKERMODE[] {
+            FmodStudioEventEmitter.SPEAKERMODE.STEREO,
+            FmodStudioEventEmitter.SPEAKERMODE._5POINT1,
+            FmodStudioEventEmitter.SPEAKERMODE._7POINT1,
+            FmodStudioEventEmitter.SPEAKERMODE._7POINT1POINT4
         };
 
         private bool hasBankSourceChanged = false;
@@ -98,10 +98,10 @@ namespace FMODUnity
         private PlatformPropertyStringListView dynamicPluginsView;
 
         private static readonly int[] LoggingValues = new int[] {
-            (int)FMOD.DEBUG_FLAGS.NONE,
-            (int)FMOD.DEBUG_FLAGS.ERROR,
-            (int)FMOD.DEBUG_FLAGS.WARNING,
-            (int)FMOD.DEBUG_FLAGS.LOG,
+            (int)FmodStudioEventEmitter.DEBUG_FLAGS.NONE,
+            (int)FmodStudioEventEmitter.DEBUG_FLAGS.ERROR,
+            (int)FmodStudioEventEmitter.DEBUG_FLAGS.WARNING,
+            (int)FmodStudioEventEmitter.DEBUG_FLAGS.LOG,
         };
 
         private static readonly string[] LoggingDisplay = new string[] {
@@ -410,19 +410,19 @@ namespace FMODUnity
                 valuesChild[0] = string.Format("Auto");
                 valuesChild[1] = string.Format("No Sound");
                 valuesChild[2] = string.Format("Wav Writer");
-                valuesChildEnum[0] = Enum.GetName(typeof(FMOD.OUTPUTTYPE), FMOD.OUTPUTTYPE.AUTODETECT);
-                valuesChildEnum[1] = Enum.GetName(typeof(FMOD.OUTPUTTYPE), FMOD.OUTPUTTYPE.NOSOUND);
-                valuesChildEnum[2] = Enum.GetName(typeof(FMOD.OUTPUTTYPE), FMOD.OUTPUTTYPE.WAVWRITER);
+                valuesChildEnum[0] = Enum.GetName(typeof(FmodStudioEventEmitter.OUTPUTTYPE), FmodStudioEventEmitter.OUTPUTTYPE.AUTODETECT);
+                valuesChildEnum[1] = Enum.GetName(typeof(FmodStudioEventEmitter.OUTPUTTYPE), FmodStudioEventEmitter.OUTPUTTYPE.NOSOUND);
+                valuesChildEnum[2] = Enum.GetName(typeof(FmodStudioEventEmitter.OUTPUTTYPE), FmodStudioEventEmitter.OUTPUTTYPE.WAVWRITER);
                 for (int i = 0; i < platform.ValidOutputTypes.Length; i++)
                 {
                     valuesChild[i + 3] = platform.ValidOutputTypes[i].displayName;
-                    valuesChildEnum[i + 3] = Enum.GetName(typeof(FMOD.OUTPUTTYPE), platform.ValidOutputTypes[i].outputType);
+                    valuesChildEnum[i + 3] = Enum.GetName(typeof(FmodStudioEventEmitter.OUTPUTTYPE), platform.ValidOutputTypes[i].outputType);
                 }
                 int currentIndex = Array.IndexOf(valuesChildEnum, platform.OutputTypeName);
                 if (currentIndex == -1)
                 {
                     currentIndex = 0;
-                    platform.OutputTypeName = Enum.GetName(typeof(FMOD.OUTPUTTYPE), FMOD.OUTPUTTYPE.AUTODETECT);
+                    platform.OutputTypeName = Enum.GetName(typeof(FmodStudioEventEmitter.OUTPUTTYPE), FmodStudioEventEmitter.OUTPUTTYPE.AUTODETECT);
                 }
                 int next = EditorGUILayout.Popup(label, currentIndex, valuesChild);
                 platform.OutputTypeName = valuesChildEnum[next];

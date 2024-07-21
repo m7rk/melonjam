@@ -1,3 +1,4 @@
+using FMODUnity;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -11,9 +12,15 @@ public class Scorer : MonoBehaviour
     public LyricScoreBox feedbackBox;
     public TMP_Text previous;
     private List<string> previousWords = new List<string>();
+    public BeatManager beatManager;
 
     public SpriteBar scoreSlider;
     public ScoreDecal scoreDecal;
+
+
+    public void Start()
+    {
+    }
 
     public enum LYRICSCORE
     {
@@ -43,8 +50,9 @@ public class Scorer : MonoBehaviour
     {
         currentScore += (playerScoring ? 1 : -1) * amt;
         scoreSlider.set((float)(currentScore / (float)SCORE_MAX));
+        beatManager.GetComponent<StudioEventEmitter>().EventInstance.setParameterByName("Flow_Bar", 100 * (float)(currentScore / (float)SCORE_MAX));
 
-        if(currentScore <= 0)
+        if (currentScore <= 0)
         {
             //lose. go to title
             SceneManager.LoadScene("Title", LoadSceneMode.Single);
@@ -72,6 +80,7 @@ public class Scorer : MonoBehaviour
                     feedbackBox.newWord(LYRICSCORE.REPEAT);
                     applyScore(SCORE_REPEAT, playerScoring);
                     scoreDecal.newWord(SCORE_REPEAT);
+                    beatManager.GetComponent<StudioEventEmitter>().EventInstance.setParameterByNameWithLabel("Rhyme", "Incorrect");
                 }
                 else if (rhymed && waspos)
                 {
@@ -79,6 +88,8 @@ public class Scorer : MonoBehaviour
                     feedbackBox.newWord(LYRICSCORE.MATCH_BOTH);
                     applyScore(SCORE_MATCH_BOTH, playerScoring);
                     scoreDecal.newWord(SCORE_MATCH_BOTH);
+
+                    beatManager.GetComponent<StudioEventEmitter>().EventInstance.setParameterByNameWithLabel("Rhyme", "Rhyme");
                 }
                 else if (rhymed)
                 {
@@ -86,6 +97,8 @@ public class Scorer : MonoBehaviour
                     feedbackBox.newWord(LYRICSCORE.RHYME_ONLY);
                     applyScore(SCORE_RHYME_ONLY, playerScoring);
                     scoreDecal.newWord(SCORE_RHYME_ONLY);
+
+                    beatManager.GetComponent<StudioEventEmitter>().EventInstance.setParameterByNameWithLabel("Rhyme", "Incorrect");
                 }
                 else if (waspos)
                 {
@@ -96,6 +109,7 @@ public class Scorer : MonoBehaviour
                         scoreDecal.flowBonus((SCORE_FLOW_BONUS * previousWords.Count), previousWords.Count);
                     }
 
+                    beatManager.GetComponent<StudioEventEmitter>().EventInstance.setParameterByNameWithLabel("Rhyme", "New_Rhyme");
                     feedbackBox.newWord(LYRICSCORE.POS_ONLY);
                     previous.text = "";
                     previousWords = new List<string>();
@@ -105,6 +119,7 @@ public class Scorer : MonoBehaviour
                     // lose many points for a nonsenstical word, but the rhyme is at least set..
                     applyScore(SCORE_NO_MATCH, playerScoring);
                     scoreDecal.newWord(SCORE_NO_MATCH);
+                    beatManager.GetComponent<StudioEventEmitter>().EventInstance.setParameterByNameWithLabel("Rhyme", "Incorrect");
 
                     feedbackBox.newWord(LYRICSCORE.NO_MATCH);
                     previous.text = "";
@@ -121,6 +136,7 @@ public class Scorer : MonoBehaviour
             previous.text = "";
             previousWords = new List<string>();
             feedbackBox.newWord(LYRICSCORE.NOT_WORD);
+            beatManager.GetComponent<StudioEventEmitter>().EventInstance.setParameterByNameWithLabel("Rhyme", "Incorrect");
         }
 
         if(isEnd)

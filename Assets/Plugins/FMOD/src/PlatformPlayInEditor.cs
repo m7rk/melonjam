@@ -7,7 +7,7 @@ using UnityEditor;
 #endif
 
 #if UNITY_EDITOR
-namespace FMOD
+namespace FmodStudioEventEmitter
 {
     public partial class VERSION
     {
@@ -15,7 +15,7 @@ namespace FMOD
     }
 }
 
-namespace FMOD.Studio
+namespace FmodStudioEventEmitter.Studio
 {
     public partial class STUDIO_VERSION
     {
@@ -102,7 +102,7 @@ namespace FMODUnity
         }
 #endif
 
-        internal override void LoadStaticPlugins(FMOD.System coreSystem, Action<FMOD.RESULT, string> reportResult)
+        internal override void LoadStaticPlugins(FmodStudioEventEmitter.System coreSystem, Action<FmodStudioEventEmitter.RESULT, string> reportResult)
         {
             // Ignore static plugins when playing in the editor
         }

@@ -94,8 +94,8 @@ namespace FMODUnity
         }
 
         private static OutputType[] sValidOutputTypes = {
-           new OutputType() { displayName = "Pulse Audio", outputType = FMOD.OUTPUTTYPE.PULSEAUDIO },
-           new OutputType() { displayName = "Advanced Linux Sound Architecture", outputType = FMOD.OUTPUTTYPE.ALSA },
+           new OutputType() { displayName = "Pulse Audio", outputType = FmodStudioEventEmitter.OUTPUTTYPE.PULSEAUDIO },
+           new OutputType() { displayName = "Advanced Linux Sound Architecture", outputType = FmodStudioEventEmitter.OUTPUTTYPE.ALSA },
         };
 #endif
 

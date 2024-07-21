@@ -95,13 +95,13 @@ namespace FMODUnity
         }
 #endif
 
-        internal override void LoadPlugins(FMOD.System coreSystem, Action<FMOD.RESULT, string> reportResult)
+        internal override void LoadPlugins(FmodStudioEventEmitter.System coreSystem, Action<FmodStudioEventEmitter.RESULT, string> reportResult)
         {
             StaticLoadPlugins(this, coreSystem, reportResult);
         }
 
-        public static void StaticLoadPlugins(Platform platform, FMOD.System coreSystem,
-            Action<FMOD.RESULT, string> reportResult)
+        public static void StaticLoadPlugins(Platform platform, FmodStudioEventEmitter.System coreSystem,
+            Action<FmodStudioEventEmitter.RESULT, string> reportResult)
         {
             platform.LoadStaticPlugins(coreSystem, reportResult);
 
@@ -117,7 +117,7 @@ namespace FMODUnity
         }
 
         private static OutputType[] sValidOutputTypes = {
-           new OutputType() { displayName = "Core Audio", outputType = FMOD.OUTPUTTYPE.COREAUDIO },
+           new OutputType() { displayName = "Core Audio", outputType = FmodStudioEventEmitter.OUTPUTTYPE.COREAUDIO },
         };
 #endif
     }

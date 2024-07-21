@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.02.00">
+	<object class="ParameterPreset" id="{3119e182-63cf-48f7-8bb7-b5df5382981c}">
+		<property name="name">
+			<value>Syllables</value>
+		</property>
+		<relationship name="folder">
+			<destination>{a418e0de-c7d0-05c9-280a-b529dc02e12e}</destination>
+		</relationship>
+		<relationship name="parameter">
+			<destination>{f602ba6c-a888-4fba-84b1-1b7bdd94dee9}</destination>
+		</relationship>
+	</object>
+	<object class="GameParameter" id="{f602ba6c-a888-4fba-84b1-1b7bdd94dee9}">
+		<property name="parameterType">
+			<value>1</value>
+		</property>
+		<property name="maximum">
+			<value>6</value>
+		</property>
+		<property name="initialValue">
+			<value>0</value>
+		</property>
+	</object>
+</objects>
