@@ -48,21 +48,55 @@ public class Scorer : MonoBehaviour
     public const int SCORE_MAX = 10000;
     private int currentScore = SCORE_MAX / 2;
 
+    public bool roundOver = false;
+
+    public void toTitle()
+    {
+        SceneManager.LoadScene("Title", LoadSceneMode.Single);
+    }
+
+    public void toIntermission()
+    {
+        SceneManager.LoadScene("Intermission", LoadSceneMode.Single);
+    }
+
     public void applyScore(int amt, bool playerScoring)
     {
+        if(roundOver)
+        {
+            return;
+        }
+
         currentScore += (playerScoring ? 1 : -1) * amt;
         scoreSlider.set((float)(currentScore / (float)SCORE_MAX));
         beatManager.GetComponent<StudioEventEmitter>().EventInstance.setParameterByName("Flow_Bar", 100 * (float)(currentScore / (float)SCORE_MAX));
 
         if (currentScore <= 0)
         {
+            roundOver = true;
+            FindObjectOfType<SceneTransition>().setState("youLose");
+            Invoke("toTitle",2f);
             //lose. go to title
-            SceneManager.LoadScene("Title", LoadSceneMode.Single);
+
         }
         if(currentScore >= SCORE_MAX)
         {
-            //win. go to intermission
-            SceneManager.LoadScene("Intermission", LoadSceneMode.Single);
+            roundOver = true;
+            if (APPSTATE.LEVEL == 2)
+            {
+                // game reset.
+                APPSTATE.LEVEL = 0;
+                FindObjectOfType<SceneTransition>().setState("youWin");
+                Invoke("toTitle", 2f);
+            }
+            else
+            {
+                APPSTATE.LEVEL++;
+                FindObjectOfType<SceneTransition>().setState("bossDown");
+                Invoke("toIntermission", 2f);
+                //win. go to intermission
+            }
+
 
         }
     }
