@@ -8,7 +8,8 @@ public class Title : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+        FindObjectOfType<SceneTransition>().clear();
+
     }
 
     // Update is called once per frame
