@@ -39,7 +39,7 @@ Material:
     m_Floats:
     - _FallOff: 5
     - _Opacity: 0.2
-    - _WhoPlays01: 0.507
+    - _WhoPlays01: 0
     m_Colors:
     - _LeftColour: {r: 0.121568635, g: 0.5568628, b: 0.20392159, a: 0}
     - _RightColour: {r: 0.5568628, g: 0.1254902, b: 0.1254902, a: 0}
