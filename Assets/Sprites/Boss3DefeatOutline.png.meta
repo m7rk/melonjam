@@ -169,7 +169,8 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      Boss3DefeatOutline_0: -2101671523674318341
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

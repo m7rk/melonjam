@@ -193,7 +193,9 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      TurnIndicatorBoss_0: 5385147581596268997
+      TurnIndicatorBoss_1: 7921180206232887009
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
