@@ -37,11 +37,11 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
-    - _BPM: 90
+    - _BPM: 80
     - _BopMagnitude: 0.02
     - _HorizontalSpeed: 0.03
     - _Scew: 0.1
-    - _Smoothness: 0.7
+    - _Smoothness: 0.3
     m_Colors:
     - _CheckerScale: {r: 9, g: 3, b: 0, a: 0}
     - _Color1: {r: 0.18431373, g: 0.20000002, b: 0.18431373, a: 1}
