@@ -75,7 +75,8 @@ public class RapManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(APPSTATE.TUTORIAL_STAGE >= 0 && APPSTATE.TUTORIAL_STAGE < 5)
+        sideMaterial.SetFloat("_WhoPlays01", Random.RandomRange(0f,1f));
+        if (APPSTATE.TUTORIAL_STAGE >= 0 && APPSTATE.TUTORIAL_STAGE < 5)
         {
             // keep up.
             totalBarIndex = (int)bm.getPhrase();
@@ -137,7 +138,7 @@ public class RapManager : MonoBehaviour
         var validWord = rhymer.validWord(word.ToUpper());
 
         // subsitute [A] with typed word. green if the word's valid
-        wordTextBox.text = (validWord ? "<color=green>" : "<color=red>") + word + "<color=orange>";
+        wordTextBox.text = (bossBars ? "<color=#999999>" : (validWord ? "<color=green>" : "<color=red>")) + word + "<color=orange>";
 
         // supported so far - nouns, adjectives, transitive verbs
         var textSubbed = currentBar.Replace("[n.]", "");
@@ -150,7 +151,7 @@ public class RapManager : MonoBehaviour
         textSubbed = textSubbed.Replace("[conj.]", "");
         textSubbed = textSubbed.Replace("[pron.]", "");
 
-        lyricTextBox.text = "<color=black>" + textSubbed.Substring(0, barCharacter) + "<color=orange>" + textSubbed.Substring(barCharacter);
+        lyricTextBox.text = (bossBars ? "<color=#999999>" : "<color=black>") + textSubbed.Substring(0, barCharacter) + (bossBars ? "<color=#bbbbbb>" : "<color=orange>") + textSubbed.Substring(barCharacter);
     }
 
     void checkKeyPress()
