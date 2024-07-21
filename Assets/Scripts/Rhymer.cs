@@ -2,8 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
+using Unity.Collections.LowLevel.Unsafe;
 using UnityEngine;
 using UnityEngine.Windows;
+using static Unity.Burst.Intrinsics.X86.Avx;
 
 //60,000 words
 public class Rhymer : MonoBehaviour
@@ -78,6 +80,22 @@ public class Rhymer : MonoBehaviour
     public bool validWord(string word)
     {
         return tocmu.ContainsKey(word) && topos.ContainsKey(word);
+    }
+
+    public int getSyllableCount(string word)
+    {
+        if(!validWord(word)) return 0;
+
+        int count = 0;
+        foreach (var syl in tocmu[word.ToUpper()][0])
+        {
+            var sylno = Regex.Replace(syl, @"[\d-]", string.Empty);
+            if (sylno!= syl)
+            {
+                count += 1;
+            }
+        }
+        return count;
     }
 
     public bool rhymes(string word1, string word2)

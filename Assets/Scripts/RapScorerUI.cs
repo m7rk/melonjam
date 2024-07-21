@@ -16,6 +16,9 @@ public class LyricScoreBox : MonoBehaviour
             case Scorer.LYRICSCORE.MATCH_BOTH:
                 stext = "<color=blue>GREAT!";
                 break;
+           case Scorer.LYRICSCORE.MATCH_BOTH_LONG:
+                stext = "<color=blue>4+ SYLLABLES! AMAZING!";
+                break;
             case Scorer.LYRICSCORE.POS_ONLY:
                 stext = "<color=blue>NEW RHYME SCHEME.";
                 break;

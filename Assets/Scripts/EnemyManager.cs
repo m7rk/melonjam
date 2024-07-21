@@ -108,7 +108,8 @@ public class EnemyManager : MonoBehaviour
             float delay = 16;
             // we are free to add minions in increments of 1/2.
 
-            foreach(var v in generateRhythms(5))
+            // 5 is very hard.. use 1/3 when player rapping
+            foreach(var v in generateRhythms(2))
             {
                 makeMinionWithDelay(delay + v);
             }

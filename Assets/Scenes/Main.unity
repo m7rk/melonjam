@@ -1031,7 +1031,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a1d2883335deb574ebd1f23a0a065326, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  BPM: 90
+  BPM: 80
   SPEEDUP: 1
 --- !u!114 &447453863
 MonoBehaviour:
@@ -2555,6 +2555,7 @@ MonoBehaviour:
   rhymer: {fileID: 2013425554}
   feedbackBox: {fileID: 251601643}
   previous: {fileID: 2102283757}
+  beatManager: {fileID: 447453862}
   scoreSlider: {fileID: 1786028952}
   scoreDecal: {fileID: 55936180}
 --- !u!4 &1273991752

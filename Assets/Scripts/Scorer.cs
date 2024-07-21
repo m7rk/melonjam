@@ -25,6 +25,7 @@ public class Scorer : MonoBehaviour
     public enum LYRICSCORE
     {
         MATCH_BOTH,
+        MATCH_BOTH_LONG,
         RHYME_ONLY, // wrong POS
         POS_ONLY, // doesn't rhyme
         REPEAT, 
@@ -34,6 +35,7 @@ public class Scorer : MonoBehaviour
 
     private const int SCORE_REPEAT = -300;
     private const int SCORE_MATCH_BOTH = 500;
+    private const int SCORE_MATCH_BOTH_LONG = 700;
     private const int SCORE_RHYME_ONLY = 0;
     private const int SCORE_FLOW_BONUS = 200;
     private const int SCORE_NO_MATCH = -400;
@@ -65,10 +67,11 @@ public class Scorer : MonoBehaviour
         }
     }
 
-    public void submitWord(string word, string targetpos, bool playerScoring, bool isEnd)
+    public void submitWord(string word, string targetpos, bool playerScoring, bool isEnd, int syllableCount)
     {
         if (rhymer.validWord(word))
         {
+            beatManager.GetComponent<StudioEventEmitter>().EventInstance.setParameterByName("Rhyme", syllableCount);
             if (getLastRhyme() != null)
             {
                 var rhymed = rhymer.rhymes(getLastRhyme(), word);
@@ -84,10 +87,20 @@ public class Scorer : MonoBehaviour
                 }
                 else if (rhymed && waspos)
                 {
-                    // get a nice amount for a match
-                    feedbackBox.newWord(LYRICSCORE.MATCH_BOTH);
-                    applyScore(SCORE_MATCH_BOTH, playerScoring);
-                    scoreDecal.newWord(SCORE_MATCH_BOTH);
+                    if (syllableCount <= 3)
+                    {
+                        // get a nice amount for a match
+                        feedbackBox.newWord(LYRICSCORE.MATCH_BOTH);
+                        applyScore(SCORE_MATCH_BOTH, playerScoring);
+                        scoreDecal.newWord(SCORE_MATCH_BOTH);
+                    }
+                    else
+                    {
+                        // get a nice amount for a match
+                        feedbackBox.newWord(LYRICSCORE.MATCH_BOTH_LONG);
+                        applyScore(SCORE_MATCH_BOTH_LONG, playerScoring);
+                        scoreDecal.newWord(SCORE_MATCH_BOTH_LONG);
+                    }
 
                     beatManager.GetComponent<StudioEventEmitter>().EventInstance.setParameterByNameWithLabel("Rhyme", "Rhyme");
                 }
@@ -125,6 +138,12 @@ public class Scorer : MonoBehaviour
                     previous.text = "";
                     previousWords = new List<string>();
                 }
+            }
+            else
+            {
+                // we set a new rhyme.
+                beatManager.GetComponent<StudioEventEmitter>().EventInstance.setParameterByNameWithLabel("Rhyme", "New_Rhyme");
+                feedbackBox.newWord(LYRICSCORE.POS_ONLY);
             }
             previous.text += (word + " ");
             previousWords.Add(word);

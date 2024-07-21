@@ -10,7 +10,7 @@ public class BeatManager : MonoBehaviour
     private float bars = 0;
     private int loops;
     private float lastCurr = 0;
-
+    private bool followingTrack = true;
 
     [SerializeField] public float SPEEDUP = 1f;
 
@@ -34,15 +34,25 @@ public class BeatManager : MonoBehaviour
 
     public void Update()
     {
-        int curr = GetEventPos_FromEventEmitter(GetComponent<FMODUnity.StudioEventEmitter>());
-        if (curr < lastCurr)
+        if (followingTrack)
         {
-            loops += 1;
+            // this is VERY fucking sketch.
+            int curr = GetEventPos_FromEventEmitter(GetComponent<FMODUnity.StudioEventEmitter>());
+            if (curr < lastCurr)
+            {
+                followingTrack = false;
+                // add an extra time.
+                lastCurr += (1000 * Time.deltaTime);
+                return;
+            }
+            bars = loops + ((curr / 1000f) / getBarLen());
+            lastCurr = curr;
+        } else
+        {
+            // we lost main track so use unity...
+            lastCurr += (1000*Time.deltaTime);
+            bars = ((lastCurr / 1000f) / getBarLen()); 
         }
-        bars = loops + ((curr/1000f) / getBarLen());
-        lastCurr = curr;
-
-
     }
 
     // define phrase as 2 bars

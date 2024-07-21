@@ -93,7 +93,7 @@ public class RapManager : MonoBehaviour
         {
             totalBarIndex += 1;
             lyricBarIndex += 1;
-            scorer.submitWord(word.ToUpper(), targetPOS, !bossBars, totalBarIndex % 8 == 0);
+            scorer.submitWord(word.ToUpper(), targetPOS, !bossBars, totalBarIndex % 8 == 0, rhymer.getSyllableCount(word.ToUpper()));
             word = "";
             if (totalBarIndex % 8 == 0)
             {
