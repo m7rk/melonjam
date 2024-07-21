@@ -39,7 +39,6 @@ public class BeatManager : MonoBehaviour
         {
             loops += 1;
         }
-        var barlen = 
         bars = loops + ((curr/1000f) / getBarLen());
         lastCurr = curr;
 

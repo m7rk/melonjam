@@ -9,10 +9,28 @@ public class Minion : MonoBehaviour
 
     public GameObject move;
     public GameObject dead;
+
+    public GameObject upArrow;
+    public GameObject downArrow;
+    public GameObject leftArrow;
+    public GameObject rightArrow;
+
+    public SpriteRenderer[] srOutline;
+    public SpriteRenderer[] srColor;
+
     // Start is called before the first frame update
     void Start()
     {
         
+    }
+
+    public void setSpriteOrder(int idx)
+    {
+        srOutline[0].sortingOrder = idx;
+        srOutline[1].sortingOrder = idx;
+
+        srColor[0].sortingOrder = idx - 1;
+        srColor[1].sortingOrder = idx - 1;
     }
 
     public void Slay()
@@ -26,6 +44,28 @@ public class Minion : MonoBehaviour
     public void delete()
     {
         Destroy(this.gameObject);
+    }
+
+    public void setDirection(string d)
+    {
+        direction = d;
+        if(d == "up")
+        {
+            upArrow.SetActive(true);
+        }
+        else if(d == "down")
+        {
+            downArrow.SetActive(true);
+        }
+        else if(d == "left")
+        {
+            leftArrow.SetActive(true);
+        }
+        else if(d == "right")
+        {
+            rightArrow.SetActive(true);
+        }
+
     }
 
     // Update is called once per frame

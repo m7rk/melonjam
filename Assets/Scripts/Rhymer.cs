@@ -19,9 +19,9 @@ public class Rhymer : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        createMCW();
         createPOS();
         createCMU();
-        createMCW();
     }
 
     private void createMCW()
@@ -54,7 +54,9 @@ public class Rhymer : MonoBehaviour
         {
             var split = line.Split("  ");
             var word = split[0];
-            if (topos.ContainsKey(word))
+            // make sure we have a POS for the word and it's > 1 syllable, OR 2 syllables and in the most common words list
+
+            if (topos.ContainsKey(word) && ((word.Length > 2) || (word.Length == 2 && mcw.Contains(word))))
             {
                 if (word.Contains("("))
                 {

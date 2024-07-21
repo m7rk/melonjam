@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class Scorer : MonoBehaviour
@@ -42,6 +43,18 @@ public class Scorer : MonoBehaviour
     {
         currentScore += (playerScoring ? 1 : -1) * amt;
         scoreSlider.set((float)(currentScore / (float)SCORE_MAX));
+
+        if(currentScore <= 0)
+        {
+            //lose. go to title
+            SceneManager.LoadScene("Title", LoadSceneMode.Single);
+        }
+        if(currentScore >= SCORE_MAX)
+        {
+            //win. go to intermission
+            SceneManager.LoadScene("Intermission", LoadSceneMode.Single);
+
+        }
     }
 
     public void submitWord(string word, string targetpos, bool playerScoring, bool isEnd)

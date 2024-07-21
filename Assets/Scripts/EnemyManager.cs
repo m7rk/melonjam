@@ -11,6 +11,8 @@ public class EnemyManager : MonoBehaviour
     public Scorer sc;
     public int lastBar;
 
+    private int spriteOrder = 30000;
+
     public GameObject enemyPrefab;
 
     private Queue<Tuple<float,Minion>> minions = new Queue<Tuple<float, Minion>>();
@@ -20,6 +22,58 @@ public class EnemyManager : MonoBehaviour
     private const float THRESH_MISS = 0.04f; // 0.03 - 0.06
     private const float THRESH_EARLY = 0.08f; // 0.06 - 0.12
 
+    private const float DIFFICULTY = 1.0f;
+
+    public List<float> generateRhythms(int count)
+    {
+        if(count > 16)
+        {
+            count = 16;
+        }
+
+        // okay, generate all quater notes first.
+        var quarts = new List<float>();
+        var eigths = new List<float>();
+        var sends = new List<float>();
+
+        for (int i = 0; i < 8; i++)
+        {
+            quarts.Add(i);
+            eigths.Add(i + 0.5f);
+        }
+
+        // first five notes should always be quarters.
+        while(sends.Count < 6 && sends.Count < count)
+        {
+            // pick randomly
+            var idx = UnityEngine.Random.Range(0, quarts.Count);
+            sends.Add(quarts[idx]);
+            quarts.RemoveAt(idx);
+        }
+
+        eigths.AddRange(quarts);
+        // otherwise just merge the lists and pick some shit
+        while(sends.Count < count)
+        {
+            var idx = UnityEngine.Random.Range(0, eigths.Count);
+            sends.Add(eigths[idx]);
+            eigths.RemoveAt(idx);
+        }
+        sends.Sort();
+        return sends;
+    }
+    public void makeMinionWithDelay(float delay)
+    {
+        var go = Instantiate(enemyPrefab);
+        go.transform.position = new Vector3(-2 + delay, -0.2f, 0);
+        var dirs = new string[] { "up", "left", "right", "down" };
+        // pick one randomly
+        go.GetComponent<Minion>().setDirection(dirs[UnityEngine.Random.Range(0, 4)]);
+        go.GetComponent<Minion>().setSpriteOrder(spriteOrder);
+        spriteOrder -= 2;
+        lastBar = ((int)bm.getPhrase());
+        minions.Enqueue(new Tuple<float, Minion>(lastBar + (delay / 8), go.GetComponent<Minion>()));
+    }
 
     public void Update()
     {
@@ -50,13 +104,14 @@ public class EnemyManager : MonoBehaviour
         {
             // spawn enemy... the indicator is at x = -3
             // enemies ALWAYS travel 2 unity unit per bar
-            float delay = 12;
+            // they will arrive in four bars.
+            float delay = 16;
+            // we are free to add minions in increments of 1/2.
 
-            var go = Instantiate(enemyPrefab);
-            go.transform.position = new Vector3(-2 + delay ,-0.5f, 0);
-            lastBar = ((int)bm.getPhrase());
-
-            minions.Enqueue(new Tuple<float, Minion>(lastBar + delay / 8, go.GetComponent<Minion>()));
+            foreach(var v in generateRhythms(5))
+            {
+                makeMinionWithDelay(delay + v);
+            }
         }
 
         // dequeue all passed minons
