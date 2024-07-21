@@ -1,10 +1,13 @@
 fileFormatVersion: 2
-guid: ea672ee7f7645e44a96a4b11633925c3
+guid: a095301a1bf218c4ab95434ce1090ca7
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 6767063239908916923
-    second: BossWin_0
+      213: -7191376338904651054
+    second: PowerupSelectColor_0
+  - first:
+      213: -6827566573890950535
+    second: PowerupSelectColor_1
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -139,13 +142,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: BossWin_0
+      name: PowerupSelectColor_0
       rect:
         serializedVersion: 2
-        x: 0
+        x: 4
         y: 0
-        width: 900
-        height: 600
+        width: 241
+        height: 291
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -153,8 +156,29 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: bbeff5bc92079ed50800000000000000
-      internalID: 6767063239908916923
+      spriteID: 2da60714259133c90800000000000000
+      internalID: -7191376338904651054
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PowerupSelectColor_1
+      rect:
+        serializedVersion: 2
+        x: 192
+        y: 108
+        width: 60
+        height: 83
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 97a26e2006c9f31a0800000000000000
+      internalID: -6827566573890950535
       vertices: []
       indices: 
       edges: []
