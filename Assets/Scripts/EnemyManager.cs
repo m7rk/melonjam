@@ -120,7 +120,7 @@ public class EnemyManager : MonoBehaviour
             // we are free to add minions in increments of 1/2.
 
             // 5 is very hard.. use 1/3 when player rapping
-            var rhythmCount = ((lastBar % 16) > 5 && (lastBar % 16) < 5+8) ? UnityEngine.Random.Range(4,7) : UnityEngine.Random.Range(1, 2);
+            var rhythmCount = ((lastBar % 16) > 6 && (lastBar % 16) < 5+8) ? UnityEngine.Random.Range(4+(APPSTATE.LEVEL*2),7+(APPSTATE.LEVEL*2)) : UnityEngine.Random.Range(1, 2 + APPSTATE.LEVEL);
 
             // add difficulty here..
             foreach (var v in generateRhythms(rhythmCount))

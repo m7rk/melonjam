@@ -63,7 +63,7 @@ public class BeatManager : MonoBehaviour
     public void Update()
     {
         //UnityEngine.Debug.Log(bars);
-        if (APPSTATE.TUTORIAL_STAGE == 6)
+        if (APPSTATE.TUTORIAL_STAGE == 5)
         {
             GetComponent<StudioEventEmitter>().EventInstance.setParameterByName("rapping", 1);
         }
