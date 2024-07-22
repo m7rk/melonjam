@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 4b9b3e7841100da43b40985d857eb81b
+guid: cbb2539300b4dc042a9c31ef87a084d2
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -6599406680857401796
-    second: Boss3Outline_0
+      213: 1139490026388695863
+    second: Boss2Outline_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -49,7 +49,7 @@ TextureImporter:
   spriteMode: 1
   spriteExtrude: 1
   spriteMeshType: 1
-  alignment: 0
+  alignment: 7
   spritePivot: {x: 0.5, y: 0.5}
   spritePixelsToUnits: 100
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
@@ -139,13 +139,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Boss3Outline_0
+      name: Boss2Outline_0
       rect:
         serializedVersion: 2
-        x: 28
-        y: 9
-        width: 267
-        height: 684
+        x: 48
+        y: 1
+        width: 256
+        height: 717
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -153,8 +153,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: c36a723c6923a64a0800000000000000
-      internalID: -6599406680857401796
+      spriteID: 73baff7442840df00800000000000000
+      internalID: 1139490026388695863
       vertices: []
       indices: 
       edges: []
@@ -170,7 +170,7 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      Boss3Outline_0: -6599406680857401796
+      Boss2Outline_0: 1139490026388695863
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

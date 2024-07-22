@@ -1,13 +1,10 @@
 fileFormatVersion: 2
-guid: d82a9bd5763016641b6340b780e856ee
+guid: a17d1c76bb4e97541b9631035580bc25
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -5163307089168915886
-    second: Boss2DefeatOutline_0
-  - first:
-      213: 9208455787759111101
-    second: Boss2DefeatOutline_1
+      213: -6459081690125736338
+    second: Boss3Color_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -52,7 +49,7 @@ TextureImporter:
   spriteMode: 1
   spriteExtrude: 1
   spriteMeshType: 1
-  alignment: 0
+  alignment: 7
   spritePivot: {x: 0.5, y: 0.5}
   spritePixelsToUnits: 100
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
@@ -142,13 +139,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Boss2DefeatOutline_0
+      name: Boss3Color_0
       rect:
         serializedVersion: 2
-        x: 20
-        y: 534
-        width: 43
-        height: 91
+        x: 31
+        y: 11
+        width: 262
+        height: 679
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -156,29 +153,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 252a4db0f8f3858b0800000000000000
-      internalID: -5163307089168915886
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Boss2DefeatOutline_1
-      rect:
-        serializedVersion: 2
-        x: 25
-        y: 2
-        width: 305
-        height: 717
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: dbb854f10c10bcf70800000000000000
-      internalID: 9208455787759111101
+      spriteID: e6663dcac6bbc56a0800000000000000
+      internalID: -6459081690125736338
       vertices: []
       indices: 
       edges: []
@@ -194,8 +170,7 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      Boss2DefeatOutline_0: -5163307089168915886
-      Boss2DefeatOutline_1: 9208455787759111101
+      Boss3Color_0: -6459081690125736338
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

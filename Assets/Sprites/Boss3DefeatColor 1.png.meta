@@ -1,13 +1,16 @@
 fileFormatVersion: 2
-guid: 33f44ee5f51063240a9d030b248735a8
+guid: f99050bdf3c4a3d46bc85e5f30e71e67
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -251938755433094849
-    second: Boss2DefeatColor_0
+      213: 7156417204256615418
+    second: Boss3DefeatColor_0
   - first:
-      213: 8750475341421559766
-    second: Boss2DefeatColor_1
+      213: -1790017950921580224
+    second: Boss3DefeatColor_1
+  - first:
+      213: -4771113285260976833
+    second: Boss3DefeatColor_2
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -52,7 +55,7 @@ TextureImporter:
   spriteMode: 1
   spriteExtrude: 1
   spriteMeshType: 1
-  alignment: 0
+  alignment: 7
   spritePivot: {x: 0.5, y: 0.5}
   spritePixelsToUnits: 100
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
@@ -142,13 +145,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Boss2DefeatColor_0
+      name: Boss3DefeatColor_0
       rect:
         serializedVersion: 2
-        x: 24
-        y: 532
-        width: 45
-        height: 82
+        x: 45
+        y: 215
+        width: 233
+        height: 476
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -156,20 +159,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: f31a149690fe08cf0800000000000000
-      internalID: -251938755433094849
+      spriteID: afba53ce783b05360800000000000000
+      internalID: 7156417204256615418
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Boss2DefeatColor_1
+      name: Boss3DefeatColor_1
       rect:
         serializedVersion: 2
-        x: 29
-        y: 4
-        width: 298
-        height: 709
+        x: 58
+        y: 23
+        width: 86
+        height: 208
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -177,8 +180,29 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 6df3f3506feef6970800000000000000
-      internalID: 8750475341421559766
+      spriteID: 0412fb558249827e0800000000000000
+      internalID: -1790017950921580224
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Boss3DefeatColor_2
+      rect:
+        serializedVersion: 2
+        x: 173
+        y: 21
+        width: 67
+        height: 198
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f3d5fd8deb999cdb0800000000000000
+      internalID: -4771113285260976833
       vertices: []
       indices: 
       edges: []
@@ -194,8 +218,9 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      Boss2DefeatColor_0: -251938755433094849
-      Boss2DefeatColor_1: 8750475341421559766
+      Boss3DefeatColor_0: 7156417204256615418
+      Boss3DefeatColor_1: -1790017950921580224
+      Boss3DefeatColor_2: -4771113285260976833
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
