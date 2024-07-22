@@ -561,10 +561,10 @@ MonoBehaviour:
       Value: 0
       HasValue: 0
     DSPBufferLength:
-      Value: 256
+      Value: 512
       HasValue: 1
     DSPBufferCount:
-      Value: 2
+      Value: 4
       HasValue: 1
     Plugins:
       Value: []
