@@ -1,3 +1,4 @@
+using FMODUnity;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -15,7 +16,7 @@ public class Title : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        GetComponent<StudioEventEmitter>().Stop();
     }
 
     public void StartLevel()

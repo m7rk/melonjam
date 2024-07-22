@@ -81,6 +81,7 @@ public class Scorer : MonoBehaviour
             roundOver = true;
             FindObjectOfType<SceneTransition>().setState("youLose");
             Invoke("toTitle",2f);
+            APPSTATE.LEVEL = 0;
             //lose. go to title
 
         }
