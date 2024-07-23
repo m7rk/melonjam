@@ -9,15 +9,17 @@ public class BeatManager : MonoBehaviour
 {
     // use a getter if you need this!
     private float BPM = 90;
-
     private float bars = 0;
-    private bool followingTrack = true;
     private float FMOD_START = 0;
+    private MusicTrack mt;
     [SerializeField] public float SPEEDUP = 1f;
+
+    private int firstFrame = 60;
 
     public void Start()
     {
-
+        // get the music player
+        mt = FindFirstObjectByType<MusicTrack>();
     }
 
     public float getBarLen()
@@ -25,51 +27,35 @@ public class BeatManager : MonoBehaviour
         return (4 * (60f / BPM));
     }
 
-    bool firstFrame = true;
-    bool isPlaying = false;
+    // wait 30 frames.
+
+    // 0.5 second delay maybe..
     public void Update()
     {
-        PLAYBACK_STATE state;
-        GetComponent<StudioEventEmitter>().EventInstance.getPlaybackState(out state);
-
-        if (!isPlaying && state == PLAYBACK_STATE.PLAYING)
+        firstFrame -= 1;
+        if (firstFrame == 0)
         {
-            isPlaying = true;
-            FMOD_START = Time.time;
-
-            // start right music and BPM
-            switch (APPSTATE.LEVEL)
+            mt.restartTrackBasedOnLevel();
+            // set BPM manually.
+            switch(APPSTATE.LEVEL)
             {
-                case 0:
-                    BPM = 80;
-                    GetComponent<StudioEventEmitter>().EventInstance.setParameterByNameWithLabel("state", "lvl1");
-                    GetComponent<StudioEventEmitter>().EventInstance.setParameterByName("rapping", APPSTATE.TUTORIAL_STAGE >= 0 ? 0 : 1);
+                    case 0: 
+                    BPM = 80; 
                     break;
-                case 1:
+                    case 1:
                     BPM = 100;
-                    GetComponent<StudioEventEmitter>().EventInstance.setParameterByNameWithLabel("state", "lvl2");
-                    GetComponent<StudioEventEmitter>().EventInstance.setParameterByName("rapping", 1);
                     break;
-                case 2:
+                    case 2:
                     BPM = 120;
-                    GetComponent<StudioEventEmitter>().EventInstance.setParameterByNameWithLabel("state", "lvl3");
-                    GetComponent<StudioEventEmitter>().EventInstance.setParameterByName("rapping", 1);
                     break;
             }
+            FMOD_START = Time.time;
         }
 
-        if(firstFrame)
-        {       
-            firstFrame = false;
-            GetComponent<StudioEventEmitter>().Play();
-        }
-
-        //UnityEngine.Debug.Log(bars);
-        if (APPSTATE.TUTORIAL_STAGE == 5)
+        if(firstFrame < 0)
         {
-            GetComponent<StudioEventEmitter>().EventInstance.setParameterByName("rapping", 1);
+            bars = ((Time.time - FMOD_START) / getBarLen());
         }
-        bars = (FMOD_START == 0 ? 0 : ((Time.time - FMOD_START) / getBarLen()));
     }
 
         // define phrase as 2 bars

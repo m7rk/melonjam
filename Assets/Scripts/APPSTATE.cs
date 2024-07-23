@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class APPSTATE : MonoBehaviour
 {
-    // Start is called before the first frame update
+    // -1 -> disable tutorial.
     public static int TUTORIAL_STAGE = 0;
     public static int LEVEL = 0;
 

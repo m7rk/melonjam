@@ -5,6 +5,7 @@ using UnityEngine.SceneManagement;
 
 public class FMODwaiter : MonoBehaviour
 {
+    public GameObject musicSystem;
     // Start is called before the first frame update
     void Start()
     {
@@ -17,7 +18,9 @@ public class FMODwaiter : MonoBehaviour
         if (FMODUnity.RuntimeManager.HasBankLoaded("Master"))
         {
             Debug.Log("Master Bank Loaded");
+            FMODUnity.RuntimeManager.StudioSystem.setParameterByName("Menu", 1);
             gameObject.SetActive(false);
+            musicSystem.SetActive(true);
             SceneManager.LoadScene("Title", LoadSceneMode.Single);
         }
     }

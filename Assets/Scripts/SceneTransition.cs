@@ -7,6 +7,7 @@ public class SceneTransition : MonoBehaviour
     public GameObject bossDown;
     public GameObject YouLose;
     public GameObject YouWin;
+    public GameObject PlayerReady;
 
     private bool fallen = false;
     // Start is called before the first frame update
@@ -23,6 +24,7 @@ public class SceneTransition : MonoBehaviour
         bossDown.SetActive(state == "bossDown");
         YouLose.SetActive(state == "youLose");
         YouWin.SetActive(state == "youWin");
+        PlayerReady.SetActive(state == "ready");
     }
 
     public void clear()

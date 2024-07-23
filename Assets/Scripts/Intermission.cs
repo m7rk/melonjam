@@ -9,6 +9,8 @@ public class Intermission : MonoBehaviour
     void Start()
     {
         FindObjectOfType<SceneTransition>().clear();
+        FindFirstObjectByType<MusicTrack>().setFlow(50);
+
     }
 
     // Update is called once per frame
@@ -17,8 +19,17 @@ public class Intermission : MonoBehaviour
         
     }
 
-    public void StartLevel()
+    public void ToMain()
     {
         SceneManager.LoadScene("Main", LoadSceneMode.Single);
+    }
+
+    public void StartLevel()
+    {
+        FindFirstObjectByType<SceneTransition>().setState("ready");
+        FindFirstObjectByType<MusicTrack>().setMenu(false);
+        FindFirstObjectByType<MusicTrack>().setVolume(0);
+
+        Invoke("ToMain", 1);
     }
 }

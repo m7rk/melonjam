@@ -1,3 +1,4 @@
+using FMODUnity;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -54,9 +55,8 @@ public class RapManager : MonoBehaviour
             baseBars.Add(v);
         }
         shuffleBars();
-
+        FindFirstObjectByType<SceneTransition>().clear();
     }
-
 
     void shuffleBars()
     {
@@ -75,12 +75,17 @@ public class RapManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        sideMaterial.SetFloat("_WhoPlays01", Random.RandomRange(0f,1f));
         if (APPSTATE.TUTORIAL_STAGE >= 0 && APPSTATE.TUTORIAL_STAGE < 5)
         {
-            // keep up.
+            // keep up, but don't show anything.
             totalBarIndex = (int)bm.getPhrase();
             return;
+        }
+
+        // start rapping.
+        if (APPSTATE.TUTORIAL_STAGE == 5)
+        {
+            FindFirstObjectByType<MusicTrack>().setRapping(true);
         }
 
         // get the current bar and bar character.

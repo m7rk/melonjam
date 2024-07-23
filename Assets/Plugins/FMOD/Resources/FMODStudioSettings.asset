@@ -14,11 +14,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   identifier: 46fbfdf3fc43db0458918377fd40293e
   parentIdentifier: default
-  active: 0
+  active: 1
   Properties:
     LiveUpdate:
       Value: 0
-      HasValue: 0
+      HasValue: 1
     LiveUpdatePort:
       Value: 0
       HasValue: 0
@@ -44,17 +44,17 @@ MonoBehaviour:
       Value: 0
       HasValue: 0
     VirtualChannelCount:
-      Value: 0
-      HasValue: 0
+      Value: 128
+      HasValue: 1
     RealChannelCount:
-      Value: 0
-      HasValue: 0
+      Value: 32
+      HasValue: 1
     DSPBufferLength:
       Value: 0
-      HasValue: 0
+      HasValue: 1
     DSPBufferCount:
       Value: 0
-      HasValue: 0
+      HasValue: 1
     Plugins:
       Value: []
       HasValue: 0
@@ -64,7 +64,7 @@ MonoBehaviour:
     CallbackHandler:
       Value: {fileID: 0}
       HasValue: 0
-  OutputTypeName: 
+  OutputTypeName: WEBAUDIO
   threadAffinities:
     Value: []
     HasValue: 0
@@ -117,17 +117,17 @@ MonoBehaviour:
       Value: 0
       HasValue: 0
     VirtualChannelCount:
-      Value: 1024
+      Value: 128
       HasValue: 1
     RealChannelCount:
-      Value: 256
+      Value: 32
       HasValue: 1
     DSPBufferLength:
-      Value: 0
-      HasValue: 0
+      Value: 256
+      HasValue: 1
     DSPBufferCount:
-      Value: 0
-      HasValue: 0
+      Value: 4
+      HasValue: 1
     Plugins:
       Value: []
       HasValue: 0
@@ -144,8 +144,12 @@ MonoBehaviour:
   displaySortOrder: 0
   childIdentifiers: []
   codecChannels:
-    Value: []
-    HasValue: 0
+    Value:
+    - format: 0
+      channels: 32
+    - format: 1
+      channels: 0
+    HasValue: 1
 --- !u!114 &-4696121280644729069
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -549,11 +553,11 @@ MonoBehaviour:
       Value: 0
       HasValue: 0
     BuildDirectory:
-      Value: 
-      HasValue: 0
+      Value: HTML5
+      HasValue: 1
     SpeakerMode:
-      Value: 0
-      HasValue: 0
+      Value: 3
+      HasValue: 1
     VirtualChannelCount:
       Value: 0
       HasValue: 0
@@ -561,10 +565,10 @@ MonoBehaviour:
       Value: 0
       HasValue: 0
     DSPBufferLength:
-      Value: 512
+      Value: 0
       HasValue: 1
     DSPBufferCount:
-      Value: 4
+      Value: 0
       HasValue: 1
     Plugins:
       Value: []

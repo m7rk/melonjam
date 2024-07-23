@@ -22,6 +22,10 @@ public class Scorer : MonoBehaviour
     public GameObject[] bossEnable;
     public GameObject[] defeatEnable;
 
+    public StudioEventEmitter swordHit;
+    public StudioEventEmitter winJingle;
+    public StudioEventEmitter loseJingle;
+
     public void Start()
     {
         bossEnable[APPSTATE.LEVEL].SetActive(true);
@@ -46,7 +50,7 @@ public class Scorer : MonoBehaviour
     private const int SCORE_NO_MATCH = -400;
     private const int SCORE_NOT_WORD = -500;
 
-    private const int SCORE_MINION_HIT = 100;
+    private const int SCORE_MINION_HIT = 1000;
     private const int SCORE_MINION_LATE = 25;
     private const int SCORE_MINION_MISS = -25;
 
@@ -54,6 +58,25 @@ public class Scorer : MonoBehaviour
     private int currentScore = SCORE_MAX / 2;
 
     public bool roundOver = false;
+
+    public void gameLoseAnimStart()
+    {
+        FindObjectOfType<SceneTransition>().setState("youLose");
+        FindFirstObjectByType<MusicTrack>().setMenu(true);
+        Invoke("toTitle", 4f);
+    }
+
+    public void roundWinAnimStart()
+    {
+        FindObjectOfType<SceneTransition>().setState("bossDown");
+        Invoke("toIntermission", 2f);
+    }
+
+    public void gameWinAnimStart()
+    {
+        FindObjectOfType<SceneTransition>().setState("youWin");
+        Invoke("toTitle", 2f);
+    }
 
     public void toTitle()
     {
@@ -74,35 +97,42 @@ public class Scorer : MonoBehaviour
 
         currentScore += (playerScoring ? 1 : -1) * amt;
         scoreSlider.set((float)(currentScore / (float)SCORE_MAX));
-        beatManager.GetComponent<StudioEventEmitter>().EventInstance.setParameterByName("Flow_Bar", 100 * (float)(currentScore / (float)SCORE_MAX));
+        var currflow = (float)(currentScore / (float)SCORE_MAX);
+        // bias a little lower
+        var currflowbias = Mathf.Pow(currflow, 1.5f);
+        FindFirstObjectByType<MusicTrack>().setFlow(100 * currflowbias);
 
         if (currentScore <= 0)
         {
+            loseJingle.Play();
+            FindFirstObjectByType<MusicTrack>().setRapping(false);
+            FindFirstObjectByType<MusicTrack>().setMenu(true);
             roundOver = true;
-            FindObjectOfType<SceneTransition>().setState("youLose");
-            Invoke("toTitle",2f);
+            gameLoseAnimStart();
             APPSTATE.LEVEL = 0;
             //lose. go to title
 
         }
         if(currentScore >= SCORE_MAX)
         {
+            winJingle.Play();
+            FindFirstObjectByType<MusicTrack>().setMenu(true);
+            FindFirstObjectByType<MusicTrack>().setRapping(false);
             roundOver = true;
+            bossEnable[APPSTATE.LEVEL].SetActive(false);
+            defeatEnable[APPSTATE.LEVEL].SetActive(true);
             if (APPSTATE.LEVEL == 2)
             {
                 // game reset.
                 APPSTATE.LEVEL = 0;
-                FindObjectOfType<SceneTransition>().setState("youWin");
-                Invoke("toTitle", 2f);
+                Invoke("gameWinAnimStart", 3f);
             }
             else
             {
-                bossEnable[APPSTATE.LEVEL].SetActive(false);
-                defeatEnable[APPSTATE.LEVEL].SetActive(true);
+
                 APPSTATE.LEVEL++;
-                FindObjectOfType<SceneTransition>().setState("bossDown");
-                Invoke("toIntermission", 2f);
                 //win. go to intermission
+                Invoke("roundWinAnimStart", 3f);
             }
 
 
@@ -121,7 +151,7 @@ public class Scorer : MonoBehaviour
     {
         if (rhymer.validWord(word))
         {
-            beatManager.GetComponent<StudioEventEmitter>().EventInstance.setParameterByName("Rhyme", syllableCount);
+            FindFirstObjectByType<MusicTrack>().setSyllables(syllableCount);
             if (getLastRhyme() != null)
             {
                 var rhymed = rhymer.rhymes(getLastRhyme(), word);
@@ -133,7 +163,7 @@ public class Scorer : MonoBehaviour
                     feedbackBox.newWord(LYRICSCORE.REPEAT);
                     applyScore(SCORE_REPEAT, playerScoring);
                     scoreDecal.newWord(SCORE_REPEAT, playerScoring);
-                    beatManager.GetComponent<StudioEventEmitter>().EventInstance.setParameterByNameWithLabel("Rhyme", "Incorrect");
+                    FindFirstObjectByType<MusicTrack>().setRhyme("Incorrect");
                 }
                 else if (rhymed && waspos)
                 {
@@ -152,7 +182,7 @@ public class Scorer : MonoBehaviour
                         scoreDecal.newWord(SCORE_MATCH_BOTH_LONG, playerScoring);
                     }
 
-                    beatManager.GetComponent<StudioEventEmitter>().EventInstance.setParameterByNameWithLabel("Rhyme", "Rhyme");
+                    FindFirstObjectByType<MusicTrack>().setRhyme("Rhyme");
                 }
                 else if (rhymed)
                 {
@@ -161,7 +191,7 @@ public class Scorer : MonoBehaviour
                     applyScore(SCORE_RHYME_ONLY, playerScoring);
                     scoreDecal.newWord(SCORE_RHYME_ONLY, playerScoring);
 
-                    beatManager.GetComponent<StudioEventEmitter>().EventInstance.setParameterByNameWithLabel("Rhyme", "Incorrect");
+                    FindFirstObjectByType<MusicTrack>().setRhyme("Incorrect");
                 }
                 else if (waspos)
                 {
@@ -172,7 +202,7 @@ public class Scorer : MonoBehaviour
                         scoreDecal.flowBonus((SCORE_FLOW_BONUS * previousWords.Count), previousWords.Count, playerScoring);
                     }
 
-                    beatManager.GetComponent<StudioEventEmitter>().EventInstance.setParameterByNameWithLabel("Rhyme", "New_Rhyme");
+                    FindFirstObjectByType<MusicTrack>().setRhyme("New_Rhyme");
                     feedbackBox.newWord(LYRICSCORE.POS_ONLY);
                     previous.text = "";
                     previousWords = new List<string>();
@@ -182,7 +212,7 @@ public class Scorer : MonoBehaviour
                     // lose many points for a nonsenstical word, but the rhyme is at least set..
                     applyScore(SCORE_NO_MATCH, playerScoring);
                     scoreDecal.newWord(SCORE_NO_MATCH, playerScoring);
-                    beatManager.GetComponent<StudioEventEmitter>().EventInstance.setParameterByNameWithLabel("Rhyme", "Incorrect");
+                    FindFirstObjectByType<MusicTrack>().setRhyme("Incorrect");
 
                     feedbackBox.newWord(LYRICSCORE.NO_MATCH);
                     previous.text = "";
@@ -192,7 +222,7 @@ public class Scorer : MonoBehaviour
             else
             {
                 // we set a new rhyme.
-                beatManager.GetComponent<StudioEventEmitter>().EventInstance.setParameterByNameWithLabel("Rhyme", "New_Rhyme");
+                FindFirstObjectByType<MusicTrack>().setRhyme("New_Rhyme");
                 feedbackBox.newWord(LYRICSCORE.POS_ONLY);
             }
             previous.text += (word + " ");
@@ -205,7 +235,7 @@ public class Scorer : MonoBehaviour
             previous.text = "";
             previousWords = new List<string>();
             feedbackBox.newWord(LYRICSCORE.NOT_WORD);
-            beatManager.GetComponent<StudioEventEmitter>().EventInstance.setParameterByNameWithLabel("Rhyme", "Incorrect");
+            FindFirstObjectByType<MusicTrack>().setRhyme("Incorrect");
         }
 
         if(isEnd)
@@ -235,14 +265,14 @@ public class Scorer : MonoBehaviour
     public void minionHit()
     {
         applyScore(SCORE_MINION_HIT, true);
-        GetComponent<StudioEventEmitter>().Play();
+        swordHit.Play();
         minionDecal.newWord(SCORE_MINION_HIT, true);
     }
 
     public void minionLate()
     {
         applyScore(SCORE_MINION_LATE, true);
-        GetComponent<StudioEventEmitter>().Play();
+        swordHit.Play();
         minionDecal.newWord(SCORE_MINION_LATE, true);
     }
 
