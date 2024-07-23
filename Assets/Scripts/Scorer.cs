@@ -42,17 +42,17 @@ public class Scorer : MonoBehaviour
         NOT_WORD // didnt finish or not a word
     }
 
-    private const int SCORE_REPEAT = -300;
-    private const int SCORE_MATCH_BOTH = 500;
-    private const int SCORE_MATCH_BOTH_LONG = 700;
+    private const int SCORE_REPEAT = -400;
+    private const int SCORE_MATCH_BOTH = 400;
+    private const int SCORE_MATCH_BOTH_LONG = 800;
     private const int SCORE_RHYME_ONLY = 0;
     private const int SCORE_FLOW_BONUS = 200;
     private const int SCORE_NO_MATCH = -400;
     private const int SCORE_NOT_WORD = -500;
 
-    private const int SCORE_MINION_HIT = 1000;
+    private const int SCORE_MINION_HIT = 50;
     private const int SCORE_MINION_LATE = 25;
-    private const int SCORE_MINION_MISS = -25;
+    private const int SCORE_MINION_MISS = -100;
 
     public const int SCORE_MAX = 10000;
     private int currentScore = SCORE_MAX / 2;
@@ -143,7 +143,7 @@ public class Scorer : MonoBehaviour
     {
         if(APPSTATE.TUTORIAL_STAGE == 1)
         {
-            currentScore = 7000;
+            currentScore = 6000;
         }
     }
 
