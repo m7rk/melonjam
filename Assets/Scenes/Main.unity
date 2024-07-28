@@ -4803,8 +4803,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   rhymer: {fileID: 2013425554}
   feedbackBox: {fileID: 251601643}
-  previous: {fileID: 2102283757}
   beatManager: {fileID: 447453862}
+  previousRhymesText: {fileID: 2102283757}
   scoreSlider: {fileID: 1786028952}
   scoreDecal: {fileID: 55936180}
   minionDecal: {fileID: 1948365157}

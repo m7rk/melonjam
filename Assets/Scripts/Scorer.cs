@@ -10,9 +10,15 @@ public class Scorer : MonoBehaviour
 {
     public Rhymer rhymer;
     public LyricScoreBox feedbackBox;
-    public TMP_Text previous;
-    private List<string> previousWords = new List<string>();
     public BeatManager beatManager;
+
+    // words already used by player and boss
+    private List<string> playerWords = new List<string>();
+    private List<string> bossWords = new List<string>();
+
+    // previous rhymes for the current string
+    public TMP_Text previousRhymesText;
+    private List<string> previousRhymes = new List<string>();
 
     public SpriteBar scoreSlider;
     public ScoreDecal scoreDecal;
@@ -147,18 +153,31 @@ public class Scorer : MonoBehaviour
         }
     }
 
+    public List<string> getUsedWordList(bool playerScoring)
+    {
+        return playerScoring ? playerWords : bossWords;
+    }
+
+
+
     public void submitWord(string word, string targetpos, bool playerScoring, bool isEnd, int syllableCount)
     {
+        // check if word in dict
         if (rhymer.validWord(word))
         {
+            bool wordWasRepeat = false;
             FindFirstObjectByType<MusicTrack>().setSyllables(syllableCount);
+
+            // check if rhyme scheme exists
             if (getLastRhyme() != null)
             {
                 var rhymed = rhymer.rhymes(getLastRhyme(), word);
                 var waspos = rhymer.isPOS(word, targetpos,false);
 
-                if(previousWords.Contains(word))
+                // the word is repeated. Don't add it to any list and penalize player
+                if(getUsedWordList(playerScoring).Contains(word))
                 {
+                    wordWasRepeat = true;
                     // lose some points for a repeat, but keep combo.
                     feedbackBox.newWord(LYRICSCORE.REPEAT);
                     applyScore(SCORE_REPEAT, playerScoring);
@@ -167,16 +186,16 @@ public class Scorer : MonoBehaviour
                 }
                 else if (rhymed && waspos)
                 {
+                    // it's a rhyme that makes sense.
                     if (syllableCount <= 3)
                     {
-                        // get a nice amount for a match
                         feedbackBox.newWord(LYRICSCORE.MATCH_BOTH);
                         applyScore(SCORE_MATCH_BOTH, playerScoring);
                         scoreDecal.newWord(SCORE_MATCH_BOTH, playerScoring);
                     }
                     else
                     {
-                        // get a nice amount for a match
+                        // bonus for 4 syl. word
                         feedbackBox.newWord(LYRICSCORE.MATCH_BOTH_LONG);
                         applyScore(SCORE_MATCH_BOTH_LONG, playerScoring);
                         scoreDecal.newWord(SCORE_MATCH_BOTH_LONG, playerScoring);
@@ -184,28 +203,28 @@ public class Scorer : MonoBehaviour
 
                     FindFirstObjectByType<MusicTrack>().setRhyme("Rhyme");
                 }
+                // it's a rhyme, but not right POS.
                 else if (rhymed)
                 {
                     // get no points for keeping the rhyme alive.
                     feedbackBox.newWord(LYRICSCORE.RHYME_ONLY);
                     applyScore(SCORE_RHYME_ONLY, playerScoring);
                     scoreDecal.newWord(SCORE_RHYME_ONLY, playerScoring);
-
                     FindFirstObjectByType<MusicTrack>().setRhyme("Incorrect");
                 }
+                // resets the rhyme. If there's at least two words, get points for them.
                 else if (waspos)
                 {
-                    // resets the rhyme. If there's at least two words, get points for them.
-                    if(previousWords.Count > 1)
+                    if(previousRhymes.Count > 1)
                     {
-                        applyScore(SCORE_FLOW_BONUS * previousWords.Count, playerScoring);
-                        scoreDecal.flowBonus((SCORE_FLOW_BONUS * previousWords.Count), previousWords.Count, playerScoring);
+                        applyScore(SCORE_FLOW_BONUS * previousRhymes.Count, playerScoring);
+                        scoreDecal.flowBonus((SCORE_FLOW_BONUS * previousRhymes.Count), previousRhymes.Count, playerScoring);
                     }
 
                     FindFirstObjectByType<MusicTrack>().setRhyme("New_Rhyme");
                     feedbackBox.newWord(LYRICSCORE.POS_ONLY);
-                    previous.text = "";
-                    previousWords = new List<string>();
+                    previousRhymesText.text = "";
+                    previousRhymes = new List<string>();
                 }
                 else
                 {
@@ -215,8 +234,8 @@ public class Scorer : MonoBehaviour
                     FindFirstObjectByType<MusicTrack>().setRhyme("Incorrect");
 
                     feedbackBox.newWord(LYRICSCORE.NO_MATCH);
-                    previous.text = "";
-                    previousWords = new List<string>();
+                    previousRhymesText.text = "";
+                    previousRhymes = new List<string>();
                 }
             }
             else
@@ -225,15 +244,21 @@ public class Scorer : MonoBehaviour
                 FindFirstObjectByType<MusicTrack>().setRhyme("New_Rhyme");
                 feedbackBox.newWord(LYRICSCORE.POS_ONLY);
             }
-            previous.text += (word + " ");
-            previousWords.Add(word);
+
+            if (!wordWasRepeat)
+            {
+                previousRhymesText.text += (word + " ");
+                previousRhymes.Add(word);
+                getUsedWordList(playerScoring).Add(word);
+            }
         }
         else
         {
             // lose everything.
             applyScore(SCORE_NOT_WORD, playerScoring);
-            previous.text = "";
-            previousWords = new List<string>();
+            scoreDecal.newWord(SCORE_NOT_WORD, playerScoring);
+            previousRhymesText.text = "";
+            previousRhymes = new List<string>();
             feedbackBox.newWord(LYRICSCORE.NOT_WORD);
             FindFirstObjectByType<MusicTrack>().setRhyme("Incorrect");
         }
@@ -241,21 +266,21 @@ public class Scorer : MonoBehaviour
         if(isEnd)
         {
             // cash out words before next turn.
-            if (previousWords.Count > 1)
+            if (previousRhymes.Count > 1)
             {
-                applyScore(SCORE_FLOW_BONUS * previousWords.Count, playerScoring);
-                scoreDecal.flowBonus((SCORE_FLOW_BONUS * previousWords.Count), previousWords.Count, playerScoring);
+                applyScore(SCORE_FLOW_BONUS * previousRhymes.Count, playerScoring);
+                scoreDecal.flowBonus((SCORE_FLOW_BONUS * previousRhymes.Count), previousRhymes.Count, playerScoring);
             }
-            previous.text = "";
-            previousWords = new List<string>();
+            previousRhymesText.text = "";
+            previousRhymes = new List<string>();
         }
     }
 
     public string getLastRhyme()
     {
-        if (previousWords.Count > 0)
+        if (previousRhymes.Count > 0)
         {
-            return previousWords[previousWords.Count - 1];
+            return previousRhymes[previousRhymes.Count - 1];
         }
         else
         {
