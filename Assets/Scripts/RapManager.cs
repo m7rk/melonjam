@@ -46,10 +46,17 @@ public class RapManager : MonoBehaviour
 
     public Material sideMaterial;
 
+    public Animator[] bossAnimators;
+    public Animator[] playerAnimators;
+
 
     // Start is called before the first frame update
     void Start()
     {
+        if (APPSTATE.TUTORIAL_STAGE <= 0)
+        {
+            setActivePlayerAnimators();
+        }
         foreach (var v in songAsset.text.Split("\n"))
         {
             baseBars.Add(v);
@@ -69,6 +76,18 @@ public class RapManager : MonoBehaviour
             {
                 bars.Add(bar);
             }
+        }
+    }
+    void setActivePlayerAnimators()
+    {
+        foreach (var v in bossAnimators)
+        {
+            v.enabled = bossBars;
+        }
+
+        foreach (var v in playerAnimators)
+        {
+            v.enabled = !bossBars;
         }
     }
 
@@ -134,6 +153,8 @@ public class RapManager : MonoBehaviour
                 bossBars = !bossBars;
                 sideMaterial.SetFloat("WhoPlays01", bossBars ? 1 : 0);
                 lyricBarIndex = 0;
+                setActivePlayerAnimators();
+   
             }
             return;
 
@@ -186,7 +207,7 @@ public class RapManager : MonoBehaviour
             }
             else if (word == "")
             {
-                var dice = Random.Range(0, 6);
+                var dice = Random.Range(0, 6 + (APPSTATE.LEVEL * 2));
 
                 if (dice == 1)
                 {

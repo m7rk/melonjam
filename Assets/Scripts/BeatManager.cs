@@ -36,19 +36,8 @@ public class BeatManager : MonoBehaviour
         if (firstFrame == 0)
         {
             mt.restartTrackBasedOnLevel();
+            BPM = APPSTATE.getBPMForLevel();
             // set BPM manually.
-            switch(APPSTATE.LEVEL)
-            {
-                    case 0: 
-                    BPM = 80; 
-                    break;
-                    case 1:
-                    BPM = 100;
-                    break;
-                    case 2:
-                    BPM = 120;
-                    break;
-            }
             FMOD_START = Time.time;
         }
 
