@@ -49,8 +49,8 @@ public class Scorer : MonoBehaviour
     }
 
     private const int SCORE_REPEAT = -400;
-    private const int SCORE_MATCH_BOTH = 400;
-    private const int SCORE_MATCH_BOTH_LONG = 800;
+    private const int SCORE_MATCH_BOTH = 300;
+    private const int SCORE_MATCH_BOTH_LONG = 700;
     private const int SCORE_RHYME_ONLY = 0;
     private const int SCORE_FLOW_BONUS = 200;
     private const int SCORE_NO_MATCH = -400;
@@ -67,20 +67,20 @@ public class Scorer : MonoBehaviour
 
     public void gameLoseAnimStart()
     {
-        FindObjectOfType<SceneTransition>().setState("youLose");
+        FindFirstObjectByType<SceneTransition>().setState("youLose");
         FindFirstObjectByType<MusicTrack>().setMenu(true);
         Invoke("toTitle", 4f);
     }
 
     public void roundWinAnimStart()
     {
-        FindObjectOfType<SceneTransition>().setState("bossDown");
+        FindFirstObjectByType<SceneTransition>().setState("bossDown");
         Invoke("toIntermission", 2f);
     }
 
     public void gameWinAnimStart()
     {
-        FindObjectOfType<SceneTransition>().setState("youWin");
+        FindFirstObjectByType<SceneTransition>().setState("youWin");
         Invoke("toTitle", 2f);
     }
 

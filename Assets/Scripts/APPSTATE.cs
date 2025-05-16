@@ -5,8 +5,13 @@ using UnityEngine;
 public class APPSTATE : MonoBehaviour
 {
     // -1 -> disable tutorial.
-    public static int TUTORIAL_STAGE = -1;
+    public static int TUTORIAL_STAGE = 0;
     public static int LEVEL = 0;
+
+    public static int GRENADE_COUNT = 3;
+    public static int CLOCK_COUNT = 3;
+    public static int CLEAR_COUNT = 3;
+    public static int FILL_COUNT = 3;
 
     public static int getBPMForLevel()
     {

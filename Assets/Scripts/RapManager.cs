@@ -49,6 +49,11 @@ public class RapManager : MonoBehaviour
     public Animator[] bossAnimators;
     public Animator[] playerAnimators;
 
+    public GameObject powerupGrenade;
+    public GameObject powerupClock;
+    public GameObject powerupClear;
+    public GameObject powerupFill;
+
 
     // Start is called before the first frame update
     void Start()
@@ -178,6 +183,8 @@ public class RapManager : MonoBehaviour
         textSubbed = textSubbed.Replace("[pron.]", "");
 
         lyricTextBox.text = (bossBars ? "<color=#999999>" : "<color=black>") + textSubbed.Substring(0, barCharacter) + (bossBars ? "<color=#bbbbbb>" : "<color=orange>") + textSubbed.Substring(barCharacter);
+
+        handlePowerup();
     }
 
     void checkKeyPress()
@@ -207,20 +214,20 @@ public class RapManager : MonoBehaviour
             }
             else if (word == "")
             {
-                var dice = Random.Range(0, 6 + (APPSTATE.LEVEL * 2));
+                var dice = Random.Range(0, 7 + (APPSTATE.LEVEL * 4));
 
-                if (dice == 1)
+                if (dice == 0)
                 {
                     string[] confuse = new string[] { "ERRR", "UHHH", "UMMM", "HMMM" };
                     word = confuse[Random.Range(0, confuse.Length)];
                 }
                 // throw in a noun randomly
-                else if (dice == 2)
+                else if (dice == 1)
                 {
                     word = rhymer.getRandomWord("n.");
                 }
                 // start a new rhyme
-                else if (dice == 3)
+                else if (dice == 2)
                 {
                     word = rhymer.getRandomWord(targetPOS);
                 }
@@ -230,6 +237,104 @@ public class RapManager : MonoBehaviour
                 }
 
             }
+        }
+    }
+
+    public void handlePowerup()
+    {
+        powerupGrenade.transform.localScale = Vector3.Lerp(powerupGrenade.transform.localScale, Vector3.one, 4*Time.deltaTime);
+        powerupGrenade.GetComponentsInChildren<TMP_Text>()[0].text = APPSTATE.GRENADE_COUNT.ToString();
+        powerupGrenade.GetComponentsInChildren<TMP_Text>()[1].text = APPSTATE.GRENADE_COUNT.ToString();
+
+        powerupClock.transform.localScale = Vector3.Lerp(powerupClock.transform.localScale, Vector3.one, 4*Time.deltaTime);
+        powerupClock.GetComponentsInChildren<TMP_Text>()[0].text = APPSTATE.CLOCK_COUNT.ToString();
+        powerupClock.GetComponentsInChildren<TMP_Text>()[1].text = APPSTATE.CLOCK_COUNT.ToString();
+
+        powerupClear.transform.localScale = Vector3.Lerp(powerupClear.transform.localScale, Vector3.one, 4*Time.deltaTime);
+        powerupClear.GetComponentsInChildren<TMP_Text>()[0].text = APPSTATE.CLEAR_COUNT.ToString();
+        powerupClear.GetComponentsInChildren<TMP_Text>()[1].text = APPSTATE.CLEAR_COUNT.ToString();
+
+        powerupFill.transform.localScale = Vector3.Lerp(powerupFill.transform.localScale, Vector3.one, 4*Time.deltaTime);
+        powerupFill.GetComponentsInChildren<TMP_Text>()[0].text = APPSTATE.FILL_COUNT.ToString();
+        powerupFill.GetComponentsInChildren<TMP_Text>()[1].text = APPSTATE.FILL_COUNT.ToString();
+
+        if (Input.GetKeyDown(KeyCode.Alpha1) && APPSTATE.GRENADE_COUNT > 0)
+        {
+            GrenadePowerUp();
+        }
+
+        if (Input.GetKeyDown(KeyCode.Alpha2) && APPSTATE.CLOCK_COUNT > 0)
+        {
+            ClockPowerUp();
+        }
+
+        if (Input.GetKeyDown(KeyCode.Alpha3) && APPSTATE.CLEAR_COUNT > 0)
+        {
+            ClearPowerUp();
+        }
+
+        if (Input.GetKeyDown(KeyCode.Alpha4) && APPSTATE.FILL_COUNT > 0)
+        {
+            FillPowerUp();
+        }
+
+        if(Time.timeScale < 1f)
+        {
+            Time.timeScale = Mathf.MoveTowards(Time.timeScale, 1f, 0.5f * Time.deltaTime);
+        }
+    }
+
+
+    public void GrenadePowerUp()
+    {
+        if(APPSTATE.GRENADE_COUNT > 0)
+        {
+            APPSTATE.GRENADE_COUNT--;
+            powerupGrenade.transform.localScale = Vector3.one * 3f;
+        }
+        FindFirstObjectByType<EnemyManager>().grenade();
+    }
+
+    public void ClockPowerUp()
+    {
+        if(APPSTATE.CLOCK_COUNT > 0)
+        {
+            APPSTATE.CLOCK_COUNT--;
+            powerupClock.transform.localScale = Vector3.one * 3f;
+        }
+        Time.timeScale = 0.5f;
+    }
+
+    public void ClearPowerUp()
+    {
+        if(APPSTATE.CLEAR_COUNT > 0)
+        {
+            APPSTATE.CLEAR_COUNT--;
+            powerupClear.transform.localScale = Vector3.one * 3f;
+        }
+        // replace the prompt with a new one.
+        bars[lyricBarIndex] = baseBars[Random.Range(0, baseBars.Count)];
+
+    }
+
+    public void FillPowerUp()
+    {
+        if(APPSTATE.FILL_COUNT > 0)
+        {
+            APPSTATE.FILL_COUNT--;
+            powerupFill.transform.localScale = Vector3.one * 3f;
+        }
+
+        var currentBar = bars[lyricBarIndex];
+        // replace the prompt with a word that counts.
+        var targetPOS = currentBar.Substring(currentBar.IndexOf("[") + 1, currentBar.IndexOf("]") - currentBar.IndexOf("[") - 1);
+        if (scorer.getLastRhyme() == null)
+        {
+            word = rhymer.getRandomWord(targetPOS);
+        }
+        else
+        {
+            word = rhymer.getRandomWordRhymesWith(targetPOS, scorer.getLastRhyme());
         }
     }
 
