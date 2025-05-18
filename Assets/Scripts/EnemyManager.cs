@@ -153,11 +153,17 @@ public class EnemyManager : MonoBehaviour
 
     public void grenade()
     {
-        foreach(var v in minions)
+        if(minions.Count == 0)
         {
+            return;
+        }
+
+        do
+        {
+            var v = minions.Dequeue();
             v.Item2.Slay();
         }
-        minions.Clear();
+        while (minions.Count > 0 && (minions.Peek().Item1 - bm.getPhrase()) < 1.5);
     }
 
     public void trySwing(string direction)

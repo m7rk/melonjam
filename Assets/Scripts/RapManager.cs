@@ -50,7 +50,6 @@ public class RapManager : MonoBehaviour
     public Animator[] playerAnimators;
 
     public GameObject powerupGrenade;
-    public GameObject powerupClock;
     public GameObject powerupClear;
     public GameObject powerupFill;
 
@@ -246,10 +245,6 @@ public class RapManager : MonoBehaviour
         powerupGrenade.GetComponentsInChildren<TMP_Text>()[0].text = APPSTATE.GRENADE_COUNT.ToString();
         powerupGrenade.GetComponentsInChildren<TMP_Text>()[1].text = APPSTATE.GRENADE_COUNT.ToString();
 
-        powerupClock.transform.localScale = Vector3.Lerp(powerupClock.transform.localScale, Vector3.one, 4*Time.deltaTime);
-        powerupClock.GetComponentsInChildren<TMP_Text>()[0].text = APPSTATE.CLOCK_COUNT.ToString();
-        powerupClock.GetComponentsInChildren<TMP_Text>()[1].text = APPSTATE.CLOCK_COUNT.ToString();
-
         powerupClear.transform.localScale = Vector3.Lerp(powerupClear.transform.localScale, Vector3.one, 4*Time.deltaTime);
         powerupClear.GetComponentsInChildren<TMP_Text>()[0].text = APPSTATE.CLEAR_COUNT.ToString();
         powerupClear.GetComponentsInChildren<TMP_Text>()[1].text = APPSTATE.CLEAR_COUNT.ToString();
@@ -263,24 +258,20 @@ public class RapManager : MonoBehaviour
             GrenadePowerUp();
         }
 
-        if (Input.GetKeyDown(KeyCode.Alpha2) && APPSTATE.CLOCK_COUNT > 0)
+        if (Input.GetKeyDown(KeyCode.Alpha2) && APPSTATE.CLEAR_COUNT > 0)
         {
-            ClockPowerUp();
+            if (!bossBars)
+            {
+                ClearPowerUp();
+            }
         }
 
-        if (Input.GetKeyDown(KeyCode.Alpha3) && APPSTATE.CLEAR_COUNT > 0)
+        if (Input.GetKeyDown(KeyCode.Alpha3) && APPSTATE.FILL_COUNT > 0)
         {
-            ClearPowerUp();
-        }
-
-        if (Input.GetKeyDown(KeyCode.Alpha4) && APPSTATE.FILL_COUNT > 0)
-        {
-            FillPowerUp();
-        }
-
-        if(Time.timeScale < 1f)
-        {
-            Time.timeScale = Mathf.MoveTowards(Time.timeScale, 1f, 0.5f * Time.deltaTime);
+            if (!bossBars)
+            {
+                FillPowerUp();
+            }
         }
     }
 
@@ -293,16 +284,7 @@ public class RapManager : MonoBehaviour
             powerupGrenade.transform.localScale = Vector3.one * 3f;
         }
         FindFirstObjectByType<EnemyManager>().grenade();
-    }
-
-    public void ClockPowerUp()
-    {
-        if(APPSTATE.CLOCK_COUNT > 0)
-        {
-            APPSTATE.CLOCK_COUNT--;
-            powerupClock.transform.localScale = Vector3.one * 3f;
-        }
-        Time.timeScale = 0.5f;
+        powerupGrenade.GetComponent<AudioSource>().Play();
     }
 
     public void ClearPowerUp()
@@ -314,6 +296,7 @@ public class RapManager : MonoBehaviour
         }
         // replace the prompt with a new one.
         bars[lyricBarIndex] = baseBars[Random.Range(0, baseBars.Count)];
+        powerupClear.GetComponent<AudioSource>().Play();
 
     }
 
@@ -336,6 +319,7 @@ public class RapManager : MonoBehaviour
         {
             word = rhymer.getRandomWordRhymesWith(targetPOS, scorer.getLastRhyme());
         }
+        powerupFill.GetComponent<AudioSource>().Play();
     }
 
 }

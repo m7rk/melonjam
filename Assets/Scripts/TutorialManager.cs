@@ -45,10 +45,15 @@ public class TutorialManager : MonoBehaviour
         // transitions.
         if (APPSTATE.TUTORIAL_STAGE >= 0)
         {   
-            if (bm.getPhrase() > 11)
+            if (bm.getPhrase() > 12)
             {
                 tutorialObjects[APPSTATE.TUTORIAL_STAGE].SetActive(false);
                 APPSTATE.TUTORIAL_STAGE = -1;
+            }
+            else if (bm.getPhrase() > 11)
+            {
+                // score
+                APPSTATE.TUTORIAL_STAGE = 10;
             }
             else if (bm.getPhrase() > 10)
             {

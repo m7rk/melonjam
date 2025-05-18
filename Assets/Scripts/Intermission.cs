@@ -1,6 +1,8 @@
+using FMODUnity;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -12,9 +14,6 @@ public class Intermission : MonoBehaviour
 
     public Sprite GrenOut;
     public Sprite GrenIn;
-
-    public Sprite ClockOut;
-    public Sprite ClockIn;
 
     public Sprite ClearOut;
     public Sprite ClearIn;
@@ -28,19 +27,25 @@ public class Intermission : MonoBehaviour
     public Button rightButton;
 
     private int sel = 0;
+
+    public GameObject[] powerups;
+    public StudioEventEmitter swordHit;
+
+    private bool done = false;
+
     // Start is called before the first frame update
     void Start()
     {
-        bonusesL = new int[3] { Random.Range(0, 4), Random.Range(0, 4), Random.Range(0, 4) };
+        bonusesL = new int[2] { Random.Range(0, 3), Random.Range(0, 3)};
 
-        bonusesR = new int[3] { Random.Range(0, 4), Random.Range(0, 4), Random.Range(0, 4) };
+        bonusesR = new int[2] { Random.Range(0, 3), Random.Range(0, 3)};
 
         // make sure that no bonuses are the same
-        for (int i = 0; i != 3;)
+        for (int i = 0; i != 2;)
         {
             if (bonusesL.Contains(bonusesR[i]))
             {
-                bonusesR[i] = Random.Range(0, 4);
+                bonusesR[i] = Random.Range(0, 3);
             }
             else
             {
@@ -60,6 +65,16 @@ public class Intermission : MonoBehaviour
 
         FindFirstObjectByType<SceneTransition>().clear();
         FindFirstObjectByType<MusicTrack>().setFlow(50);
+
+        powerups[0].GetComponentsInChildren<TMP_Text>()[0].text = APPSTATE.GRENADE_COUNT.ToString();
+        powerups[0].GetComponentsInChildren<TMP_Text>()[1].text = APPSTATE.GRENADE_COUNT.ToString();
+
+        powerups[1].GetComponentsInChildren<TMP_Text>()[0].text = APPSTATE.CLEAR_COUNT.ToString();
+        powerups[1].GetComponentsInChildren<TMP_Text>()[1].text = APPSTATE.CLEAR_COUNT.ToString();
+
+        powerups[2].GetComponentsInChildren<TMP_Text>()[0].text = APPSTATE.FILL_COUNT.ToString();
+        powerups[2].GetComponentsInChildren<TMP_Text>()[1].text = APPSTATE.FILL_COUNT.ToString();
+
     }
     public void pointerEnterR()
     {
@@ -79,6 +94,11 @@ public class Intermission : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if(done)
+        {
+            return;
+        }
+
         if(sel < 0)
         {
             leftButton.transform.localScale = Vector3.Lerp(leftButton.transform.localScale,Vector3.one * 1.1f,2*Time.deltaTime);
@@ -103,9 +123,13 @@ public class Intermission : MonoBehaviour
 
     public void StartLevel()
     {
-        if(sel < 0)
+        if (done)
         {
-            for (int i = 0; i != 3; ++i)
+            return;
+        }
+        if (sel > 0)
+        {
+            for (int i = 0; i != 2; ++i)
             {
                 switch(bonusesL[i])
                 {
@@ -113,20 +137,17 @@ public class Intermission : MonoBehaviour
                         APPSTATE.GRENADE_COUNT += 1;
                         break;
                     case 1:
-                        APPSTATE.CLOCK_COUNT += 1;
-                        break;
-                    case 2:
                         APPSTATE.CLEAR_COUNT += 1;
                         break;
-                    case 3:
+                    case 2:
                         APPSTATE.FILL_COUNT += 1;
                         break;
                 }
             }
         }
-        if(sel > 0)
+        if(sel < 0)
         {
-            for (int i = 0; i != 3; ++i)
+            for (int i = 0; i != 2; ++i)
             {
                 switch (bonusesR[i])
                 {
@@ -134,23 +155,33 @@ public class Intermission : MonoBehaviour
                         APPSTATE.GRENADE_COUNT += 1;
                         break;
                     case 1:
-                        APPSTATE.CLOCK_COUNT += 1;
-                        break;
-                    case 2:
                         APPSTATE.CLEAR_COUNT += 1;
                         break;
-                    case 3:
+                    case 2:
                         APPSTATE.FILL_COUNT += 1;
                         break;
                 }
             }
         }
 
+        powerups[0].GetComponentsInChildren<TMP_Text>()[0].text = APPSTATE.GRENADE_COUNT.ToString();
+        powerups[0].GetComponentsInChildren<TMP_Text>()[1].text = APPSTATE.GRENADE_COUNT.ToString();
+
+        powerups[1].GetComponentsInChildren<TMP_Text>()[0].text = APPSTATE.CLEAR_COUNT.ToString();
+        powerups[1].GetComponentsInChildren<TMP_Text>()[1].text = APPSTATE.CLEAR_COUNT.ToString();
+
+        powerups[2].GetComponentsInChildren<TMP_Text>()[0].text = APPSTATE.FILL_COUNT.ToString();
+        powerups[2].GetComponentsInChildren<TMP_Text>()[1].text = APPSTATE.FILL_COUNT.ToString();
+
+        swordHit.Play();
+        done = true;
+
         FindFirstObjectByType<SceneTransition>().setState("ready");
         FindFirstObjectByType<MusicTrack>().setMenu(false);
         FindFirstObjectByType<MusicTrack>().setVolume(0);
 
         Invoke("ToMain", 1);
+        
     }
 
     public void setItemSprite(int id, Image inner, Image outer)
@@ -162,14 +193,10 @@ public class Intermission : MonoBehaviour
                 inner.sprite = GrenIn;
                 break;
             case 1:
-                outer.sprite = ClockOut;
-                inner.sprite = ClockIn;
-                break;
-            case 2:
                 outer.sprite = ClearOut;
                 inner.sprite = ClearIn;
                 break;
-            case 3:
+            case 2:
                 outer.sprite = FillOut;
                 inner.sprite = FillIn;
                 break;

@@ -14,9 +14,13 @@ public class Rhymer : MonoBehaviour
     public TextAsset partofspeech;
     public TextAsset mostcommonwords;
 
+    // CMU pronunciation dictionary
     private Dictionary<string, List<string[]>> tocmu = new Dictionary<string, List<string[]>>();
+    // PART OF SPEECH dictionary
     private Dictionary<string, string[]> topos = new Dictionary<string, string[]>();
+    // Most Common Words
     private HashSet<string> mcw = new HashSet<string>();
+    private Dictionary<string,string> deAccentedCMU = new Dictionary<string, string>();
 
     // Start is called before the first frame update
     void Start()
@@ -85,6 +89,13 @@ public class Rhymer : MonoBehaviour
                 {
                     tocmu[word] = new List<string[]>();
                 }
+
+                // caching help
+                foreach(var v in cmu)
+                {
+                    deAccentedCMU[v] = Regex.Replace(v, @"[\d-]", string.Empty);
+                }
+
                 tocmu[word.ToUpper()].Add(cmu);
 
                 hitCount++;
@@ -131,8 +142,8 @@ public class Rhymer : MonoBehaviour
 
                     var pho1 = cmu1[cmu1.Length - cmp];
                     var pho2 = cmu2[cmu2.Length - cmp];
-                    var pho1_noacc = Regex.Replace(pho1, @"[\d-]", string.Empty);
-                    var pho2_noacc = Regex.Replace(pho2, @"[\d-]", string.Empty);
+                    var pho1_noacc = deAccentedCMU[pho1];
+                    var pho2_noacc = deAccentedCMU[pho2];
 
                     // staring from the end, compare syllables until both match on a stress. We don't care about the stress. (for now)
                     if (pho1_noacc == pho2_noacc)
@@ -160,13 +171,14 @@ public class Rhymer : MonoBehaviour
     // strict - don't use words that have more than one POS (good for AI)
     public bool isPOS(string word1, string target, bool strict)
     {
+        var lookup = topos[word1.ToUpper()];
 
-        if(strict && topos[word1.ToUpper()].Length > 2)
+        if (strict && lookup.Length > 2)
         {
             return false;
         }
 
-        foreach(var v in topos[word1.ToUpper()])
+        foreach(var v in lookup)
         {
             // corpus has extra space.
             if(v.Trim() == target.Trim())
@@ -199,11 +211,10 @@ public class Rhymer : MonoBehaviour
 
     public string getRandomWordRhymesWith(string pos, string lastWord)
     {
-        var keys = tocmu.Keys.ToList();
         List<string> words = new List<string>();
-        foreach(var word in keys) 
+        foreach(var word in mcw) 
         {
-            if (isPOS(word, pos, true) && rhymes(word, lastWord) && aiKnowsWord(word) && word != lastWord)
+            if (tocmu.ContainsKey(word) && isPOS(word, pos, true) && rhymes(word, lastWord) && word != lastWord)
             {
                 words.Add(word);
             }

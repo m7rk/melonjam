@@ -115,7 +115,7 @@ public class Scorer : MonoBehaviour
             FindFirstObjectByType<MusicTrack>().setMenu(true);
             roundOver = true;
             gameLoseAnimStart();
-            APPSTATE.LEVEL = 0;
+            APPSTATE.reset();
             //lose. go to title
 
         }
@@ -130,7 +130,7 @@ public class Scorer : MonoBehaviour
             if (APPSTATE.LEVEL == 2)
             {
                 // game reset.
-                APPSTATE.LEVEL = 0;
+                APPSTATE.reset();
                 Invoke("gameWinAnimStart", 3f);
             }
             else

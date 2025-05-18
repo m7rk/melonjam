@@ -6,6 +6,7 @@ using UnityEngine.SceneManagement;
 
 public class Title : MonoBehaviour
 {
+    public StudioEventEmitter swordHit;
     // Start is called before the first frame update
     void Start()
     {
@@ -28,6 +29,7 @@ public class Title : MonoBehaviour
 
     public void StartLevel()
     {
+        swordHit.Play();
         FindFirstObjectByType<SceneTransition>().setState("ready");
         FindFirstObjectByType<MusicTrack>().setMenu(false);
         FindFirstObjectByType<MusicTrack>().setVolume(0);

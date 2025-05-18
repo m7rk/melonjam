@@ -8,10 +8,19 @@ public class APPSTATE : MonoBehaviour
     public static int TUTORIAL_STAGE = 0;
     public static int LEVEL = 0;
 
-    public static int GRENADE_COUNT = 3;
-    public static int CLOCK_COUNT = 3;
-    public static int CLEAR_COUNT = 3;
-    public static int FILL_COUNT = 3;
+    public static int GRENADE_COUNT = 2;
+    public static int CLEAR_COUNT = 2;
+    public static int FILL_COUNT = 2;
+
+    public static void reset()
+    {
+        // don't re run the tutorial ever
+        LEVEL = 0;
+        GRENADE_COUNT = 2;
+        CLEAR_COUNT = 2;
+        FILL_COUNT = 2;
+    }
+
 
     public static int getBPMForLevel()
     {
